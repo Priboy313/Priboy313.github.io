@@ -1,0 +1,36 @@
+
+.im-chat-input--attach{
+	display: none;
+}
+._emoji_btn{
+	padding-right: 7px;
+}
+
+
+.autopic_cont::-webkit-scrollbar-button {
+	width:5px;
+	height:0px;
+}
+
+.autopic_cont::-webkit-scrollbar-track {
+	background-color:rgb(58, 58, 58);
+}
+
+.autopic_cont::-webkit-scrollbar-thumb {
+	background-color: white;
+}
+
+.autopic_cont::-webkit-scrollbar-thumb:hover{
+	background-color:#56999f;
+}
+
+.autopic_cont::-webkit-resizer{
+	width:4px;
+	height:0px
+}
+
+.autopic_cont::-webkit-scrollbar{
+	-webkit-border-radius: 2%;
+	border-radius: 2%;
+	width: 4px;
+}
