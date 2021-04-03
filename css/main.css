@@ -75,8 +75,15 @@ html,body{
     border-left: 1px solid rgb(12, 221, 12);
 }
 
+.menu_link_list{
+    display: none;
+}
+
 .menu_button:hover{
     box-shadow: 0;
+}
+.menu_p:hover .menu_link_list{
+    display: block;
 }
 
 

@@ -18,6 +18,7 @@ document.addEventListener("keydown", function(event) {
 document.addEventListener("keypress", function reLoad(event){
 	if(event.keyCode == 121){
 		console.log("%cRELOAD", "color: yellow;");
+		
 		var pics = document.getElementsByClassName("picwin_pic");
 		
 		if( pics.length > 0){
