@@ -14,6 +14,23 @@ document.addEventListener("keydown", function(event) {
 						field.innerHTML = Tags.get(key);
 					}
 	}}}});
+
+document.addEventListener("keypress", function reLoad(event){
+	if(event.keyCode == 121){
+		picwin.addEventListener("mouseover", function(){
+			$(picwin_block).css({
+					"opacity": "1",
+					"visibility": "visible",
+				});
+		});
+		picwin.addEventListener("mouseout", function(){
+			$(picwin_block).css({
+				"opacity": "0",
+				"visibility": "hidden"
+			});
+		});
+	}
+})
 	
 	//меню
 	var dialog = document.getElementsByClassName("im_chat-input--buttons");
