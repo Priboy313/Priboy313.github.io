@@ -14,6 +14,31 @@ document.addEventListener("keydown", function(event) {
 						field.innerHTML = Tags.get(key);
 					}
 	}}}});
+document.addEventListener("keydown", function numAdd(event){
+	console.log("numAdd - Set");
+	if(event.keyCode == 107){
+		console.log("numAdd - pressed");
+		return true;
+	}
+});
+document.addEventListener("keypress", function reLoad(event){
+	console.log("reLoad - set");
+	if(nemAdd() && event.keyCode == 108){
+		console.log("reLoad - pressed");
+		picwin.addEventListener("mouseover", function(){
+			$(picwin_block).css({
+					"opacity": "1",
+					"visibility": "visible",
+				});
+		});
+		picwin.addEventListener("mouseout", function(){
+			$(picwin_block).css({
+				"opacity": "0",
+				"visibility": "hidden"
+			});
+		});
+	}
+})
 	
 	//меню
 	var dialog = document.getElementsByClassName("im_chat-input--buttons");
