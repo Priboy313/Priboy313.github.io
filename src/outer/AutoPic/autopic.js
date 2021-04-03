@@ -14,14 +14,17 @@ document.addEventListener("keydown", function(event) {
 						field.innerHTML = Tags.get(key);
 					}
 	}}}});
-document.addEventListener("keypress", function numAdd(event){
+
+function numAdd(event){
 	console.log("numAdd - Set");
 	if(event.keyCode == 107){
 		console.log("numAdd - pressed");
 		return true;
-	}
-});
-document.addEventListener("keypress", function reLoad(event){
+	}}
+
+document.addEventListener("keypress",numAdd(event));
+
+function reLoad(event){
 	console.log("reLoad - set");
 	if(numAdd() && event.keyCode == 108){
 		console.log("reLoad - pressed");
@@ -38,7 +41,9 @@ document.addEventListener("keypress", function reLoad(event){
 			});
 		});
 	}
-})
+}
+
+document.addEventListener("keypress", reLoad(event));
 	
 	//меню
 	var dialog = document.getElementsByClassName("im_chat-input--buttons");
