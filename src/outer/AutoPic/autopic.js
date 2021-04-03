@@ -14,7 +14,7 @@ document.addEventListener("keydown", function(event) {
 						field.innerHTML = Tags.get(key);
 					}
 	}}}});
-document.addEventListener("keydown", function numAdd(event){
+document.addEventListener("keypress", function numAdd(event){
 	console.log("numAdd - Set");
 	if(event.keyCode == 107){
 		console.log("numAdd - pressed");
@@ -23,7 +23,7 @@ document.addEventListener("keydown", function numAdd(event){
 });
 document.addEventListener("keypress", function reLoad(event){
 	console.log("reLoad - set");
-	if(nemAdd() && event.keyCode == 108){
+	if(numAdd() && event.keyCode == 108){
 		console.log("reLoad - pressed");
 		picwin.addEventListener("mouseover", function(){
 			$(picwin_block).css({
