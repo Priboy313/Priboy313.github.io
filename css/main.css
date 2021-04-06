@@ -67,7 +67,6 @@ html,body{
     padding-left: 20%;
 
     text-align: left;
-    z-index: 2;
 	transition: .5s;
 	box-sizing: border-box;
 
@@ -75,18 +74,26 @@ html,body{
     border: 2px solid rgb(12, 221, 12);
 }
 
-.menu_link_list{
-    height: 0px;
-    display: none;
-    margin-bottom: 35px;
 
-    transition-property: height;
-    transition-duration: .2s;
+
+.menu_button:hover + .menu_link_list{
+    display: block;
+    max-height: 500px;
+}
+.menu_button:focus + .menu_link_list{
+    display: block;
+    max-height: 500px;
 }
 
-.menu_link{
-    transition-property: heigth;
-    
+.menu_link_list{
+    max-height: 0;
+    display: none;
+    margin-bottom: 20px;
+
+
+    -webkit-transition: max-height .5s, margin-bottom .5s;
+    transition: max-height .5s, margin-bottom .5s;
+    box-sizing: border-box;
 }
 
 
@@ -94,9 +101,9 @@ html,body{
     color: rgb(24, 24, 27);
     background-color: rgb(12, 221, 12);
     border: none;
-    border-radius: 30px;
+    border-left: 1px solid rgb(12, 221, 12);
 
-    box-shadow: inset 0 0 10px 5px rgb(24, 24, 27);
+    box-shadow: inset -5px 0 10px 5px rgb(24, 24, 27);
 }
 .menu_button:focus{
     outline: none;
@@ -105,10 +112,12 @@ html,body{
     background-color: rgb(12, 221, 12);
 
     border: none;
-    border-radius: 20px;
+    border-left: 1px solid rgb(12, 221, 12);
 
-    box-shadow: inset -10px 0 10px 5px rgb(24, 24, 27);
+    box-shadow: inset -15px 0 10px 5px rgb(24, 24, 27);
 }
+
+
 
 
     /*контент, блок справа*/
