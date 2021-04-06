@@ -97,22 +97,23 @@ html,body{
 }
 
 
+
 .menu_button:hover{
+    left: -7px;
+
     color: rgb(24, 24, 27);
     background-color: rgb(12, 221, 12);
     border: none;
-    border-left: 1px solid rgb(12, 221, 12);
 
     box-shadow: inset -5px 0 10px 5px rgb(24, 24, 27);
 }
 .menu_button:focus{
     outline: none;
+    left: -7px;
+
     color: rgb(24, 24, 27);
-
     background-color: rgb(12, 221, 12);
-
     border: none;
-    border-left: 1px solid rgb(12, 221, 12);
 
     box-shadow: inset -15px 0 10px 5px rgb(24, 24, 27);
 }
