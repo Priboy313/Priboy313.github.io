@@ -1,6 +1,5 @@
 console.log("%csidebar.js connected!", "color: yellow; font-size: 20px;");
 
-
 function Open(num){
     var menu = document.getElementById("menu");
 
@@ -13,16 +12,16 @@ function Open(num){
             "heigth": '1px',
             "display": 'none'
         })
-        $(list[i]).css({
+        $(link[i]).css({
             "heigth": '1px',
             "display": 'none'
         })
     }
-
+ 
     $(list[num-1]).css({
         "display": 'block'
     })
-
+    
     $(link[0]).css({
         "heigth": '150px'
     })
