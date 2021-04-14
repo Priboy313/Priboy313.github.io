@@ -1,0 +1,55 @@
+/*Header*/
+
+.nav-list{
+    list-style-type: none;
+
+    position: absolute;
+        top: -20%;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    margin: auto;
+    padding: 0;
+    
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    width: 500px;
+    height: 300px;
+
+    background-color: rgb(51, 47, 47);
+    border: 1px solid green;
+
+    grid-template-areas:
+    ". . . . ."
+    "about . image . cprod"
+    ". . image . ."
+    "pres . image . remote"
+    ". . . . .";
+
+}
+
+.nav__item{
+    width: 33%;
+    margin: auto;
+    
+}
+
+.item-about{
+    grid-area: about;
+}
+.item-img{
+    grid-area: image;
+    grid-row: span 2;
+
+}
+.item-c{
+    grid-area: cprod;
+}
+.item-presentation{
+    grid-area: pres;
+}
+
+.item-remote{
+    grid-area: remote;
+}
