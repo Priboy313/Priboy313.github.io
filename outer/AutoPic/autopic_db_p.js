@@ -3,6 +3,7 @@ var Tags = new Map([
 	['ну нахер', 'https://sun9-61.userapi.com/impf/c840530/v840530855/3525a/VO7v5o-yAZ0.jpg?size=600x338&quality=96&proxy=1&sign=d8e835d552ba4b39692bf1b98fc466ed&type=album'],
 	['пичот', 'https://sun9-50.userapi.com/impf/8ze-oNod7rliD7UvBfFkJcQ7l6WRobFd1HDAtQ/mVs5gJorNkY.jpg?size=1280x720&quality=96&proxy=1&sign=eab7051ad2a6cfc020660e23129ac161&type=album'],
 	['хех', 'https://sun9-31.userapi.com/impg/DRZqjGZ2R5O49vP34CN6LcSLmxRTK9rziN4aFA/Aorq1demghk.jpg?size=1080x1041&quality=96&proxy=1&sign=2f314d9f966f1a1781fd793b184417ad&type=album'],
+	['крыса', 'https://sun9-60.userapi.com/impg/CNfgSOrEn23AM3uYtHuQ9sIA8f1ZHRvL8BVRBw/-Euwsk5KIYY.jpg?size=480x360&quality=96&sign=c20b41651f22b9ca0db2a60c95dba497&type=album'],
 	['дориме', 'https://sun9-61.userapi.com/impg/WA99cnoKYq7UE8neDwsjqQ_5cp-VwarTxOuGpA/madZoCsygko.jpg?size=1080x1065&quality=96&proxy=1&sign=bf5609f76a8a1f8106e526a79c38924c&type=album'],
 	['сделяль', 'https://sun9-42.userapi.com/impf/c841638/v841638657/3082e/eF9dIAFvajs.jpg?size=600x750&quality=96&proxy=1&sign=5811a772d0ed1169b06ff556f5ea851e&type=album'],
 	['ооо бля', 'https://sun9-15.userapi.com/impg/w_JYXlAqZ_DD-XDnvElBw81_XTKiZ0NPHO-dKw/9k6vVGSPit0.jpg?size=1080x1080&quality=96&proxy=1&sign=3d23bd6634c29760a08bf94156b52873&type=album'],
