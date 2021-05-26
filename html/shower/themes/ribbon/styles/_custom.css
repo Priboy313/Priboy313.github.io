@@ -1,0 +1,38 @@
+i{
+    visibility: hidden;
+}
+.sl_noback{
+    background-image: none;
+}
+
+.code_x1{
+    font-size: 24px;
+}
+.code_x2, .code_x3{
+    font-size: 20px;
+    grid-column-gap: 25px;
+}
+.code_x2{
+    font-size: 22px;
+    grid-column-gap: 30px;
+}
+
+
+.sl_code_x1{
+    padding-left: 80px;
+    padding-right: 40px;
+}
+.sl_code_x2{
+    padding-left: 60px;
+    padding-right: 40px;
+}
+.sl_code_x3{
+    padding-left: 60px;
+    padding-right: 40px;
+}
+
+.sl_code_x1 h2, .sl_code_x2 h2, .sl_code_x3 h2{
+    font-size: 34px;
+    margin-top: -30px;
+}
+

@@ -9,12 +9,9 @@
     <style>
         .shower {
             --slide-ratio: calc(16 / 9);
-        }
+        } 
         .slide{
-            background-image: url("pictures/back.webp");
-        }
-        .sl_noback{
-            background-image: none;
+           background-image: url("pictures/back.webp");
         }
     </style>
 </head>
@@ -62,17 +59,13 @@
         
 
         <h2>Компьютерная (видео-) игра - это</h2>
-        <blockquote>
-            <p>компьютерная программа, служащая для организации игрового процесса (далее геймплея), связи с партнёрами по игре, или сама выступающая в качестве партнёра.</p>
-        </blockquote>
-        <blockquote>
+            <p>компьютерная программа, служащая для организации игрового процесса, связи с партнёрами по игре, или сама выступающая в качестве партнёра.</p>
             <p>Основные составляющие видео игры - 
                 это Сеттинг - место действия, условия, время, среда,
                 Геймплей - интерактивное взаимодействие игры и игрока и 
                 Музыкальное сопровождение - мелодии, композиции, саундреки, мелкие звуки
                 окружающего мира, взаимодействия и т.д.
             </p>
-        </blockquote>
     </section>
 
     <section class="slide">
@@ -80,37 +73,37 @@
 
         <h2>Выбор технологии</h2>
         <table>
-            <tr class="next">
+            <tr>
                 <th scope="col"></th>
                 <th>GameMaker 2</th>
                 <th>Unity3D</th>
             </tr>
-            <tr class="next">
+            <tr>
                 <th scope="row">Простота освоения</th>
                 <td><img src="pictures/yes.png" style="height: 23px;"></td>
                 <td><img src="pictures/yes.png" style="height: 23px;"></td>
             </tr>
-            <tr class="next">
+            <tr>
                 <th scope="row">Лицензия для старта</th>
                 <td>7500 руб./12 мес.</td>
                 <td><img src="pictures/no.png" style="height: 23px;"></td>
             </tr>
-            <tr class="next">
+            <tr>
                 <th scope="row">Набор возможностей</th>
                 <td>Меньше</td>
                 <td>Больше</td>
             </tr>
-            <tr class="next">
+            <tr>
                 <th scope="row">Работа с измерениями</th>
                 <td>2D</td>
                 <td>2D, 3D</td>
             </tr>
-            <tr class="next">
+            <tr>
                 <th scope="row">Используемый язык</th>
                 <td>GML</td>
                 <td>C#, UnityScript</td>
             </tr>
-            <tr class="next">
+            <tr>
                 <th scope="row">Система сохранения</th>
                 <td>Встроенная</td>
                 <td>Реализуемая</td>
@@ -130,29 +123,85 @@
         <img src="pictures/геймплей-оп.gif" class="cover" style="width: 320px; left: 80%; top: 55%;">
     </section>
 
-    <section class="slide">
-        <h2>Создание игрового поля:</h2>
-        <img src="pictures/Start.png" class="cover" style="width: 90%; margin-top: 5px;">
-        <p></p>
+    <section class="slide sl_code_x3 clear">
+        <h2>Основной скрипт игры: x2_PlayerController: переменные</h2>
+        <div class="columns three code_x3">
+            <p>
+                [SerializeField] DataBase <b>inGameSet</b>;<br>
+                [SerializeField] Profile <b>profile</b>;<br>
+                public GameObject <b>gameStats</b>;<br>
+                public GameObject <b>goal1</b>;<br>
+                public GameObject <b>goal2</b>;<br>
+                public GameObject <b>Explosion</b>;<br>
+                public GameObject <b>ScoreText</b>;<br>
+                public GameObject <b>ComboText</b>;<br>
+            </p> 
+            <p>
+                public GameObject <b>DeathText</b>;<br>
+                public GameObject <b>scrapController</b>;<br>
+                public int <b>score</b> = 0;<br>
+                public int <b>combo</b> = 0;<br>
+                public int <b>death</b> = 0;<br>
+                public float <b>body_speed</b> = 2f;<br>
+                public float <b>body_rotation</b> = 1f;<br>
+            </p>
+            <p>
+                public bool <b>check</b> = false;<br>
+                public int <b>hp</b>;<br>
+                public GameObject[] <b>hpArr</b> = new GameObject[10];<br>
+                public GameObject <b>hpXY</b>;<br>
+                public GameObject <b>hpBody</b>;<br>
+                public float <b>Wmax</b> = 5f;<br>
+                public float <b>Wobj</b> = 0.6f;<br>
+                private Vector3 <b>g1pos</b>;<br>
+                private Vector3 <b>g2pos</b>;<br>
+            </p>    
+        </div>
     </section>
     
-    <section class="slide">
-        <h2>Запуск игрового поля:</h2>
-        <img src="pictures/Update.png" class="cover" style="width: 90%; margin-top: 5px;">
-        <p></p>
+    <section class="slide sl_code_x1 clear">
+        <h2>x2_PlayerController: метод Start() часть 1</h2>
+        <div class="code_x1">
+            <p>
+            <b>hp</b> = inGameSet.hpStart;<br>
+            <b>g1pos</b> = new Vector3 (Random.Range(-2.7f,2.7f), goal1.transform.position.y, 1);<p></p>
+            <b>g2pos</b> = new Vector3 (Random.Range(-2.7f,2.7f), goal2.transform.position.y, 1);<br>
+            <p></p>
+            <b>goal1</b>.transform.position = g1pos;<br>
+            <b>goal1</b>.SetActive (true);<br>
+            <p></p>
+            <b>goal2</b>.transform.position = g2pos;<br>
+            <b>goal2</b>.SetActive (false);<br>
+            </p>
+        </div>
     </section>
 
-    <section class="slide sl_noback">
+    <section class="slide sl_code_x1 clear">
+        <h2>x2_PlayerController: метод Start() часть 2</h2>
+        <div class="code_x1">
+            <p>
+                var <b>start_g2pos</b> = <b>goal2</b>.transform.position;<br>
+                <b>transform.position</b> = new Vector3(start_g2pos.x, start_g2pos.y, 2f);<br>
+                <p></p>
+                hpControler("Start");<br>
+                <b>scrapController</b>.GetComponent<<i></i>ScrapSpawner>().ScrapSpawn();<br>
+                <p></p>
+                <b>gameStats</b>.GetComponent<<i></i>subMenuController>().pos = gameStats.GetComponent<<i></i>DeadMenucontroller>().startPos.transform.position;<br>
+            </p>
+        </div>
+    </section>
+
+    <section class="slide sl_noback sl_code_x1 clear">
         <h2 style="margin-top: -50px;" >Диаграмма классов: общий вид</h2>
-        <img src="pictures/dc1.jpg" style="height: 75%; margin-top: 30px;" class="cover">
+        <img src="pictures/dc1.jpg" style="height: 85%; margin-top: 30px;" class="cover">
     </section>
-    <section class="slide sl_noback">
+    <section class="slide sl_noback sl_code_x1 clear">
         <h2 style="margin-top: -50px;" >Диаграмма классов: первая часть</h2>
-        <img src="pictures/dc2.jpg" style="height: 75%; margin-top: 30px;" class="cover">
+        <img src="pictures/dc2.jpg" style="height: 85%; margin-top: 30px;" class="cover">
     </section>
-    <section class="slide sl_noback">
+    <section class="slide sl_noback sl_code_x1 clear">
         <h2 style="margin-top: -50px;" >Диаграмма классов: вторая часть</h2>
-        <img src="pictures/dc3.jpg" style="height: 75%; margin-top: 30px;" class="cover">
+        <img src="pictures/dc3.jpg" style="height: 85%; margin-top: 30px;" class="cover">
     </section>
 
 
