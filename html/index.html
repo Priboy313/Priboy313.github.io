@@ -25,7 +25,7 @@
     </header>
 
         <!--Титульный лист------------------------------------------->
-    <section class="slide">
+    <section class="slide ">
         <h2 style="text-align: center;">Дипломная работа</h2>
         <p style="text-align: center; margin-bottom: 0;">на тему:</p>
 
@@ -40,7 +40,7 @@
     </section>
         <!----------------------------------------------------------->
 
-    <section class="slide clear">
+    <section class="slide ">
         
 
         <h2 style="margin-bottom: 5px;" >Введение</h2>
@@ -69,9 +69,7 @@
             </p>
     </section>
 
-    <section class="slide">
-        
-
+    <section class="slide ">
         <h2>Выбор технологии</h2>
         <table>
             <tr>
@@ -114,7 +112,7 @@
     </section>
     
 
-    <section class="slide">
+    <section class="slide ">
         <h2 style="margin-left: -40px;">Корневая механика</h2>
         <p style="width: 70%; font-size: 24px; margin-top: -30px; margin-left: -40px;">Суть игры: по игровому полю самостоятельно перемещается игрок, курсируя между двумя точками, 
             расположенными на разных концах поля. При достижении одной цели пользователь получает одно очко 
@@ -124,7 +122,7 @@
         <img src="pictures/геймплей-оп.gif" class="cover" style="width: 320px; left: 80%; top: 55%;">
     </section>
 
-    <section class="slide sl_code_x3 clear">
+    <section class="slide sl_code_x3 ">
         <h2>Основной скрипт игры: x2_PlayerController: переменные</h2>
         <div class="columns three code_x3">
             <p>
@@ -160,8 +158,8 @@
         </div>
     </section>
     
-    <section class="slide sl_code_x1 clear">
-        <h2>x2_PlayerController: метод Start() часть 1</h2>
+    <section class="slide sl_code_x1 ">
+        <h2>x2_PlayerController: Start()</h2>
         <div class="code_x1">
             <p>
             <b>hp</b> = inGameSet.hpStart;<br>
@@ -177,8 +175,8 @@
         </div>
     </section>
 
-    <section class="slide sl_code_x1 clear">
-        <h2>x2_PlayerController: метод Start() часть 2</h2>
+    <section class="slide sl_code_x1 ">
+        <h2>x2_PlayerController: Start()</h2>
         <div class="code_x1">
             <p>
                 var <b>start_g2pos</b> = <b>goal2</b>.transform.position;<br>
@@ -192,20 +190,126 @@
         </div>
     </section>
 
-    <section class="slide sl_noback sl_code_x1 clear">
+    <section class="slide sl_code_x1 ">
+        <h2>x2_PlayerController: Update()</h2>
+        <div class="code_x2">
+            
+                if(<b>transform.position</b> == <b>goal1</b>.transform.position || transform.position == <b>goal2</b>.transform.position) <b>check = !check</b>;<br>
+                if(<b>!check</b>){
+                   <div class="tab"><b>transform.position</b> = Vector3.MoveTowards(transform.position, goal1.transform.position, body_speed * Time.deltaTime);</div> 
+                } else {<br>
+                    <div class="tab"><b>transform.position</b> = Vector3.MoveTowards(transform.position, goal2.transform.position, body_speed * Time.deltaTime);</div>
+                } <br>
+                <b>transform.rotation</b> *= Quaternion.Euler(0f,0f,body_rotation);<br>
+            
+        </div>
+    </section>
+
+
+    <section class="slide sl_code_x1 ">
+        <h2>x2_PlayerController: OnCollisionEnter2D(Collision2D other)</h2>
+        <div class="code_x2">
+            if(other.gameObject.tag == "goal1"){
+                <div class="tab">
+                    <b>goal1</b>.SetActive (false);<br>
+                    <b>goal2</b>.SetActive (true);<br>
+                    <b>g2pos</b> = new Vector3(Random.Range(-2.7f,2.7f), goal2.transform.position.y, 1);<br>
+                    <b>goal2</b>.transform.position = g2pos;<br>
+                </div>
+            }else if(other.gameObject.tag == "goal2"){
+                <div class="tab">
+                        <b>goal1</b>.SetActive (true);<br>
+                        <b>goal2</b>.SetActive (false);<br>
+                        <b>g1pos</b> = new Vector3(Random.Range(-2.7f,2.7f), goal1.transform.position.y, 1);<br>
+                        <b>goal1</b>.transform.position = g1pos;<br>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide sl_code_x1 ">
+        <h2>x2_PlayerController: OnCollisionEnter2D(Collision2D other)</h2>
+        <div class="code_x2">
+            <b>score</b>++; <br>
+            <b>ScoreText</b>.GetComponent<<i></i>Text>().text = "" + score;<br>
+            <b>gameStats</b>.GetComponent<<i></i>DeadMenucontroller>().score = score;<br>
+            <b>profile</b>.ScoreController(inGameSet.state);<br>
+            <p></p>
+            <b>combo</b>++;<br>
+            <b>ComboText</b>.GetComponent<<i></i>Text>().text = "x" + combo;<br>
+            <b>gameStats</b>.GetComponent<<i></i>DeadMenucontroller>().ComboController(combo);<br>
+            <b>profile</b>.ComboController(inGameSet.state, combo);<br>
+
+            
+    </section>
+
+    <section class="slide sl_code_x1">
+        <h2>x2_PlayerController: OnCollisionEnter2D(Collision2D other)</h2>
+        <div class="code_x2">
+            double <b>ost</b> = score % inGameSet.<b>healScore</b>;<br>
+            if(ost == 0 && hp != inGameSet.<b>maxHp</b>){<br>
+            <div class="tab">
+                <b>hp</b>++;<br>
+            </div>
+            }<br>
+            <b>scrapController</b>.GetComponent<<i></i>ScrapSpawner>().ScrapSpawn();<br>
+        </div>
+    </section>
+
+    <section class="slide sl_code_x1">
+        <h2>x2_PlayerController: OnTriggerEnter2D(Collider2D other)</h2>
+        <div class="code_x2">
+            if(other.gameObject.tag == "Scrap"){<br>
+                <div class="tab">
+                    <b>body_rotation</b> *= -1;<br>
+                    <b>hp</b>--;<br>
+                    <b>combo</b> = 0;<br>
+                    <b>ComboText</b>.GetComponent<<i></i>Text>().text = "x" + combo;<br>
+                    <b>death</b>++;
+                    <b>DeathText</b>.GetComponent<<i></i>Text>().text = "" + death;<br>
+                    <b>gameStats</b>.GetComponent<<i></i>DeadMenucontroller>().death = death;<br>
+                    <b>profile</b>.DeathController(inGameSet.state);<br>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide sl_code_x1">
+        <h2>x2_PlayerController: OnTriggerEnter2D(Collider2D other)</h2>
+        <div class="code_x2">
+            <div class="tab">
+                if(hp == 0){<br>
+                    <div class="tab">
+                        Instantiate(Explosion, transform.position, Quaternion.identity);<br>
+                        <b>goal1</b>.SetActive(false);<br>
+                        <b>goal2</b>.SetActive(false);<br>
+                        <b>gameObject</b>.SetActive(false);<br>
+                        <b>gameStats</b>.SetActive(true);
+                        <b>gameStats</b>.GetComponent<<i></i>DeadMenucontroller>().Death();<br>
+                        <b>gameStats</b>.GetComponent<<i></i>subMenuController>().pos = gameStats.GetComponent<<i></i>DeadMenucontroller>().activePos.transform.position;<br>
+                        <b>body_speed</b> = 0;<br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide sl_noback sl_code_x1 ">
         <h2 style="margin-top: -50px;" >Диаграмма классов: общий вид</h2>
         <img src="pictures/dc1.jpg" style="height: 85%; margin-top: 30px;" class="cover">
     </section>
-    <section class="slide sl_noback sl_code_x1 clear">
+    <section class="slide sl_noback sl_code_x1 ">
         <h2 style="margin-top: -50px;" >Диаграмма классов: первая часть</h2>
         <img src="pictures/dc2.jpg" style="height: 85%; margin-top: 30px;" class="cover">
     </section>
-    <section class="slide sl_noback sl_code_x1 clear">
+    <section class="slide sl_noback sl_code_x1 ">
         <h2 style="margin-top: -50px;" >Диаграмма классов: вторая часть</h2>
         <img src="pictures/dc3.jpg" style="height: 85%; margin-top: 30px;" class="cover">
     </section>
 
-
+    <section class="slide">
+        <h2 style="margin-top: -30px;">Заключение</h2>
+        <p style="width: 65%; font-size: 22px;">Результатом дипломной работы является готовый программный продукт «Техническая демонстрационная версия двухмерной компьютерной игры “HyperCasual”». Реализованы подсистемы графического интерфейса пользователя, управления реестром операционной системы и взаимодействия внутриигровых объектов. Все подсистемы отлажены, оптимизированы, протестированы и интегрированы в единую программную систему.</p>
+        <img src="pictures/result.gif" class="cover" style="width: 320px; left: 80%; top: 55%;">
+    </section>
 
 
 
