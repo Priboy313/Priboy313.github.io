@@ -20,7 +20,7 @@ var Tags = new Map([
 	['я шутка', 'https://sun9-63.userapi.com/impg/0qzA5I2YFXP3MXVz8Tb9KdJZLx6VO_HH3w9LeA/aZ1Yt7rYAeU.jpg?size=728x475&quality=96&proxy=1&sign=330e1cbdb62eb6ee4bd158ac3a00b69e&type=album'],
 	['ничтожество', 'https://sun9-38.userapi.com/impg/GGMb26XyLD3FjqFKb97XQM74IYBvjzHxDD_-8Q/LmpH8-rlsyg.jpg?size=1080x639&quality=96&proxy=1&sign=f6d969ff8731cd542a54959a6eee50cf&type=album'],
 	['педрилас', 'https://sun9-74.userapi.com/impg/pbNQWzjEjXWSEYrJPmPrvTr2Mw5CmJxJhCSpLg/Sybq5BIpkyg.jpg?size=1080x778&quality=96&proxy=1&sign=eec99f6ee74a610097bd6e2d139fac78&type=album'],
-	['слушаю', 'https://sun9-57.userapi.com/impg/m5TrdA78QAeAM9oOTYFDRLoZLrp7kFnDI0Slbw/D9OOlNwzXx4.jpg?size=500x390&quality=96&proxy=1&sign=e9115995b90aeb51b4b4c660f1e300ad&type=album'],
+	['слушаю', 'https://sun9-55.userapi.com/impg/CWS_8NXaeEAsgdBCYKhhugk5SID5Zy1vSGT0sw/ZCp2WaKz_ag.jpg?size=1000x500&quality=95&sign=83da267dadcbd5a65d8cae4f45d494e9&type=album'],
 	['преисполнился', 'https://sun9-11.userapi.com/impg/XBYJwmDXIZNBBCawKRCe9Ho3yjtYyuApxT826g/-KfkOASCH0E.jpg?size=1028x1028&quality=96&proxy=1&sign=7a4d808023f473be8c05d2a0a0dde426&type=album'],
 	['хитрый', 'https://sun9-50.userapi.com/impg/NYLFoyI5ej0cy_ZFRyhbzkuQYG-moLyqhXop-w/kQz1AKlv1II.jpg?size=600x338&quality=96&proxy=1&sign=80b694317a933e28316add846030e0be&type=album'],
 	['зеркалочка', 'https://sun9-15.userapi.com/impg/diEQ0TtHLC4fZDn-mo436H-JS6l0IPvEEguqTA/450BgtFLgm4.jpg?size=720x720&quality=96&proxy=1&sign=354ef8dc4bb4c9c99aa1cf4b425c3b82&type=album'],
