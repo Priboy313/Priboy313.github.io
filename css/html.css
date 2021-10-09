@@ -1,16 +1,16 @@
-*{
-    color: ivory;
+* {
+	color: ivory;
 }
 
-html,body{
-    margin: 0;
-    padding: 0;
-
-    background-color: rgb(34, 34, 38);
-    background-image: url(/src/back.webp);
-    background-repeat: repeat;
-    background-attachment: fixed;
-
-
-    height: 100%;
+html, body {
+	margin: 0;
+	padding: 0;
+	
+	background-color: rgb(34, 34, 38);
+	background-image: url("/src/back.webp");
+	background-repeat: repeat;
+	background-attachment: fixed;
+	
+	
+	height: 100%;
 }
