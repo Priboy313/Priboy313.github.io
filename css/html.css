@@ -40,10 +40,11 @@ section .row{
 	transform: rotate(-30deg);
 
 	width: 100%;
+	margin-right: 20px;
 	padding: 10px 0;
 	white-space: nowrap;
 
-	font-size: 56px;
+	font-size: 64px;
 
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -58,7 +59,6 @@ section .row{
 section .row div{
 	font-size: 1em;
 	white-space: nowrap;
-	
 	animation: animate1 80s linear infinite;
 	animation-delay: -80s;
 }
