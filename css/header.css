@@ -2,7 +2,7 @@
 
 :root {
 	/*статика*/
-	--back-color: black;
+	--btn-back-color: black;
 	--btn-act-bckg-color: black;
 	--menu-text-color: rgb(0, 255, 0);
 	

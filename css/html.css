@@ -36,7 +36,7 @@ section .row{
 	position: relative;
 	display: flex;
 
-	top: -50%;
+	top: -60%;
 	transform: rotate(-30deg);
 
 	width: 100%;
