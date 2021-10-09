@@ -1,16 +1,131 @@
+:root{
+	--main-back-color: rgb(20, 20, 20);
+
+	--icon-def-color: rgba(0, 0, 0, 0.5);
+	--icon-act-color: rgba(0, 240, 0, 0.8);
+
+	--icon-act-transition: 0.6s
+}
+
+
 * {
-	color: ivory;
+	margin: 0;
+	padding: 0;
 }
 
 html, body {
-	margin: 0;
-	padding: 0;
+	color: ivory;
 	
-	background-color: rgb(34, 34, 38);
-	background-image: url("/src/back.webp");
-	background-repeat: repeat;
-	background-attachment: fixed;
-	
+	background-color: var(--main-back-color);
 	
 	height: 100%;
+}
+
+/*animated background*/
+section{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+}
+
+section .row{
+	position: relative;
+	display: flex;
+
+	top: -50%;
+	transform: rotate(-30deg);
+
+	width: 100%;
+	padding: 10px 0;
+	white-space: nowrap;
+
+	font-size: 56px;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none; 
+
+	
+}
+
+section .row div{
+	font-size: 1em;
+	white-space: nowrap;
+	
+	animation: animate1 80s linear infinite;
+	animation-delay: -80s;
+}
+
+section .row:nth-child(even) div{
+	animation: animate3 80s linear infinite;
+	animation-delay: -80s;
+}
+
+section .row div:nth-child(2){
+	font-size: 1em;
+	white-space: nowrap;
+	
+	animation: animate2 80s linear infinite;
+	animation-delay: -40s;
+}
+
+section .row:nth-child(even) div:nth-child(2){
+	animation: animate4 80s linear infinite;
+	animation-delay: -40s;
+}
+
+@keyframes animate1{
+	0%{
+		transform: translateX(100%);
+	}
+	100%{
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes animate2{
+	0%{
+		transform: translateX(0%);
+	}
+	100%{
+		transform: translateX(-200%);
+	}
+}
+
+@keyframes animate3{
+	0%{
+		transform: translateX(-100%);
+	}
+	100%{
+		transform: translateX(100%);
+	}
+}
+
+@keyframes animate4{
+	0%{
+		transform: translateX(-200%);
+	}
+	100%{
+		transform: translateX(0%);
+	}
+}
+
+section i{
+	user-select: none;
+	cursor: default;
+	color: var(--icon-def-color);
+	transition: var(--icon-act-transition);
+}
+
+section i:hover{
+	transition: 0s;
+	color: var(--icon-act-color);
+	text-shadow: 0 0 120px var(--icon-act-color);
 }

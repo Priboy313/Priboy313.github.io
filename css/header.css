@@ -24,36 +24,18 @@ header {
 	
 	display: grid;
 	grid-template-areas:
-		"info"
 		"menu";
 	gap: 10px;
 	
-	height: 120px;
+	height: 30px;
 	width: 60%;
 	min-width: 400px;
 	
 	top: 0px;
 	margin: 0 20%;
+	margin-top: 50px;
 	
 	opacity: 0.85;
-}
-
-/*****INFO*/
-.info {
-	grid-area: info;
-	display: grid;
-	grid-template-areas: "logo spc phone";
-}
-
-.logo {
-	grid-area: logo;
-	height: 60px;
-	visibility: hidden;
-}
-
-.phone {
-	grid-area: phone;
-	text-align: right;
 }
 
 /*****MENU*/
