@@ -18,7 +18,6 @@ var row_icons = [
 	"fas fa-italic",
 	"fab fa-css3-alt",
 	"fas fa-user-secret",
-	"fab fa-android",
 	"fab fa-app-store",
 	"fas fa-atom",
 	"fas fa-battery-three-quarters",
