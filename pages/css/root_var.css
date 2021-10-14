@@ -1,0 +1,34 @@
+	/* main */
+:root{
+	/*background*/
+	--main-back-color: rgb(20, 20, 20);
+
+	/* animated backround icons */
+	--icon-def-color: rgba(0, 0, 0, 0.5);
+	--icon-act-color: rgba(0, 240, 0, 0.8);
+
+	--icon-act-transition: 0.6s;
+
+
+}
+
+	/* header */
+:root{
+
+	/*buttons animation static*/
+	--btn-back-color: black;
+	--btn-act-bckg-color: black;
+	--menu-text-color: rgb(0, 255, 0);
+	
+	/*buttons animation active*/
+	--btn-act-color: rgba(0, 240, 0, 0.8);
+
+	--btn-act-shd-delay: 0.5s;
+	--btn-act-dec-delay1: 0.1s;
+	--btn-act-dec-delay2: 0.2s;
+	--btn-act-dec-delay3: 0.3s;
+	--btn-act-dec-delay4: 0.4s;
+	--btn-act-dec-transition: 0.5s;
+
+	--btn-act-text-color: black;
+}

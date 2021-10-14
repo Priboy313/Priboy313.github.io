@@ -1,24 +1,5 @@
 /*Header*/
 
-:root {
-	/*статика*/
-	--btn-back-color: black;
-	--btn-act-bckg-color: black;
-	--menu-text-color: rgb(0, 255, 0);
-	
-	/*анимации*/
-	--btn-act-color: rgba(0, 240, 0, 0.8);
-
-	--btn-act-shd-delay: 0.5s;
-	--btn-act-dec-delay1: 0.1s;
-	--btn-act-dec-delay2: 0.2s;
-	--btn-act-dec-delay3: 0.3s;
-	--btn-act-dec-delay4: 0.4s;
-	--btn-act-dec-transition: 0.5s;
-
-	--btn-act-text-color: black;
-}
-
 header {
 	position: absolute;
 	

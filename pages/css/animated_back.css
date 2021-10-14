@@ -1,28 +1,6 @@
-:root{
-	--main-back-color: rgb(20, 20, 20);
-
-	--icon-def-color: rgba(0, 0, 0, 0.5);
-	--icon-act-color: rgba(0, 240, 0, 0.8);
-
-	--icon-act-transition: 0.6s
-}
-
-
-* {
-	margin: 0;
-	padding: 0;
-}
-
-html, body {
-	color: ivory;
-	
-	background-color: var(--main-back-color);
-	
-	height: 100%;
-}
-
 /*animated background*/
-section{
+
+.back_animated_section{
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -32,7 +10,7 @@ section{
 	overflow: hidden;
 }
 
-section .row{
+.back_animated_section .row{
 	position: relative;
 	display: flex;
 
@@ -56,19 +34,19 @@ section .row{
 	
 }
 
-section .row div{
+.back_animated_section .row div{
 	font-size: 1em;
 	white-space: nowrap;
 	animation: animate1 80s linear infinite;
 	animation-delay: -80s;
 }
 
-section .row:nth-child(even) div{
+.back_animated_section .row:nth-child(even) div{
 	animation: animate3 80s linear infinite;
 	animation-delay: -80s;
 }
 
-section .row div:nth-child(2){
+.back_animated_section .row div:nth-child(2){
 	font-size: 1em;
 	white-space: nowrap;
 	
@@ -76,7 +54,7 @@ section .row div:nth-child(2){
 	animation-delay: -40s;
 }
 
-section .row:nth-child(even) div:nth-child(2){
+.back_animated_section .row:nth-child(even) div:nth-child(2){
 	animation: animate4 80s linear infinite;
 	animation-delay: -40s;
 }
@@ -117,14 +95,14 @@ section .row:nth-child(even) div:nth-child(2){
 	}
 }
 
-section i{
+.back_animated_section i{
 	user-select: none;
 	cursor: default;
 	color: var(--icon-def-color);
 	transition: var(--icon-act-transition);
 }
 
-section i:hover{
+.back_animated_section i:hover{
 	transition: 0s;
 	color: var(--icon-act-color);
 	text-shadow: 0 0 120px var(--icon-act-color);
