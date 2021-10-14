@@ -1,14 +1,14 @@
 
 var menu = document.getElementsByClassName('menu')[0];
 
-for(x=0; x < 4; x++){
+for(x=1; x <= 4; x++){
 	var menu_btn = document.createElement("a")
 		menu_btn.classList.add("menu_btn")
 		values = SetBtnContent(x);
 			menu_btn.href = values.href;
 			menu_btn.innerHTML = values.cont;
 
-	for(y=0; y<4; y++){
+	for(y=1; y <= 4; y++){
 		var menu_btn_dec = document.createElement("span")
 			menu_btn_dec.classList.add("menu_btn_dec")
 		menu_btn.appendChild(menu_btn_dec)
@@ -18,19 +18,19 @@ for(x=0; x < 4; x++){
 
 function SetBtnContent(num){
 	switch (num) {
-		case 0:
+		case 1:
 			href = "https://priboy313.github.io/";
 			cont = "Главная";
 			break;
-		case 1:
+		case 2:
 			href = "/pages/about.html";
 			cont = "Обо мне";
 			break;
-		case 2:
+		case 3:
 			href = "/pages/projects.html";
 			cont = "Проекты";
 			break;
-		case 3:
+		case 4:
 			href = "#";
 			cont = "Мини";
 			break;
