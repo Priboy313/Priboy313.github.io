@@ -12,3 +12,23 @@ html, body {
 	height: 100%;
 }
 
+.wrapper{
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	top: 30px;
+
+	margin-top: 50px;
+
+	height: 85%;
+	min-height: 30%;
+	width: 99.8%;
+
+	pointer-events: none;
+}
+
+.wrapper .content{
+	pointer-events: all;
+}

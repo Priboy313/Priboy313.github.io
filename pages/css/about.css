@@ -1,0 +1,22 @@
+
+/* styles for "pages/about.html" */
+
+.about_box{
+	--radius: 20px;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	top: -50px;
+
+	height: 300px;
+	width: 200px;
+
+	background-color: var(--icon-def-color);
+
+	border-radius: var(--radius);
+
+	transition-delay: 0.5s;
+	transition: 0.2s;
+}

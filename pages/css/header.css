@@ -30,7 +30,7 @@ header {
 	display: inline-block;
 	overflow: hidden;
 
-	background-color: var(--btn-act-bckg-color);
+	background-color: var(--btn-back-color);
 	
 	min-width: 100px;
 	padding-top: 0.5em;
@@ -41,7 +41,7 @@ header {
 	text-decoration-line: none;
 	text-align: center;
 
-	transition: 0.2s
+	transition: 0.2s;
 }
 
 .menu .menu_btn:hover{

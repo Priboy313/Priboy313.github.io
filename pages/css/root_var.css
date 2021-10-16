@@ -16,8 +16,7 @@
 :root{
 
 	/*buttons animation static*/
-	--btn-back-color: black;
-	--btn-act-bckg-color: black;
+	--btn-back-color:black;
 	--menu-text-color: rgb(0, 255, 0);
 	
 	/*buttons animation active*/

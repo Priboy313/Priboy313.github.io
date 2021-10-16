@@ -1,0 +1,51 @@
+
+
+.animated_box{
+	overflow: hidden;
+	transition-delay: 0.5s;
+	transition: 0.2s;
+}
+
+.animated_box:hover{
+	transition-delay: 0.5s;
+	transition: 0.2s;
+}
+
+.animated_box:hover .animated_box_content{
+	z-index: 10;
+}
+
+.animated_box:hover::before{
+	content: "";
+	position: absolute;
+
+	width: 150px;
+	height: 125%;
+
+	background-color: var(--btn-act-color);
+	
+	animation: animated_border 3s linear infinite;
+
+	transition-delay: 0.5s;
+	transition: 0.2s;
+}
+
+.animated_box:hover::after{
+	content: "";
+	position: absolute;
+	inset: 2px;
+	background-color: var(--btn-back-color);
+	border-radius: var(--radius);
+
+	transition-delay: 0.5s;
+	transition: 0.2s;	
+}
+
+@keyframes animated_border{
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+}
