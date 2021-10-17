@@ -1,14 +1,8 @@
 
 
 .animated_box{
+	--animation-speed: 3s;
 	overflow: hidden;
-	transition-delay: 0.5s;
-	transition: 0.2s;
-}
-
-.animated_box:hover{
-	transition-delay: 0.5s;
-	transition: 0.2s;
 }
 
 .animated_box:hover .animated_box_content{
@@ -22,30 +16,29 @@
 	width: 150px;
 	height: 125%;
 
-	background-color: var(--btn-act-color);
+	background-color: var(--key-act-color);
 	
-	animation: animated_border 3s linear infinite;
-
-	transition-delay: 0.5s;
-	transition: 0.2s;
+	animation: animated_border_bef var(--animation-speed)  linear infinite;
 }
 
 .animated_box:hover::after{
 	content: "";
 	position: absolute;
 	inset: 2px;
-	background-color: var(--btn-back-color);
+	background-color: var(--key-elem-color);
 	border-radius: var(--radius);
-
-	transition-delay: 0.5s;
-	transition: 0.2s;	
 }
 
-@keyframes animated_border{
+@keyframes animated_border_bef{
 	0%{
+		background-color: var(--key-elem-color);
 		transform: rotate(0deg);
 	}
+	20%{
+		background-color: var(--key-act-color);
+	}
 	100%{
+		background-color: var(--key-elem-color);
 		transform: rotate(360deg);
 	}
 }

@@ -100,12 +100,12 @@
 .back_animated_section i{
 	user-select: none;
 	cursor: default;
-	color: var(--icon-def-color);
+	color: var(--key-elem-op-color);
 	transition: var(--icon-act-transition);
 }
 
 .back_animated_section i:hover{
 	transition: 0s;
-	color: var(--icon-act-color);
-	text-shadow: 0 0 120px var(--icon-act-color);
+	color: var(--key-act-color);
+	text-shadow: 0 0 120px var(--key-act-shd-color);
 }

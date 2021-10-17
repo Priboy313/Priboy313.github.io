@@ -7,7 +7,7 @@
 html, body {
 	color: ivory;
 	
-	background-color: var(--main-back-color);
+	background-color: var(--key-back-color);
 	
 	height: 100%;
 }

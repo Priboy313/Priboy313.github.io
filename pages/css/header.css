@@ -30,12 +30,12 @@ header {
 	display: inline-block;
 	overflow: hidden;
 
-	background-color: var(--btn-back-color);
+	background-color: var(--key-elem-color);
 	
 	min-width: 100px;
 	padding-top: 0.5em;
 	
-	color: var(--menu-text-color);
+	color: var(--key-act-color);
 	text-transform: uppercase;
 	text-decoration: none;
 	text-decoration-line: none;
@@ -45,12 +45,12 @@ header {
 }
 
 .menu .menu_btn:hover{
-	background-color: var(--btn-act-color);
+	background-color: var(--key-act-shd-color);
 	color: var(--btn-act-text-color);
 
-	box-shadow: 0 0 10px var(--btn-act-color),
-				0 0 40px var(--btn-act-color),
-				0 0 80px var(--btn-act-color);
+	box-shadow: 0 0 10px var(--key-act-shd-color),
+				0 0 40px var(--key-act-shd-color),
+				0 0 80px var(--key-act-shd-color);
 	
 	transition-delay: var(--btn-act-shd-delay);
 
@@ -73,7 +73,7 @@ header {
 	left: -100%;
 	width: 100%;
 	height: 2px;
-	background: linear-gradient(90deg,transparent,var(--btn-act-color));
+	background: linear-gradient(90deg,transparent,var(--key-act-shd-color));
 }
 .menu_btn:hover .menu_btn_dec:nth-child(1){
 	left: 100%;
@@ -86,7 +86,7 @@ header {
 	right: 0;
 	width: 2px;
 	height: 100%;
-	background: linear-gradient(180deg,transparent,var(--btn-act-color));
+	background: linear-gradient(180deg,transparent,var(--key-act-shd-color));
 }
 .menu_btn:hover .menu_btn_dec:nth-child(2){
 	top: 100%;
@@ -99,7 +99,7 @@ header {
 	right: -100%;
 	width: 100%;
 	height: 2px;
-	background: linear-gradient(270deg,transparent,var(--btn-act-color));
+	background: linear-gradient(270deg,transparent,var(--key-act-shd-color));
 }
 .menu_btn:hover .menu_btn_dec:nth-child(3){
 	right: 100%;
@@ -112,7 +112,7 @@ header {
 	left: 0;
 	width: 2px;
 	height: 100%;
-	background: linear-gradient(360deg,transparent,var(--btn-act-color));
+	background: linear-gradient(360deg,transparent,var(--key-act-shd-color));
 }
 .menu_btn:hover .menu_btn_dec:nth-child(4){
 	bottom: 100%;

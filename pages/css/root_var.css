@@ -1,26 +1,20 @@
 	/* main */
 :root{
-	/*background*/
-	--main-back-color: rgb(20, 20, 20);
+	/* key colors for all website */
+	--key-back-color: rgb(20, 20, 20);
+	--key-elem-color: black;
+	--key-elem-op-color:  rgba(0, 0, 0, 0.5);
+	--key-act-color:rgb(0, 255, 0);
+	--key-act-shd-color: rgba(0, 240, 0, 0.8);
 
 	/* animated backround icons */
-	--icon-def-color: rgba(0, 0, 0, 0.5);
-	--icon-act-color: rgba(0, 240, 0, 0.8);
-
 	--icon-act-transition: 0.6s;
-
 
 }
 
 	/* header */
 :root{
-
-	/*buttons animation static*/
-	--btn-back-color:black;
-	--menu-text-color: rgb(0, 255, 0);
-	
 	/*buttons animation active*/
-	--btn-act-color: rgba(0, 240, 0, 0.8);
 
 	--btn-act-shd-delay: 0.5s;
 	--btn-act-dec-delay1: 0.1s;
