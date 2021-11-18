@@ -1,0 +1,143 @@
+:root{
+	--col-a: #d9d9da;
+	--col-back: #222226;
+	--col-panel: #333336;
+	--col-title: #444446;
+	--col-border: #3f3f41;
+	--col-name-text: #bed4d2;
+	--col-text: #626264;
+}
+
+body{
+	background-color: var(--col-back);
+	color: var(--col-name-text);
+}
+
+a, a:hover, .special-link, .special-link:hover{
+	color: var(--col-a);
+}
+
+
+
+	/** right profile **/
+	
+.aside-profile-stats, .aside-profile-btns{
+	background-color: var(--col-panel);
+}
+
+
+
+
+	/** .panel **/
+	
+.panel-body{
+	background-color: var(--col-panel);
+}
+
+.panel{
+	border: 1px solid var(--col-border);
+}
+
+.panel-heading .panel-nav{
+	background-color: var(--col-title);
+}
+
+.panel .panel-heading {
+	background-color: var(--col-title);
+	border-bottom: 1px solid var(--col-border);
+}
+
+.alert-warning{
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+	color: var(--col-text);
+}
+
+
+
+	/** panel book **/
+.book-row .book-title a, .book-row .book-title a:hover{
+	color: var(--col-a);
+}
+
+
+
+	/** panel button **/
+.btn-default {
+	color: var(--col-name-text);
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:hover{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:active{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:focus{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:mousedown{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+
+
+.new-year-layout .topnavbar-wrapper{
+background-color: var(--col-panel);
+}
+
+
+.nav-pills-v2 .nav>li>a.nav-link, 
+.nav-pills-v2 .nav>li>a:hover.nav-link,
+.book-page .nav>li>a:hover{
+	background-color: var(--col-title);
+	color: var(--col-name-text);
+}
+
+.book-page .book-tab-content {
+	background-color: var(--col-panel);
+}
+.book-page .book-title{
+	color: var(--col-a)!important;
+}
+
+
+
+
+	/** navigation ul li **/
+
+.nav-tabs li a{
+	background-color: var(--col-page);
+	color: var(--col-a);
+}
+
+.nav-tabs li:hover a{
+	background-color: var(--col-page);
+	text-decoration: underline;
+}
+
+.nav-tabs li.active:hover a{
+	background-color: var(--col-page);
+	text-decoration: none;
+}
+
+.nav-tabs li.active a{
+	background-color: var(--col-title);
+}
