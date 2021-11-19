@@ -1,0 +1,325 @@
+:root{
+	--col-back: #222226;			/* исключительно для body, задний фон страницы */
+	
+	--col-panel: #333336;			/* тела блоков */
+	--col-title: #444446;			/* заголовки блоков, главный текст, заголовки */
+	--col-border: #3f3f41;			/* границы обычных блоков */
+	
+	--col-alarm-border: #e27c79;	/* границы предупреждающих блоков, ошибок, оповещений */
+	--col-alarm-text: #d9463c;		/* текст предупреждающих блоков, ошибок, оповещений */
+	
+	--col-a: #d9d9da;				/* цвет ссылок */
+	--col-name-text: #bed4d2;		/* цвет заголовков, выделенного текста */
+	--col-text: #6a7c8a;			/* цвет затемнённого текста, если уместен и не сливается */
+}
+
+
+
+body{
+	background-color: var(--col-back);
+	color: var(--col-name-text);
+}
+
+a, a:hover, .special-link, .special-link:hover{
+	background-color: var(--col-panel);
+	color: var(--col-a);
+}
+
+
+
+	/** right profile **/
+	
+.aside-profile-stats, 
+.aside-profile-btns{
+	background-color: var(--col-panel);
+}
+
+
+	/** head menu, dropdown menu **/
+
+body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
+.navbar .navbar-nav .open .dropdown-menu a,
+.dropdown-header{
+	color: var(--col-a);
+	background-color: var(--col-panel);
+}
+
+.navbar .navbar-nav .open .dropdown-menu li:hover a{
+	color: var(--col-a);
+	background-color: var(--col-title);
+}
+
+.dropdown-menu .divider{
+	/* так и не понял, как поменять задник полоске-разделителю перед заголовком ТОП*/
+	display: none;
+}
+
+
+.notification-header{
+	border-bottom: solid 1px var(--col-border);
+}
+
+.list-group-item{
+	background-color: var(--col-panel);
+	border: 1px solid var(--col-border);
+}
+
+.list-group-item .contact .contact-info{
+	color: var(--col-a);
+}
+
+.list-group .list-group-item .contact:hover{
+	background-color: var(--col-title);
+}
+
+
+
+
+
+	/** .panel **/
+	
+.panel-body{
+	background-color: var(--col-panel);
+}
+
+.panel{
+	border: 1px solid var(--col-border);
+}
+
+.panel-heading .panel-nav{
+	background-color: var(--col-title);
+}
+
+.panel .panel-heading {
+	background-color: var(--col-title);
+	border-bottom: 1px solid var(--col-border);
+}
+
+.panel-heading a{
+	background-color: var(--col-title);
+}
+
+.alert-warning{
+	background-color: var(--col-panel);
+	border-color: var(--col-alarm-border);
+	color: var(--col-alarm-text);
+}
+
+
+
+	/** panel book **/
+.book-row{
+	border-bottom: 1px solid var(--col-border);
+}
+.book-row .book-title a, 
+.book-row .book-title a:hover{
+	color: var(--col-a);
+}
+
+.disputed-item{
+	border-bottom: 1px solid var(--col-border);
+}
+
+.disputed-item:hover{
+	background-color: var(--col-title);
+}
+
+.item-title{
+	color: var(--col-a);
+}
+
+
+
+
+
+
+	/** panel button **/
+.btn-default {
+	color: var(--col-name-text);
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:hover{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:active{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:focus{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+.btn-default:mousedown{
+	color: var(--col-a);
+	text-decoration: underline;
+	background-color: var(--col-title);
+	border-color: var(--col-border);
+}
+
+
+.new-year-layout .topnavbar-wrapper{
+background-color: var(--col-panel);
+}
+
+
+.nav-pills-v2 .nav li a.nav-link, 
+.nav-pills-v2 .nav li a:hover.nav-link,
+.book-page .nav>li>a:hover{
+	background-color: var(--col-title);
+	color: var(--col-name-text);
+}
+
+.tab-content{
+    border-color: var(--col-border);
+}
+
+.book-page .book-tab-content {
+	background-color: var(--col-panel);
+}
+
+.book-page .book-title{
+	color: var(--col-a)!important;
+}
+
+
+
+
+
+	/** navigation ul li **/
+	
+.nav-tabs{
+	border-bottom: 1px solid var(--col-border)
+}
+
+.nav-tabs li a{
+	background-color: var(--col-page);
+	border: 1px solid var(--col-border);
+	color: var(--col-a);
+}
+
+.nav-tabs li:hover a{
+	background-color: var(--col-page);
+	border: 1px solid var(--col-border);
+	text-decoration: underline;
+}
+
+.nav-tabs li.active:hover a{
+	background-color: var(--col-page);
+	border: 1px solid var(--col-border);
+	text-decoration: none;
+}
+
+.nav-tabs li.active a{
+	background-color: var(--col-title);
+	border: 1px solid var(--col-border);
+}
+
+
+
+	/** footer **/
+	
+.footer{
+	background-color: var(--col-title);
+    border-top: 1px solid var(--col-border);
+}
+
+.footer a{
+	background-color: var(--col-title);
+	color: var(--col-a);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/** --------------- scrollbar ------------------------ **/
+
+::-webkit-scrollbar-button {
+	width:5px;
+	height:0px;
+}
+
+::-webkit-scrollbar-track {
+	background-color:rgb(58, 58, 58);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: white;
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background-color:#56999f;
+}
+
+::-webkit-resizer{
+	width:4px;
+	height:0px
+}
+
+::-webkit-scrollbar{
+	-webkit-border-radius: 2%;
+	border-radius: 2%;
+	width: 4px;
+}
+
+::-webkit-scrollbar-button {
+	width:5px;
+	height:0px;
+}
+
+::-webkit-scrollbar-track {
+	background-color:rgb(58, 58, 58);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: white;
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background-color:#56999f;
+}
+
+::-webkit-resizer{
+	width:4px;
+	height:0px
+}
+
+::-webkit-scrollbar{
+	-webkit-border-radius: 2%;
+	border-radius: 2%;
+	width: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
