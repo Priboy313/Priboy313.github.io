@@ -1,23 +1,29 @@
 :root{
-	--col-back: #222226;			/* исключительно для body, задний фон страницы */
+	--col-back: #222226;				/* исключительно для body, задний фон страницы */
 	
-	--col-panel: #333336;			/* тела блоков */
-	--col-title: #444446;			/* заголовки блоков, главный текст, заголовки */
-	--col-border: #3f3f41;			/* границы обычных блоков */
+	--col-panel: #333336;				/* тела блоков */
+	--col-title: #444446;				/* заголовки блоков, главный текст, заголовки */
+	--col-border: #3f3f41;				/* границы обычных блоков */
+	--col-shadow: rgb(63,63,65 / 12%);	/* тень */
 	
-	--col-alarm-border: #e27c79;	/* границы предупреждающих блоков, ошибок, оповещений */
-	--col-alarm-text: #d9463c;		/* текст предупреждающих блоков, ошибок, оповещений */
+	--col-search-back: #444446;			/* задник для поисковой строки */
 	
-	--col-a: #d9d9da;				/* цвет ссылок */
-	--col-name-text: #bed4d2;		/* цвет заголовков, выделенного текста */
-	--col-text: #6a7c8a;			/* цвет затемнённого текста, если уместен и не сливается */
+	--col-alarm-border: #e27c79;		/* границы предупреждающих блоков, ошибок, оповещений */
+	--col-alarm-text: #d9463c;			/* текст предупреждающих блоков, ошибок, оповещений */
+	
+	--col-a: #d9d9da;					/* цвет ссылок */
+	--col-name-text: #bed4d2;			/* цвет заголовков, выделенного текста */
+	--col-text: #6a7c8a;				/* цвет затемнённого текста, если уместен и не сливается */
 }
 
 
+*{
+	color: var(--col-text);
+	
+}
 
 body{
 	background-color: var(--col-back);
-	color: var(--col-name-text);
 }
 
 a, a:hover, .special-link, .special-link:hover{
@@ -35,13 +41,30 @@ a, a:hover, .special-link, .special-link:hover{
 }
 
 
+
+
+
+
 	/** head menu, dropdown menu **/
 
 body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 .navbar .navbar-nav .open .dropdown-menu a,
-.dropdown-header{
+.dropdown-header, .dropdown-menu{
 	color: var(--col-a);
 	background-color: var(--col-panel);
+}
+
+.dropdown-menu::before{
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid var(--col-panel);
+    border-left: 7px solid transparent;
+    border-bottom-color: rgba(0,0,0,.2);
+}
+
+.dropdown-menu::after{
+	border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--col-panel);
+    border-left: 6px solid transparent;
 }
 
 .navbar .navbar-nav .open .dropdown-menu li:hover a{
@@ -57,7 +80,10 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 
 .notification-header{
 	border-bottom: solid 1px var(--col-border);
+	background-color: var(--col-panel);
 }
+
+
 
 .list-group-item{
 	background-color: var(--col-panel);
@@ -78,12 +104,14 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 
 	/** .panel **/
 	
-.panel-body{
-	background-color: var(--col-panel);
-}
-
 .panel{
 	border: 1px solid var(--col-border);
+	background-color: var(--col-back);
+	box-shadow: 0 0.005em 0.01em 0 var(--col-back), 0 2px 10px 0 var(--col-back);
+}
+
+.panel-body{
+	background-color: var(--col-panel);
 }
 
 .panel-heading .panel-nav{
@@ -99,11 +127,17 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 	background-color: var(--col-title);
 }
 
+
 .alert-warning{
 	background-color: var(--col-panel);
 	border-color: var(--col-alarm-border);
+}
+
+.alert-warning p{
 	color: var(--col-alarm-text);
 }
+
+
 
 
 
@@ -128,9 +162,56 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 	color: var(--col-a);
 }
 
+.fr-box:not(.fr-basic){
+	border: 2px solid var(--col-border);
+}
 
+.pagination li a, 
+.pagination li span,
+.pagination> .disabled a{
+	border-color: var(--col-border);
+    background: var(--col-title);
+}
 
+.pagination li a:hover, 
+.pagination li span:hover, 
+.pagination .disabled a:hover{
+	border-color: var(--col-border);
+    background: var(--col-title);
+    text-decoration: underline;
+}
 
+.pagination .active a, 
+.pagination .active a:hover{
+	border-color: var(--col-border);
+    background: var(--col-panel);
+    color: var(--col-text);
+    text-decoration: none;
+}
+
+.comment:not(.c-reply) a{
+	transition: background-color .4s ease-in;
+}
+
+.comment:not(.c-reply):hover,
+.comment:not(.c-reply):hover a{
+	background-color: var(--col-title);
+	transition: background-color .4s ease-in;
+}
+
+.comment-toggle-expand{
+	background: var(--col-panel);
+}
+
+.comment-toggle-expand:hover{
+	text-decoration: underline;
+}
+
+.collection, 
+.collection footer{
+	background: background: var(--col-panel);;
+    border: 1px solid var(--col-border);
+}
 
 
 	/** panel button **/
@@ -190,10 +271,21 @@ background-color: var(--col-panel);
 }
 
 .book-page .book-title{
-	color: var(--col-a)!important;
+	color: var(--col-a);
 }
 
 
+
+
+.search-input{
+	background-color: var(--col-search-back);
+    border: 1px solid var(--col-border);	
+}
+
+.book-cover .cover-image{
+	background-color: var(--col-panel);
+    border: 1px solid var(--col-border);
+}
 
 
 
@@ -204,19 +296,19 @@ background-color: var(--col-panel);
 }
 
 .nav-tabs li a{
-	background-color: var(--col-page);
+	background-color: var(--col-panel);
 	border: 1px solid var(--col-border);
 	color: var(--col-a);
 }
 
 .nav-tabs li:hover a{
-	background-color: var(--col-page);
+	background-color: var(--col-panel);
 	border: 1px solid var(--col-border);
 	text-decoration: underline;
 }
 
 .nav-tabs li.active:hover a{
-	background-color: var(--col-page);
+	background-color: var(--col-panel);
 	border: 1px solid var(--col-border);
 	text-decoration: none;
 }
@@ -228,15 +320,69 @@ background-color: var(--col-panel);
 
 
 
+
+
+
+	/** left sidebar **/
+
+
+
+.profile-card{
+	border: 1px solid var(--col-border);
+}
+.aside-profile.profile-card .aside-profile-avatar{
+	background-color: var(--col-border);
+	border: 3px solid var(--col-border);
+}
+
+.layout-fixed .wrapper .aside{
+	background-color: var(--col-panel);
+}
+
+.sidebar{
+	background-color: var(--col-panel);
+}
+
+.sidebar .nav li{
+    border-left: 3px solid var(--col-panel);
+}
+
+.sidebar .nav li a{
+	color: var(--col-a);
+}
+
+.sidebar .nav li.active,
+.sidebar .nav li.active a, 
+.sidebar .nav li.active span{
+	background-color: var(--col-panel);
+	color: var(--col-text);
+}
+
+.sidebar .nav li a:hover{
+	background-color: var(--col-title);
+	color: var(--col-a);
+	text-decoration: underline;
+}
+
+.sidebar .nav li.active a:hover{
+	background-color: var(--col-panel);
+	color: var(--col-a);
+	text-decoration: none;
+}
+
+
+
+
+
 	/** footer **/
 	
 .footer{
-	background-color: var(--col-title);
+	background-color: var(--col-panel);
     border-top: 1px solid var(--col-border);
 }
 
 .footer a{
-	background-color: var(--col-title);
+	background-color: var(--col-panel);
 	color: var(--col-a);
 }
 
