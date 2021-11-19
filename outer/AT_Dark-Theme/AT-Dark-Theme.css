@@ -209,7 +209,7 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 
 .collection, 
 .collection footer{
-	background: background: var(--col-panel);;
+	background: var(--col-panel);;
     border: 1px solid var(--col-border);
 }
 
