@@ -74,7 +74,7 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 
 .navbar .navbar-nav .open .dropdown-menu li:hover a{
 	color: var(--col-a);
-	background-color: transparent;
+	background-color: var(--col-title);
 }
 
 .dropdown-menu .divider{
@@ -551,7 +551,6 @@ background-color: var(--col-panel);
 	border-radius: 2%;
 	width: 4px;
 }
-
 
 
 
