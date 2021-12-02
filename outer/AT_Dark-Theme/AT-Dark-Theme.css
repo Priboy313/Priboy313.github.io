@@ -1,3 +1,17 @@
+
+/*
+* Dark Theme for Author.Today
+* by Priboy313
+*
+* version: 0.7r
+*
+* injector link: https://author.today
+*
+*/
+
+
+
+
 :root{
 	--col-back: #222226;				/* исключительно для body, задний фон страницы */
 	
@@ -27,17 +41,8 @@ body{
 }
 
 a, a:hover, .special-link, .special-link:hover{
-	background-color: var(--col-panel);
+	background-color: transparent;
 	color: var(--col-a);
-}
-
-
-
-	/** right profile **/
-	
-.aside-profile-stats, 
-.aside-profile-btns{
-	background-color: var(--col-panel);
 }
 
 
@@ -69,7 +74,7 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 
 .navbar .navbar-nav .open .dropdown-menu li:hover a{
 	color: var(--col-a);
-	background-color: var(--col-title);
+	background-color: transparent;
 }
 
 .dropdown-menu .divider{
@@ -99,6 +104,56 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 }
 
 
+
+
+
+.search-input{
+	background-color: var(--col-search-back);
+    border: 1px solid var(--col-border);	
+}
+
+.book-cover .cover-image{
+	background-color: var(--col-panel);
+    border: 1px solid var(--col-border);
+}
+
+
+
+
+	/** footer **/
+	
+.footer{
+	background-color: var(--col-panel);
+    border-top: 1px solid var(--col-border);
+}
+
+.footer a{
+	background-color: var(--col-panel);
+	color: var(--col-a);
+}
+
+
+
+	/*	----	ГЛАВНАЯ		----	*/
+
+h2 a,
+.bookcard-footer .bookcard-title a{
+	color: var(--col-a);
+}
+
+.bookcard-footer .bookcard-authors:after{
+	background-color: transparent;
+}
+
+
+	/*	----	BOOK PAGE	----	*/
+	
+	/** right profile **/
+	
+.aside-profile-stats, 
+.aside-profile-btns{
+	background-color: var(--col-panel);
+}
 
 
 
@@ -207,11 +262,26 @@ body:not(.layout-responsive) .navbar .navbar-nav .open .dropdown-menu,
 	text-decoration: underline;
 }
 
+.comment.is-new header{
+	background-color: transparent;
+}
+
+.is-new .comment-toggle-expand{
+	background-color: var(--col-panel);
+}
+
+.fr-view blockquote{
+    border: 1px solid var(--col-border);
+	background-color: var(--col-panel);
+}
+
 .collection, 
 .collection footer{
-	background: var(--col-panel);;
+	background: var(--col-panel);
     border: 1px solid var(--col-border);
 }
+
+
 
 
 	/** panel button **/
@@ -277,15 +347,9 @@ background-color: var(--col-panel);
 
 
 
-.search-input{
-	background-color: var(--col-search-back);
-    border: 1px solid var(--col-border);	
-}
 
-.book-cover .cover-image{
-	background-color: var(--col-panel);
-    border: 1px solid var(--col-border);
-}
+
+
 
 
 
@@ -323,8 +387,12 @@ background-color: var(--col-panel);
 
 
 
-	/** left sidebar **/
 
+
+	/*	----	МОИ ПРОИЗВЕДЕНИЯ	----	*/
+
+
+	/** left sidebar **/
 
 
 .profile-card{
@@ -374,16 +442,36 @@ background-color: var(--col-panel);
 
 
 
-	/** footer **/
-	
-.footer{
+
+
+
+
+	/*	---- НОВОСТИ ---- */
+
+.nav-pills-v2{
 	background-color: var(--col-panel);
-    border-top: 1px solid var(--col-border);
 }
 
-.footer a{
+
+.header .nav-profile .nav-pills-v2 .nav-pills .nav li a.nav-link{
 	background-color: var(--col-panel);
-	color: var(--col-a);
+}
+
+
+.profile .header{
+	border-bottom: 1px solid var(--col-border);
+}
+
+.is-new{
+	background-color: var(--col-title)!important;
+}
+
+.is-new a {
+	background-color: transparent!important;
+}
+
+.feed-row{
+	background-color: var(--col-panel);
 }
 
 
@@ -393,7 +481,12 @@ background-color: var(--col-panel);
 
 
 
+	/*	---- ПОСТ БЛОГА ---- */
 
+.post.full-post .post-buttons{
+	border: 1px solid var(--col-border);
+	background-color: var(--col-panel);
+}
 
 
 
