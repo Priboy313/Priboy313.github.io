@@ -27,40 +27,46 @@ var row_icons = [
 	"fas fa-broadcast-tower",
 	"fab fa-chrome",
 	"fas fa-wifi"
-]
+	]
 
-for (let i = 0; i < 20; i++) {
+var screen_width = $(window).width();
+var row_sum = Math.floor(screen_width / 64) + 5;
+var row_len = Math.floor(screen_width / (64 * row_icons.length)) + 2;
+
+for (let i = 0; i < row_sum; i++) {
 	Full_master()
 }
 
 function Full_master(){
 	var section = document.getElementsByClassName("back_animated_section")[0];
 
-	section.appendChild(Dungeon())
+	section.appendChild(Dungeon());
 }
 
 function Dungeon(){
-	var newrow = document.createElement("div")
-	newrow.classList.add("row")
+	var newrow = document.createElement("div");
+	newrow.classList.add("row");
 
-	var row_div = document.createElement("div")
-	var row_div2 = document.createElement("div")
-	for (value in row_icons){
-		var icon = document.createElement('i')
-		var icon2 = document.createElement('i')
-		fclass = ""
-		sclass = ""
-		for (x in row_icons[value]){
-			fclass = row_icons[value].slice(0, row_icons[value].indexOf(" "))
-			sclass = row_icons[value].slice(row_icons[value].indexOf(" ") + 1)
-			icon.classList.add(fclass, sclass)
-			icon2.classList.add(fclass, sclass)
-			row_div.appendChild(icon)
-			row_div2.appendChild(icon2)
+	var row_div = document.createElement("div");
+	var row_div2 = document.createElement("div");
+	for(i = 0; i < row_len; i++){
+		for (value in row_icons){
+			var icon = document.createElement('i');
+			var icon2 = document.createElement('i');
+			fclass = "";
+			sclass = "";
+			for (x in row_icons[value]){
+				fclass = row_icons[value].slice(0, row_icons[value].indexOf(" "));
+				sclass = row_icons[value].slice(row_icons[value].indexOf(" ") + 1);
+				icon.classList.add(fclass, sclass);
+				icon2.classList.add(fclass, sclass);
+				row_div.appendChild(icon);
+				row_div2.appendChild(icon2);
+			}
 		}
 	}
-	newrow.appendChild(row_div)
-	newrow.appendChild(row_div2)
+	newrow.appendChild(row_div);
+	newrow.appendChild(row_div2);
 	return newrow
 }
 
