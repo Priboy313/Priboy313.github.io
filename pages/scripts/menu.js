@@ -1,4 +1,4 @@
-
+/*
 var menu = document.getElementsByClassName('menu')[0];
 
 for(x=1; x <= 4; x++){
@@ -45,3 +45,4 @@ function SetBtnContent(num){
 		cont: cont,
 	};
 }
+*/

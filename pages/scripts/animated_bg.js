@@ -36,14 +36,13 @@ var main_size = screen_width >= screen_height ? screen_width : screen_height;
 var row_sum = Math.floor(main_size / 64) + 10;
 var row_len = Math.floor(main_size / (64 * row_icons.length)) + 2;
 
-for (let i = 0; i < row_sum; i++) {
-	Set_row()
-}
 
-function Set_row(){
+//заполнение фона бегущими строчками
+if (screen_width > 480){
 	var section = document.getElementsByClassName("back_animated_section")[0];
-
-	section.appendChild(Get_row());
+	for (let i = 0; i < row_sum; i++) {
+		section.appendChild(Get_row());
+	}
 }
 
 function Get_row(){
