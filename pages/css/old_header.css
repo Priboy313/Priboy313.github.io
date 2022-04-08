@@ -1,0 +1,121 @@
+/*Header*/
+
+header {
+	position: absolute;
+	
+	display: grid;
+	grid-template-areas:
+		"menu";
+	gap: 10px;
+	
+	height: 30px;
+	width: 60%;
+	min-width: 400px;
+	
+	top: 0px;
+	margin: 0 20%;
+	margin-top: 50px;
+	
+	opacity: 0.85;
+}
+
+/*****MENU*/
+.menu {
+	display: grid;
+	grid-template-areas: "btn-1 btn-2 btn-3 btn-4";
+}
+
+.menu .menu_btn {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+
+	background-color: var(--key-elem-color);
+	
+	min-width: 100px;
+	padding-top: 0.5em;
+	
+	color: var(--key-act-color);
+	text-transform: uppercase;
+	text-decoration: none;
+	text-decoration-line: none;
+	text-align: center;
+
+	transition: 0.2s;
+}
+
+.menu .menu_btn:hover{
+	background-color: var(--key-act-shd-color);
+	color: var(--btn-act-text-color);
+
+	box-shadow: 0 0 10px var(--key-act-shd-color),
+				0 0 40px var(--key-act-shd-color),
+				0 0 80px var(--key-act-shd-color);
+	
+	transition-delay: var(--btn-act-shd-delay);
+
+	z-index: 1;
+}
+
+.menu .menu_btn:nth-child(1){grid-area: btn-1;}
+.menu .menu_btn:nth-child(2){grid-area: btn-2;}
+.menu .menu_btn:nth-child(3){grid-area: btn-3;}
+.menu .menu_btn:nth-child(4){grid-area: btn-4;}
+
+
+.menu_btn .menu_btn_dec{
+	position: absolute;
+	display: block;
+}
+
+.menu_btn .menu_btn_dec:nth-child(1){
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 2px;
+	background: linear-gradient(90deg,transparent,var(--key-act-shd-color));
+}
+.menu_btn:hover .menu_btn_dec:nth-child(1){
+	left: 100%;
+	transition: var(--btn-act-dec-transition);
+	transition-delay: var(--btn-act-dec-delay1);
+}
+
+.menu_btn .menu_btn_dec:nth-child(2){
+	top: -100%;
+	right: 0;
+	width: 2px;
+	height: 100%;
+	background: linear-gradient(180deg,transparent,var(--key-act-shd-color));
+}
+.menu_btn:hover .menu_btn_dec:nth-child(2){
+	top: 100%;
+	transition: var(--btn-act-dec-transition);
+	transition-delay: var(--btn-act-dec-delay2);
+}
+
+.menu_btn .menu_btn_dec:nth-child(3){
+	bottom: 0;
+	right: -100%;
+	width: 100%;
+	height: 2px;
+	background: linear-gradient(270deg,transparent,var(--key-act-shd-color));
+}
+.menu_btn:hover .menu_btn_dec:nth-child(3){
+	right: 100%;
+	transition: var(--btn-act-dec-transition);
+	transition-delay: var(--btn-act-dec-delay3);
+}
+
+.menu_btn .menu_btn_dec:nth-child(4){
+	bottom: -100%;
+	left: 0;
+	width: 2px;
+	height: 100%;
+	background: linear-gradient(360deg,transparent,var(--key-act-shd-color));
+}
+.menu_btn:hover .menu_btn_dec:nth-child(4){
+	bottom: 100%;
+	transition: var(--btn-act-dec-transition);
+	transition-delay: var(--btn-act-dec-delay4);
+}
