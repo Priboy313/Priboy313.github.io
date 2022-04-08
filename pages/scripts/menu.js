@@ -20,7 +20,7 @@ function SetBtnContent(num){
 	switch (num) {
 		case 1:
 			href = "https://priboy313.github.io/";
-			cont = "Главная";
+			cont = $(window).width();
 			break;
 		case 2:
 			href = "/pages/about.html";
@@ -36,8 +36,8 @@ function SetBtnContent(num){
 			break;
 	
 		default:
-			href = "#"
-			cont = ""
+			href = "#";
+			cont = "";
 			break;
 	}
 	return {
