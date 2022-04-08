@@ -34,16 +34,16 @@ var row_sum = Math.floor(screen_width / 64) + 5;
 var row_len = Math.floor(screen_width / (64 * row_icons.length)) + 2;
 
 for (let i = 0; i < row_sum; i++) {
-	Full_master()
+	Set_row()
 }
 
-function Full_master(){
+function Set_row(){
 	var section = document.getElementsByClassName("back_animated_section")[0];
 
-	section.appendChild(Dungeon());
+	section.appendChild(Get_row());
 }
 
-function Dungeon(){
+function Get_row(){
 	var newrow = document.createElement("div");
 	newrow.classList.add("row");
 
