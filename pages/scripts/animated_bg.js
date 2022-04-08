@@ -30,8 +30,11 @@ var row_icons = [
 	]
 
 var screen_width = $(window).width();
-var row_sum = Math.floor(screen_width / 64) + 5;
-var row_len = Math.floor(screen_width / (64 * row_icons.length)) + 2;
+var screen_height = $(window).height();
+var main_size = screen_width > screen_height ? screen_width : screen_height;
+
+var row_sum = Math.floor(main_size / 64) + 5;
+var row_len = Math.floor(main_size / (64 * row_icons.length)) + 2;
 
 for (let i = 0; i < row_sum; i++) {
 	Set_row()
