@@ -59,6 +59,14 @@ function Get_row(){
 			sclass = row_icons[value].slice(row_icons[value].indexOf(" ") + 1);
 			icon.classList.add(fclass, sclass);
 			icon2.classList.add(fclass, sclass);
+
+			icon.addEventListener("click", function() {
+				this.classList += " i_active";
+			});
+			icon2.addEventListener("click", function() {
+				this.classList += " i_active";
+			});
+
 			row_div.appendChild(icon);
 			row_div2.appendChild(icon2);
 		}

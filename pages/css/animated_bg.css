@@ -112,6 +112,11 @@
 	transition: var(--icon-act-transition);
 }
 
+.back_animated_section .i_active{
+	color: var(--key-act-color)!important;
+	text-shadow: 0 0 120px var(--key-act-shd-color);
+}
+
 .back_animated_section i:hover{
 	transition: 0s;
 	color: var(--key-act-color);
