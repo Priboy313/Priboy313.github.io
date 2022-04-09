@@ -55,14 +55,12 @@ function Get_row(){
 			var icon2 = document.createElement('i');
 			fclass = "";
 			sclass = "";
-			for (x in row_icons[value]){
-				fclass = row_icons[value].slice(0, row_icons[value].indexOf(" "));
-				sclass = row_icons[value].slice(row_icons[value].indexOf(" ") + 1);
-				icon.classList.add(fclass, sclass);
-				icon2.classList.add(fclass, sclass);
-				row_div.appendChild(icon);
-				row_div2.appendChild(icon2);
-			}
+			fclass = row_icons[value].slice(0, row_icons[value].indexOf(" "));
+			sclass = row_icons[value].slice(row_icons[value].indexOf(" ") + 1);
+			icon.classList.add(fclass, sclass);
+			icon2.classList.add(fclass, sclass);
+			row_div.appendChild(icon);
+			row_div2.appendChild(icon2);
 		}
 	}
 	newrow.appendChild(row_div);
