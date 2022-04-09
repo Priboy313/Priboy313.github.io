@@ -14,6 +14,7 @@
 
 	/* header */
 :root{
+	--hd-back-col: #0c1013;
 	--key-hd-text-color: rgb(56,250,83);
 	--key-hd-tagline-color: rgb(23, 121, 36);
 

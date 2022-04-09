@@ -5,9 +5,17 @@
 	display: flex;
 	flex-direction: column;
 
+	min-width: 330px;
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
+}
+
+@media (max-width: 350px){
+
+	.back_animated_section{
+		display: none;
+	}
 }
 
 .back_animated_section .row{

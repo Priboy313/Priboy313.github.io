@@ -38,16 +38,14 @@ var row_len = Math.floor(main_size / (64 * row_icons.length)) + 2;
 
 
 //заполнение фона бегущими строчками
-if (screen_width > 480){
-	var section = document.getElementsByClassName("back_animated_section")[0];
-	for (let i = 0; i < row_sum; i++) {
-		section.appendChild(Get_row());
-	}
+var section = document.getElementsByClassName("back_animated_section")[0];
+for (let i = 0; i < row_sum; i++) {
+	section.appendChild(Get_row());
 }
 
 function Get_row(){
 	var newrow = document.createElement("div");
-	newrow.classList.add("row");
+	newrow.classList = "row";
 
 	var row_div = document.createElement("div");
 	var row_div2 = document.createElement("div");
