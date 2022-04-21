@@ -23,6 +23,6 @@
 ::-webkit-scrollbar{
 	-webkit-border-radius: 2%;
 	border-radius: 2%;
-	width: 2px;
+	width: 4px;
 	height: 5px;
 }
