@@ -1,5 +1,5 @@
 
-header {
+header{
 	position: absolute;
 
 	display: grid;
@@ -15,9 +15,10 @@ header {
 	background-color: var(--hd-back-col);
 	box-shadow: 0 0 19px 2px rgb(0 0 0 / 91%);
 
-	/* font-family: "Roboto Condensed", sans-serif; */
 	color: var(--key-hd-text-color);
 	z-index: 1;
+
+	text-decoration: none;
 }
 
 .header_logo {
