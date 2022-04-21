@@ -20,7 +20,7 @@
 .item_box {
 	display: inline-block;
 	width: 350px;
-	height: 500px;
+	height: 600px;
 	margin-top: 20px;
 
 	font-size: 25px;
@@ -34,6 +34,11 @@
 
 }
 
+.item_box a {
+	text-decoration: none;
+	color: whitesmoke;
+}
+
 .item_box h3 {
 	text-align: center;
 }
@@ -41,7 +46,7 @@
 .item_box .divider {
 	height: 1px;
 	width: 95%;
-	margin-left: 2.5%;
+	margin: 1px 0 4px 2.5%;
 
 	background-color: whitesmoke;
 
@@ -50,11 +55,12 @@
 
 .item_box .year {
 	text-align: center;
+	margin-bottom: 3px;
 }
 
 .item_box .stack {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	justify-items: center;
 
 	width: 100%;
@@ -62,14 +68,27 @@
 
 .item_box i {
 	color: aliceblue;
+	font-size: 30px;
 }
 
 .item_box i img {
-	width: 24px;
+	width: 30px;
 	line-height: 1;
 	margin-bottom: -2px;
 }
 
 .item_box .screenshot img {
-	max-width: 350px;
+	max-width: 340px;
+	margin-left: 1.5%;
+}
+
+.item_box .annotation {
+	text-align: center;
+}
+
+
+.item_links p{
+	text-decoration: underline;
+	text-align: center;
+	margin-top: 20px;
 }
