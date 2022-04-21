@@ -5,38 +5,70 @@
 	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 	<title>Pr InSite: About</title>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
-	<link rel="icon" type="image/png" href="/src/ico2.png"/>
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="icon" type="image/png" href="/pages/src/ico2.png" />
+
 	<!--style-->
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/root_var.css'>
 
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/html.css'>
-	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_back.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_bg.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/header.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/scrollbar.css'>
-	
+
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/about.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_box.css'>
 
 	<!--framework-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://kit.fontawesome.com/e2add1f772.js" crossorigin="anonymous"></script>
-	
+
 	<!--script-->
 	<script src='/pages/scripts/sidebar.js'></script>
 
 </head>
 
 <body>
-		<!-- animated background generation-->
+	<!-- animated background generation-->
 	<section class="back_animated_section"></section>
 	<script src='/pages/scripts/animated_bg.js'></script>
-	
-		<!-- head menu generation-->
+
+	<!-- head menu generation-->
 	<header>
-		<nav class="menu"></nav>
-		<script src='/pages/scripts/menu.js'></script>
+		<div class="header_logo">
+			<img class="logo_ico" src="/pages/src/ico2.png">
+			<div class="logo_text">
+				<div class="logo_name">Priboy313</div>
+				<div class="logo_tagline">PROFILE PORTFOLIO</div>
+			</div>
+		</div>
+
+		<nav class="menu">
+			<ul id="mobile_menu">
+				<li>
+					<a href="/index.html" class="nav_back">Home</a>
+				</li>
+				<li>
+					<a href="/pages/about.html" class="nav_about">About</a>
+				</li>
+				<li>
+					<a href="/pages/projects.html" class="nav_projects">Projects</a>
+				</li>
+				<li>
+					<a href="" class="nav_presentations">Presentations</a>
+				</li>
+				<li>
+					<a href="" class="nav_outer">Outers</a>
+				</li>
+			</ul>
+
+			<button class="menu_expanded_button" aria-expanded="false" aria-controls="mobile_menu">
+				<i class="fa-solid fa-bars"></i>
+			</button>
+		</nav>
 	</header>
+	<script src='/pages/scripts/menu.js'></script>
 	
 <main>
 	<div class="wrapper">

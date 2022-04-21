@@ -1,6 +1,5 @@
 
 header {
-
 	position: absolute;
 
 	display: grid;
@@ -16,9 +15,9 @@ header {
 	background-color: var(--hd-back-col);
 	box-shadow: 0 0 19px 2px rgb(0 0 0 / 91%);
 
-	font-family: "Roboto Condensed", sans-serif;
+	/* font-family: "Roboto Condensed", sans-serif; */
 	color: var(--key-hd-text-color);
-
+	z-index: 1;
 }
 
 .header_logo {
@@ -58,7 +57,8 @@ header {
 		align-items: flex-end;
 		padding-bottom: 2px;
 	
-		font-weight: bold;
+		/* font-weight: bold; */
+		font-family: ds3-bold;
 		font-size: 20px;
 		letter-spacing: 0.3em;
 	
@@ -67,6 +67,7 @@ header {
 	.header_logo .logo_tagline {
 		font-size: 14px;
 		text-transform: uppercase;
+		/* letter-spacing: 0.07em; */
 		color: var(--key-hd-tagline-color);
 	}
 

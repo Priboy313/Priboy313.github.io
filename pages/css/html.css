@@ -1,36 +1,67 @@
+@font-face {
+	font-family: "ds3";
+	font-style: normal;
+	font-weight: 400;
+
+	src: local(masonchronicles), url(/pages/fonts/masonchronicles.ttf);
+}
+
+@font-face {
+	font-family: "ds3-bold";
+	font-style: normal;
+	font-weight: 900;
+
+	src: local(masonchronicles), url(/pages/fonts/masonchronicles.ttf);
+}
+
 
 * {
 	margin: 0;
 	padding: 0;
+	font-family: ds3;
 }
 
-html, body {
+html,
+body {
 	color: ivory;
-	
+
 	background-color: var(--key-back-color);
-	
+
 	height: 100%;
 	width: 100%;
+
 }
 
-.wrapper{
+
+.wrapper {
 	position: absolute;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	top: 30px;
+	top: 0;
 
-	margin-top: 50px;
-
-	height: 85%;
+	height: 100%;
 	min-height: 30%;
 	width: 99.8%;
 
 	pointer-events: none;
+
+	overflow: hidden;
 }
 
-.wrapper .content{
+.wrapper .content,
+.wrapper .item_wrapper {
 	pointer-events: all;
 }
 
+.visually_hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	border: 0;
+	padding: 0;
+	clip: rect(0 0 0 0);
+	overflow: hidden;
+}
