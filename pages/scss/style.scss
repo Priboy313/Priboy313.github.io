@@ -1,0 +1,17 @@
+@import "__root_vars";
+
+*{
+    color: var(--key-hd-tagline-color);
+
+    header{
+        color: green;
+    }
+
+    width: 100px;
+    height: 1px;
+}
+
+
+
+
+@import "main";
