@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "gulp": "^4.0.2"
+  },
+  "name": "priboy313.github.io",
+  "description": "my portfolio website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-watch": "^5.0.1",
+    "sass": "^1.51.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Priboy313/Priboy313.github.io.git"
+  },
+  "author": "Priboy313",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Priboy313/Priboy313.github.io/issues"
+  },
+  "homepage": "https://github.com/Priboy313/Priboy313.github.io#readme"
+}
