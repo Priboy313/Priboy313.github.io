@@ -1,0 +1,57 @@
+/* // navigation */
+#nav-progressive-subnav,
+#nav-main,
+
+/* // get prime button */
+#primeDPUpsellContainer,
+
+
+#returnsInfoFeature_feature_div,
+#secureTransactionReorderT1_feature_div,
+#mbb_feature_div,
+#detailPageGifting_feature_div,
+
+
+/* // deliver|pick-up */
+#offerDisplayGroupTabSet,
+
+/* //grabley */
+.pvv-ext-wrap-buttons,
+.pvv-ext-wrap-sellers,
+.pvv-ext-wrap-TotalQuantity,
+.pvv-ext-wrap-ProductDetailsLink,
+.pvv-ext-wrap-footer,
+
+/* // revseller popup */
+#aic-ext-hint-popup,
+.aic-ext-dropdown,
+
+/* // Frequently bought together */
+#similarities_feature_div
+{
+	display: none!important;
+}
+
+/* //*price no discound  */
+#corePrice_desktop,
+#corePriceDisplay_desktop_feature_div{
+	background-color: rgba(0,255,0, 0.3);
+}
+#promoMessagingDiscountValue_feature_div,
+#promoMessaging{
+	background-color: rgba(2,141,194, 0.3);
+}
+
+/* //*price w/ discound */
+.price_box_w_disc{
+	background-color: rgba(255,216,20, 0.3)!important;
+}
+
+
+
+/* // custom full price */
+.custom-full-price{
+	font-size: 23px!important;
+	padding: 5px 0 4px 0;
+	background-color: rgba(0,255,0, 0.3);
+}
