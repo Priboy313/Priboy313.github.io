@@ -1,16 +1,18 @@
-console.log('--------------- script injected!');
+// console.log('--------------- script injected!');
 
 
 
-// --------------- B08544LGRB
+// --------------- 
 var price_to_pay_high = ""
 var price_to_pay = ""
+
 
 // volume Amazon discount
 let amz_disc_label = document.getElementById('promoMessagingDiscountValue_feature_div');
 let amz_disc_label2 = document.getElementById('promoMessaging');
 
 if (amz_disc_label){
+	
 	
 	if (amz_disc_label.innerText.includes(" Amazon discount.")) {
 	    console.log('Скидка найдена! Type 1');
@@ -55,4 +57,36 @@ function set_price(disc_label, price_box_class){
   		full_price_span.innerHTML = `Full price: $${full_price}`;
   		
   price_holder.appendChild(full_price_span)
+}
+
+setTimeout(function() {
+    // Код, который нужно выполнить после трех секунд
+    check_hide_price();
+}, 3000);
+
+
+// hide boybox price replacement
+function check_hide_price(){
+	var price_hide_box = document.getElementById("corePriceDisplay_desktop_feature_div");
+		// price_hide_box.className += " price_box_w_disc";
+
+	if (price_hide_box){
+		if (price_hide_box.innerText.includes("See price in cart")){
+			console.log("HIDE PRICE FINDED!");
+			
+			hide_price = document.getElementsByClassName("aic-ext-offers-row")[0]
+			hide_price = hide_price.getElementsByClassName("aic-ext-offers-item")[3]
+			hide_price = hide_price.getElementsByClassName("aic-ext-offers-item-body-price")[0]
+			hide_price = parseFloat(hide_price.innerText.substring(1))
+			
+			console.log(hide_price)
+			
+			var full_price_span = document.createElement('div')
+  		full_price_span.className = "a-section a-spacing-none aok-align-center aok-relative custom-full-price"
+  		full_price_span.innerHTML = `Hide price: $${hide_price}`;
+  		
+  		price_hide_box.className += " price_box_w_disc";
+  		price_hide_box.appendChild(full_price_span)
+		}
+	}
 }
