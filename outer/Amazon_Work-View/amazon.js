@@ -1,4 +1,4 @@
-// console.log('--------------- script injected!');
+console.log('--------------- AmazonWorkView injected!');
 
 
 
@@ -59,34 +59,128 @@ function set_price(disc_label, price_box_class){
   price_holder.appendChild(full_price_span)
 }
 
+
 setTimeout(function() {
-    // Код, который нужно выполнить после трех секунд
-    check_hide_price();
-}, 3000);
+    check_hidden_price();
+    set_mirror_links();
+}, 2000);
+
+setInterval(function() {
+    set_fee_in_revseller_calc();
+}, 100);
+
+function get_fee_in_revseller_calc(){
+	let popup_window = document.getElementById("aic-ext-popup");
+	let window_tbody = popup_window.getElementsByTagName("tbody")[0]
+	let rows = window_tbody.getElementsByTagName("tr")
+	
+	let referral_fee = rows[3].getElementsByTagName("td")
+			referral_fee = parseFloat(referral_fee[3].innerText)
+	
+	let fulfilment_fee_fba = rows[5].getElementsByTagName("td")
+			fulfilment_fee_fba = parseFloat(fulfilment_fee_fba[2].innerText)
+	
+	let fee_fba = referral_fee + fulfilment_fee_fba
+			// console.log(popup_window);
+			// console.log(`Referral fee: ${referral_fee}`)
+			// console.log(`Fulfilment fee: ${fulfilment_fee_fba}`)
+			// console.log(`FBA fee: ${fee_fba}`)
+
+	return [fee_fba, referral_fee]
+}
+
+function set_fee_in_revseller_calc(){
+	let calc_root = document.getElementsByClassName("aic-ext-view")[0];
+	let calc_body = calc_root.getElementsByClassName("aic-ext-table-container")[0];
+	let calc_hollow_place = calc_body.getElementsByClassName("aic-ext-tr-small-and-light")[0];
+	let calc_place_cells = calc_hollow_place.getElementsByTagName("td");
+	
+	let fee = get_fee_in_revseller_calc();
+			calc_place_cells[0].innerText = 'Fee';
+			calc_place_cells[3].innerText = fee[0].toFixed(2);
+			calc_place_cells[1].innerText = fee[1].toFixed(2);
+}
 
 
-// hide boybox price replacement
-function check_hide_price(){
+function check_hidden_price(){
 	var price_hide_box = document.getElementById("corePriceDisplay_desktop_feature_div");
 		// price_hide_box.className += " price_box_w_disc";
 
 	if (price_hide_box){
 		if (price_hide_box.innerText.includes("See price in cart")){
-			console.log("HIDE PRICE FINDED!");
+			console.log("HIDDEN PRICE FINDED!");
 			
-			hide_price = document.getElementsByClassName("aic-ext-offers-row")[0]
-			hide_price = hide_price.getElementsByClassName("aic-ext-offers-item")[3]
-			hide_price = hide_price.getElementsByClassName("aic-ext-offers-item-body-price")[0]
-			hide_price = parseFloat(hide_price.innerText.substring(1))
+			hidden_price = document.getElementsByClassName("aic-ext-offers-row")[0]
+			hidden_price = hidden_price.getElementsByClassName("aic-ext-offers-item")[3]
+			hidden_price = hidden_price.getElementsByClassName("aic-ext-offers-item-body-price")[0]
+			hidden_price = parseFloat(hidden_price.innerText.substring(1))
 			
-			console.log(hide_price)
+			console.log(hidden_price)
 			
 			var full_price_span = document.createElement('div')
   		full_price_span.className = "a-section a-spacing-none aok-align-center aok-relative custom-full-price"
-  		full_price_span.innerHTML = `Hide price: $${hide_price}`;
+  		full_price_span.innerHTML = `Hidden price: $${hidden_price}`;
   		
   		price_hide_box.className += " price_box_w_disc";
   		price_hide_box.appendChild(full_price_span)
 		}
 	}
+}
+
+
+function set_mirror_links(){
+	var title_section = document.getElementById("titleSection")
+	
+	let currentURL = window.location.href;
+  let regex = /\bB0\w*\b/g;
+  let asin = currentURL.match(regex);
+  		asin = asin[0]
+
+	
+	var title_link_section = document.createElement("div")
+			title_link_section.className = "title_link_section"
+	
+	var link_us = document.createElement("a")
+			link_us.className = "amazon_mirror_link"
+			link_us.innerText="AmzUS"
+			link_us.href = `https://www.amazon.com/gp/product/`
+			
+	var link_ca = document.createElement("a")
+			link_ca.className = "amazon_mirror_link"
+			link_ca.innerText="AmzCA"
+			link_ca.href = `https://www.amazon.ca/gp/product/`
+			
+	var link_mx = document.createElement("a")
+			link_mx.className = "amazon_mirror_link"
+			link_mx.innerText="AmzMX"
+			link_mx.href = `https://www.amazon.com.mx/gp/product/`
+	
+	title_section.appendChild(title_link_section)
+	
+	if (asin) {
+		console.log("ASIN: " + asin);
+		
+			link_us.innerText="AmzUS"
+			link_us.href = `https://www.amazon.com/gp/product/${asin}`
+	
+			link_ca.innerText="AmzCA"
+			link_ca.href = `https://www.amazon.ca/gp/product/${asin}`
+	
+			link_mx.innerText="AmzMX"
+			link_mx.href = `https://www.amazon.com.mx/gp/product/${asin}`
+		
+	} else {
+		console.log("--! ASIN not found in page info !--");
+		
+		let error_asin_span = document.createElement('span')
+				error_asin_span.innerText = "ASIN not found\n"
+		
+		title_link_section.appendChild(error_asin_span)
+		
+	}
+
+	title_link_section.appendChild(link_us)
+	title_link_section.appendChild(link_ca)
+	title_link_section.appendChild(link_mx)
+	
 }
