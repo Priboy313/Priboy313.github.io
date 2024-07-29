@@ -63,13 +63,14 @@ function set_price(disc_label, price_box_class){
 setTimeout(function() {
     check_hidden_price();
     set_mirror_links();
+    
+    setInterval(function() {
+    	set_fee_in_revseller_calc();
+		}, 100);
+
 }, 2000);
 
-setInterval(function() {
-    set_fee_in_revseller_calc();
-}, 100);
-
-function get_fee_in_revseller_calc(){
+function get_fee_from_revseller_calc(){
 	let popup_window = document.getElementById("aic-ext-popup");
 	let window_tbody = popup_window.getElementsByTagName("tbody")[0]
 	let rows = window_tbody.getElementsByTagName("tr")
@@ -95,10 +96,20 @@ function set_fee_in_revseller_calc(){
 	let calc_hollow_place = calc_body.getElementsByClassName("aic-ext-tr-small-and-light")[0];
 	let calc_place_cells = calc_hollow_place.getElementsByTagName("td");
 	
-	let fee = get_fee_in_revseller_calc();
-			calc_place_cells[0].innerText = 'Fee';
-			calc_place_cells[3].innerText = fee[0].toFixed(2);
-			calc_place_cells[1].innerText = fee[1].toFixed(2);
+	let cell_title = calc_place_cells[0];
+	let cell_fba = calc_place_cells[3];
+	let cell_fbm = calc_place_cells[1];
+	
+	let fee = get_fee_from_revseller_calc();
+	let fba_fee = fee[0].toFixed(2);
+	let fbm_fee = fee[1].toFixed(2);
+		
+		if (cell_fba.innerText != fba_fee)
+		{
+			cell_title.innerText = 'Fee';
+			cell_fba.innerText = fba_fee;
+			cell_fbm.innerText = fbm_fee;
+		}
 }
 
 
