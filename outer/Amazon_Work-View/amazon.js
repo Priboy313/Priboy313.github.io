@@ -7,7 +7,6 @@ setTimeout(function() {
   	set_fee_in_revseller_calc();
 	}, 100);
 	
-	// set_fee_in_revseller_calc();
   set_mirror_links();
   check_hidden_price();
   check_discount();
@@ -96,7 +95,8 @@ function get_fee_from_revseller_calc(){
 	
 	let fulfilment_fee_fba = 0;
 	
-	if (calc_peak_text == "Non-Peak rate" && calc_peak_checkbox.checked == false) {
+	if (calc_peak_text == "Non-Peak rate" && calc_peak_checkbox.checked == false || 
+			calc_peak_text != "Non-Peak rate" && calc_peak_checkbox.checked == true) {
 		// is Peak rate default case! Winter time!
 			fulfilment_fee_fba = row_fulfilment.getElementsByTagName('span')[2]
 	} else {
