@@ -13,6 +13,8 @@ setTimeout(function() {
 }, 2500);
 
 
+console.log('--------------- AmazonWorkView Started!');
+
 
 
 function check_discount(){
@@ -66,8 +68,10 @@ function set_price(disc_label, price_box_class, price_to_pay){
   var full_price_span = document.createElement('div')
   		full_price_span.className = "a-section a-spacing-none aok-align-center aok-relative custom-full-price"
   		full_price_span.innerHTML = `Full price: $${full_price}`;
-  		
-  price_holder.appendChild(full_price_span)
+  
+  if (!document.getElementsByClassName("custom-full-price")[0]){
+  		price_holder.appendChild(full_price_span)
+  }
 }
 
 function get_fee_from_revseller_calc(){
@@ -220,7 +224,10 @@ function set_mirror_links(){
 			link_mx.innerText="AmzMX"
 			link_mx.href = `https://www.amazon.com.mx/gp/product/`
 	
-	title_section.appendChild(title_link_section)
+	if (!title_section.getElementsByClassName("title_link_section")[0]){
+		title_section.appendChild(title_link_section)
+	}
+	
 	
 	if (asin) {
 		console.log("ASIN: " + asin);
