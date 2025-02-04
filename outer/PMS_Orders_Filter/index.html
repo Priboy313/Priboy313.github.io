@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Test Orders Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head>
+
+<body>
+    <div class="custom-floating-window dev-window">
+        <!-- COPY TO THE SCRIPT -->
+        
+        <div class="custom-header">
+            <span>PMS Orders Custom Filters</span>
+            <span class="custom-close-btn">&times;</span>
+        </div>
+        <div class="custom-content">
+
+            <div class="custom-filter">
+                <input type="button" value="READ ORDERS TABLE" id="orders_read_table">
+            </div>
+            
+            <div class="custom-filter">
+                <label for="order_margin order_margin_accept">Hide Margin > </label>
+                <input type="number" name="order_margin" value="15" id="order_margin"><span>%  </span>
+                <input type="button" value="Accept" id="order_margin_accept">
+            </div>
+            
+        </div>
+
+        <!-- /COPY TO THE SCRIPT -->
+    </div>
+
+</body>
+
+
+<script src='main.js'></script>
+</html>

@@ -1,0 +1,74 @@
+.custom-floating-window {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 400px;
+    background: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 2147483647;
+    display: none;
+}
+
+.custom-header {
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.custom-content {
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+}
+
+.custom-close-btn {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    margin-left: 15px;
+    font-size: 20px;
+    margin-top: -5px;
+}
+
+
+/* content */
+
+
+.custom-filter{
+    margin-bottom: 10px;
+}
+
+.custom-filter span {
+    margin-left: 5px;
+    margin-right: 15px;
+}
+
+.custom-filter button{
+    margin-left: auto;
+}
+
+#order_margin{
+    max-width: 40px;
+    margin-right: auto;
+}
+
+.custom-filter #orders_read_table{
+    width: 100%;
+}
+
+
+.dev-window{
+    position: fixed;
+    display: block;
+    left: 2%!important;
+}
+
+.visiable{
+    display: block;
+}
+
+.hidden{
+    display: none;
+}
