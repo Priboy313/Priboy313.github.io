@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <script src='main.js'></script>
     <div class="custom-floating-window dev-window">
         <!-- COPY TO THE SCRIPT -->
         
@@ -19,18 +20,35 @@
         <div class="custom-content">
 
             <div class="custom-filter">
-                <input type="button" value="READ ORDERS TABLE" id="orders_read_table" class="custom-filter-oneline-button">
+                <input type="button" value="READ ORDERS TABLE" 
+                id="orders_read_table" class="custom-filter-oneline-button">
             </div>
             
-            <div class="custom-filter">
-                <form>
-                    <label for="order_margin order_margin_accept">Hide Margin > </label>
-                    <input type="number" name="order_margin" value="15" id="order_margin" class="margin_input"><span>%  </span>
-                    <input type="button" value="Accept" id="order_margin_accept">
-                    <br>
-                    <label for="order_overmargin order_overmargin_accept">Keep Margin > </label>
-                    <input type="number" name="order_margin" value="50" id="order_overmargin" class="margin_input"><span>%  </span>
-                    <input type="checkbox" checked="True" id="order_overmargin_accept">
+            <div class="custom-filter bordered">
+                <form class="filter-grid">
+                    <div class="grid-row">
+                        <label for="order_margin" class="grid-label">Hide Margin ></label>
+                        <div class="input-group">
+                            <input type="number" name="order_margin" value="15" 
+                                   id="order_margin" class="margin_input">
+                            <span class="percent">%</span>
+                        </div>
+                        <input type="button" value="Accept" 
+                               id="order_margin_accept" class="grid-button">
+                    </div>
+                    
+                    <div class="grid-row">
+                        <label for="order_overmargin" class="grid-label">Keep Margin ></label>
+                        <div class="input-group">
+                            <input type="number" name="order_margin" value="50" 
+                                   id="order_overmargin" class="margin_input">
+                            <span class="percent">%</span>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" checked="true" 
+                                   id="order_overmargin_accept" class="grid-checkbox">
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -46,5 +64,5 @@
 </body>
 
 
-<script src='main.js'></script>
+
 </html>
