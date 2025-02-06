@@ -111,7 +111,6 @@
             }
             else if (childEl.classList.contains('order-block-mid')){
                 virtualOrder.addOorderMidRow(childEl, i);
-                virtualOrder.calcOrderMargin();
             }
             else if (childEl.classList.contains('order-block-bottom')){
                 virtualOrder.setBottomRowTableNum(i);
@@ -128,6 +127,7 @@
     		this.orderNum = topRow.querySelector('.table-order').querySelector('a').textContent.replace('\n', '');
     		this.owner = topRow.querySelector('.green').innerHTML;
             // this.date = date;
+            this.SKU = "";
             this.margin = 0;
             this.tableNum = tableNum;
             this.bottomRowTableNum = 0;
@@ -137,6 +137,12 @@
 
         addOorderMidRow(midRow, tableNum){
             this.orderMidRowsList.push(new OrderMidRow(midRow, tableNum));
+            this.calcOrderMargin();
+            this.SKU = this.orderMidRowsList[0].SKU;
+        }
+
+        setSKU(SKU){
+            this.SKU = SKU;
         }
 
         setBottomRowTableNum(bottomRowTableNum){
@@ -155,15 +161,30 @@
     }
 
     class OrderMidRow {
-        constructor(midRow, tableNum, cost, price, qty, fee, margin, profit) {
+        constructor(midRow, tableNum) {
             this.midRow = midRow;
             this.tableNum = tableNum;
-            this.cost = cost;
-            this.price = price;
-            this.qty = qty;
-            this.fee = fee;
-            this.margin = margin;
-            this.profit = profit;
+            this.SKU = "";
+
+            this.cost = 0;
+            this.price = 0;
+            this.qty = 0;
+            this.fee = 0;
+            this.margin = 0;
+            this.profit = 0;
+
+            this.setValues();
+        }
+
+        setValues(){
+            this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+            this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
+            this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
+            this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+            this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
+            this.fee    = this.fee * -1;
+            this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
+            this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
         }
     }       
 
