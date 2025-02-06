@@ -9,12 +9,20 @@
         </div>
         <div class="custom-content">
 
+            <div class="custom-filter custom-filter-header">
+                <span id="orders-read-header" class="custom-filter-header-label red-label">ORDERS NOT READED</span>
+            </div>
+
             <div class="custom-filter">
                 <input type="button" value="READ ORDERS TABLE" 
                 id="orders_read_table" class="custom-filter-oneline-button">
             </div>
+
+            <div class="custom-filter">
+                <input type="button" value="Calculate Sales per SKUs" id="orders_calculate_sku" class="custom-filter-oneline-button">
+            </div>
             
-            <div class="custom-filter bordered disabled">
+            <div class="custom-filter bordered">
                 <form class="filter-grid">
                     <div class="grid-row">
                         <label for="order_margin" class="grid-label">Hide Margin ></label>
@@ -23,8 +31,8 @@
                                    id="order_margin" class="margin_input">
                             <span class="percent">%</span>
                         </div>
-                        <input type="button" value="Accept" 
-                               id="order_margin_accept" class="grid-button">
+                        <input type="button" value="Apply" 
+                               id="order_margin_apply" class="grid-button">
                     </div>
                     
                     <div class="grid-row">
@@ -36,16 +44,11 @@
                         </div>
                         <div class="checkbox-wrapper">
                             <input type="checkbox" checked="true" 
-                                   id="order_overmargin_accept" class="grid-checkbox">
+                                   id="order_overmargin_apply" class="grid-checkbox">
                         </div>
                     </div>
                 </form>
             </div>
-
-            <div class="custom-filter disabled">
-                <input type="button" value="Calculate Sales per SKUs" id="orders_calculate_sku" class="custom-filter-oneline-button">
-            </div>
-            
         </div>
     `;
 
@@ -54,7 +57,7 @@
     // Функции управления
     const toggleCustomElements = (enable = false) => {
         const container = document.querySelector('.custom-content');
-        const elementsToToggle = Array.from(container.children).slice(1);
+        const elementsToToggle = Array.from(container.children).slice(2);
         
         elementsToToggle.forEach(el => {
             if(enable) {
@@ -70,6 +73,21 @@
             }
         });
     };
+
+    const toggleCustomFiltersHeader = (enable = false, orders_len = 0) => {
+        const header = document.querySelector('.custom-filter-header')
+        const label = header.querySelector('#orders-read-header');
+
+        if(enable) {
+            label.classList.remove('red-label');
+            label.classList.add('green-label');
+            label.innerHTML = `${orders_len} ORDERS READED`;
+        } else {
+            label.classList.remove('green-label');
+            label.classList.add('red-label');
+            label.innerHTML = 'ORDERS NOT READED';
+        }
+    }
 
     const showWindow = () => {
         floatingWindow.style.display = 'block';
@@ -88,6 +106,7 @@
         document.getElementById('orders_read_table').addEventListener('click', async () => {
             try {
                 toggleCustomElements(true);
+                toggleCustomFiltersHeader(true);
                 
             } catch (error) {
                 console.error('Error loading orders:', error);

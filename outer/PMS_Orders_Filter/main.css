@@ -93,6 +93,20 @@
     font-size: 16px;
 }
 
+.custom-filter-header{
+    text-align: center;
+    font-family: monospace;
+
+    margin-bottom: 10px;
+}
+
+.red-label{
+    color: red;
+}
+
+.green-label{
+    color: green;
+}
 
 /* Content GRID */
 
