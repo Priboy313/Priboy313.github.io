@@ -101,7 +101,7 @@
         console.log('createVirtualOrdersList', tableBody);
     	
         let virtualOrder;
-        let i = 0;
+        let i = -1;
 
         Array.from(tableBody.children).forEach((childEl) => {
             i++;
@@ -131,6 +131,7 @@
             this.margin = 0;
             this.tableNum = tableNum;
             this.bottomRowTableNum = 0;
+            this.tableNumsList = Array();
     	}
 
         orderMidRowsList = Array();
@@ -147,6 +148,15 @@
 
         setBottomRowTableNum(bottomRowTableNum){
             this.bottomRowTableNum = bottomRowTableNum;
+            this.setTableNumsList();
+        }
+
+        setTableNumsList(){
+            this.tableNumsList.push(this.tableNum);
+            this.orderMidRowsList.forEach((midRow) => {
+                this.tableNumsList.push(midRow.tableNum);
+            });
+            this.tableNumsList.push(this.bottomRowTableNum);
         }
 
         calcOrderMargin(){
