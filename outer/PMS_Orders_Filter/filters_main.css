@@ -178,6 +178,12 @@
 }
 
 
+/* Hidden Margin Filter */
+
+.hidden-margin-filter {
+    display: none!important;
+}
+
 /* DEV */
 
 .dev-window{

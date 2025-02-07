@@ -59,9 +59,10 @@
 
     document.body.appendChild(floatingWindow);
 
-    // ====== Функции управления
 
-    let virtualOrdersListObject = Array();
+    // ====== Функции управления ======= \\
+
+    let virtualOrdersList = Array();
 
     const toggleCustomElements = (enable = false) => {
         const container = document.querySelector('.custom-content');
@@ -98,43 +99,37 @@
     };
 
     const createVirtualOrdersList = (tableBody) => {
-        console.log('createVirtualOrdersList', tableBody);
-    	
         let virtualOrder;
-        let i = -1;
 
         Array.from(tableBody.children).forEach((childEl) => {
-            i++;
-
             if (childEl.classList.contains('order-block-top')){
-                virtualOrder = new Order(childEl, i);
+                virtualOrder = new Order(childEl);
             }
             else if (childEl.classList.contains('order-block-mid')){
-                virtualOrder.addOorderMidRow(childEl, i);
+                virtualOrder.addOorderMidRow(childEl);
             }
             else if (childEl.classList.contains('order-block-bottom')){
-                virtualOrder.setBottomRowTableNum(i);
-                virtualOrdersListObject.push(virtualOrder);
+                virtualOrder.setOrderBottomRow(childEl);
+                virtualOrdersList.push(virtualOrder);
             }
         });
 
-        console.log('virtualOrdersListObject', virtualOrdersListObject);
+        console.log('virtualOrdersList', virtualOrdersList);
     }
     
 
     class Order {
-    	constructor(topRow, tableNum) {
+    	constructor(topRow) {
+            this.orderTopRow = topRow;
+            this.orderBottomRow = null;
     		this.orderNum = topRow.querySelector('.table-order').querySelector('a').textContent.replace('\n', '');
     		this.owner = topRow.querySelector('.green').innerHTML;
             // this.date = date;
             this.SKU = "";
             this.margin = 0;
-            this.tableNum = tableNum;
-            this.bottomRowTableNum = 0;
-            this.tableNumsList = Array();
+            this.orderMidRowsList = Array();
     	}
 
-        orderMidRowsList = Array();
 
         addOorderMidRow(midRow, tableNum){
             this.orderMidRowsList.push(new OrderMidRow(midRow, tableNum));
@@ -146,17 +141,8 @@
             this.SKU = SKU;
         }
 
-        setBottomRowTableNum(bottomRowTableNum){
-            this.bottomRowTableNum = bottomRowTableNum;
-            this.setTableNumsList();
-        }
-
-        setTableNumsList(){
-            this.tableNumsList.push(this.tableNum);
-            this.orderMidRowsList.forEach((midRow) => {
-                this.tableNumsList.push(midRow.tableNum);
-            });
-            this.tableNumsList.push(this.bottomRowTableNum);
+        setOrderBottomRow(bottomRow){
+            this.orderBottomRow = bottomRow;
         }
 
         calcOrderMargin(){
@@ -203,7 +189,6 @@
         const tableBody = tableHover.querySelector('tbody');
         const rows = Array.from(tableBody.querySelectorAll('.order-block-top'));
 
-        console.log('scrapOrders', tableBody);
         createVirtualOrdersList(tableBody);
 
         return rows.length;
@@ -211,7 +196,35 @@
 
 
     const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
+        virtualOrdersList.forEach((order) => {
+            if (overmarginApply == false){
+                if (order.margin > margin){
+                    order.orderTopRow.classList.add('hidden-margin-filter');
+                    order.orderBottomRow.classList.add('hidden-margin-filter');
+                    order.orderMidRowsList.forEach((midRow) => {
+                        midRow.midRow.classList.add('hidden-margin-filter');
+                    });
+                }            
+            } else {
+                if (order.margin > margin && order.margin < overmargin){
+                    order.orderTopRow.classList.add('hidden-margin-filter');
+                    order.orderBottomRow.classList.add('hidden-margin-filter');
+                    order.orderMidRowsList.forEach((midRow) => {
+                        midRow.midRow.classList.add('hidden-margin-filter');
+                    });
+                }
+            }
+        });
+    };
 
+    const applyResetFilters = () => {
+        virtualOrdersList.forEach((order) => {
+            order.orderTopRow.classList.remove('hidden-margin-filter');
+            order.orderBottomRow.classList.remove('hidden-margin-filter');
+            order.orderMidRowsList.forEach((midRow) => {
+                midRow.midRow.classList.remove('hidden-margin-filter');
+            });
+        });
     };
 
     const showWindow = () => {
@@ -244,6 +257,10 @@
             const overmarginApply = document.getElementById('order_overmargin_apply').checked;
 
             applyHiddenMarginFilter(margin, overmargin, overmarginApply);
+        });
+
+        document.getElementById('reset-orders-filters').addEventListener('click', () => {
+            applyResetFilters();
         });
 
         floatingWindow.querySelector('.custom-close-btn').addEventListener('click', hideWindow);
