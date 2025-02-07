@@ -263,27 +263,27 @@
         hiddenMargin: 'hidden-margin-filter',
         hiddenRefund: 'hidden-refund-filter',
         hiddenNonRefund: 'hidden-non-refund-filter'
-    }
+    };
 
     const filtersClassesVals = Object.values(filtersClasses);
 
-    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
-        const setHiddenMarginClassToRows = (order) =>{
-            order.orderTopRow.classList.add(filtersClasses.hiddenMargin);
-            order.orderBottomRow.classList.add(filtersClasses.hiddenMargin);
-            order.orderMidRowsList.forEach((midRow) => {
-                midRow.midRow.classList.add(filtersClasses.hiddenMargin);
-            });
-        }
+    const applyFilter = (order, filterClass) => {
+        order.orderTopRow.classList.add(filterClass);
+        order.orderBottomRow.classList.add(filterClass);
+        order.orderMidRowsList.forEach((midRow) => {
+            midRow.midRow.classList.add(filterClass);
+        });
+    };
 
+    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
         virtualOrdersList.forEach((order) => {
             if (overmarginApply == false){
                 if (order.margin >= margin){
-                    setHiddenMarginClassToRows(order);
+                    applyFilter(order, filtersClasses.hiddenMargin);
                 }            
             } else {
                 if (order.margin >= margin && order.margin <= overmargin){
-                    setHiddenMarginClassToRows(order);
+                    applyFilter(order, filtersClasses.hiddenMargin);
                 }
             }
         });
@@ -292,11 +292,7 @@
     const applyHiddenRefundFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isRefundOrder == true){
-                order.orderTopRow.classList.add(filtersClasses.hiddenRefund);
-                order.orderBottomRow.classList.add(filtersClasses.hiddenRefund);
-                order.orderMidRowsList.forEach((midRow) => {
-                    midRow.midRow.classList.add(filtersClasses.hiddenRefund);
-                });
+                applyFilter(order, filtersClasses.hiddenRefund);
             }
         });
     };
@@ -304,11 +300,7 @@
     const applyHiddenNonRefundFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isRefundOrder == false){
-                order.orderTopRow.classList.add(filtersClasses.hiddenNonRefund);
-                order.orderBottomRow.classList.add(filtersClasses.hiddenNonRefund);
-                order.orderMidRowsList.forEach((midRow) => {
-                    midRow.midRow.classList.add(filtersClasses.hiddenNonRefund);
-                });
+                applyFilter(order, filtersClasses.hiddenRefund);
             }
         });
     }
