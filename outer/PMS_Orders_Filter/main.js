@@ -51,6 +51,17 @@
                                    id="order-overmargin-apply" class="grid-checkbox">
                         </div>
                     </div>
+
+                    <div class="grid-row">
+                        <label for="order-refund" class="grid-label">Keep Refund</label>
+                        <div class="input-group">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" checked="true" 
+                                   id="order-refund-apply" class="grid-checkbox">
+                        </div>
+                    </div>
+
                 </form>
             </div>
 
@@ -125,20 +136,28 @@
     		this.orderNum = topRow.querySelector('.table-order').querySelector('a').textContent.replace('\n', '');
     		this.owner = topRow.querySelector('.green').innerHTML;
             // this.date = date;
-            this.SKU = "";
+            this.SKU = null;
             this.margin = 0;
             this.orderMidRowsList = Array();
+            this.isRefundOrder = false;
     	}
 
 
-        addOorderMidRow(midRow, tableNum){
-            this.orderMidRowsList.push(new OrderMidRow(midRow, tableNum));
+        addOorderMidRow(midRow){
+            this.orderMidRowsList.push(new OrderMidRow(midRow));
             this.calcOrderMargin();
             this.SKU = this.orderMidRowsList[0].SKU;
+            this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
         }
 
         setSKU(SKU){
             this.SKU = SKU;
+        }
+
+        checkFeeIsRefund(midRow){
+            if (midRow.isRefundOrder == true){
+                this.isRefundOrder = true;
+            }
         }
 
         setOrderBottomRow(bottomRow){
@@ -157,9 +176,8 @@
     }
 
     class OrderMidRow {
-        constructor(midRow, tableNum) {
+        constructor(midRow) {
             this.midRow = midRow;
-            this.tableNum = tableNum;
             this.SKU = "";
 
             this.cost = 0;
@@ -169,18 +187,33 @@
             this.margin = 0;
             this.profit = 0;
 
+            this.isRefundOrder = false;
+
             this.setValues();
         }
 
         setValues(){
-            // this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-            // this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
-            // this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
-            // this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-            // this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
-            // this.fee    = this.fee * -1;
-            this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
-            // this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
+            this.isRefundOrder = this.checkFeeIsRefund();
+            if (this.isRefundOrder == false){
+                this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
+                this.fee    = this.fee * -1;
+                this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+                this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
+                this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
+                this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+                this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
+                this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
+            } else {
+                
+            }
+        }
+
+        checkFeeIsRefund(){
+            if (this.midRow.querySelector('.fee').innerHTML.includes('Refund')){
+                return true;
+            } else {
+                return false;
+            }
         }
     }       
 
@@ -195,7 +228,7 @@
     };
 
 
-    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
+    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true, refundApply=true) => {
         const setHiddenClassToOrders = (order) =>{
             order.orderTopRow.classList.add('hidden-margin-filter');
             order.orderBottomRow.classList.add('hidden-margin-filter');
@@ -205,6 +238,10 @@
         }
 
         virtualOrdersList.forEach((order) => {
+            if (refundApply == false && order.isRefundOrder == true){
+                setHiddenClassToOrders(order);
+            }
+
             if (overmarginApply == false){
                 if (order.margin >= margin){
                     setHiddenClassToOrders(order);
@@ -255,8 +292,9 @@
             const margin = parseFloat(document.getElementById('order-margin-thr').value);
             const overmargin = parseFloat(document.getElementById('order-overmargin').value);
             const overmarginApply = document.getElementById('order-overmargin-apply').checked;
+            const refundApply = document.getElementById('order-refund-apply').checked;
 
-            applyHiddenMarginFilter(margin, overmargin, overmarginApply);
+            applyHiddenMarginFilter(margin, overmargin, overmarginApply, refundApply);
         });
 
         document.getElementById('reset-orders-filters').addEventListener('click', () => {
