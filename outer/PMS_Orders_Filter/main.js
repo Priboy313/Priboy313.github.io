@@ -188,24 +188,42 @@
             this.profit = 0;
 
             this.isRefundOrder = false;
+            this.isCostNotSet = false;
 
             this.setValues();
         }
 
         setValues(){
             this.isRefundOrder = this.checkFeeIsRefund();
+            this.isCostNotSet = this.checkCostIsSet();
+
             if (this.isRefundOrder == false){
-                this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
-                this.fee    = this.fee * -1;
-                this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-                this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
-                this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
-                this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-                this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
-                this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
-            } else {
+
+                if (this.isCostNotSet == false){
+
+                    this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
+                    this.fee    = this.fee * -1;
+                    this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+                    this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
+                    this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
+                    this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+                    this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
+                    this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
                 
-            }
+                } else {
+
+                    this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
+                    this.fee    = this.fee * -1;
+                    this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+                    this.cost   = 0;
+                    this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
+                    this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+                    this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
+                    this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
+                
+                }
+
+            } 
         }
 
         checkFeeIsRefund(){
@@ -213,6 +231,12 @@
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        checkCostIsSet(){
+            if (this.midRow.querySelector('.col3').innerHTML.includes('Not Set')){
+                return true;
             }
         }
     }       
