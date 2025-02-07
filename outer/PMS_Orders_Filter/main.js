@@ -15,40 +15,40 @@
 
             <div class="custom-filter">
                 <input type="button" value="READ ORDERS TABLE" 
-                id="orders_read_table" class="custom-filter-oneline-button">
+                id="orders-read-table" class="custom-filter-oneline-button">
             </div>
 
             <div class="custom-filter">
-                <input type="button" value="Calculate Sales per SKUs" id="orders_calculate_sku" class="custom-filter-oneline-button">
+                <input type="button" value="Calculate Sales per SKUs" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
 
             <div class="custom-filter">
                 <input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
             </div>
             
-            <div class="custom-filter bordered">
+            <div class="custom-filter bordered-filter">
                 <form class="filter-grid">
                     <div class="grid-row">
-                        <label for="order_margin" class="grid-label">Hide Margin ></label>
+                        <label for="order-margin-thr" class="grid-label">Hide Margin &ge;</label>
                         <div class="input-group">
-                            <input type="number" name="order_margin" value="15" 
-                                   id="order_margin" class="margin_input">
+                            <input type="number" name="order-margin-thr" value="15" 
+                                   id="order-margin-thr" class="margin-input">
                             <span class="percent">%</span>
                         </div>
                         <input type="button" value="Apply" 
-                               id="order_margin_apply" class="grid-button">
+                               id="order-margin-filter-apply" class="grid-button">
                     </div>
                     
                     <div class="grid-row">
-                        <label for="order_overmargin" class="grid-label">Keep Margin ></label>
+                        <label for="order-overmargin" class="grid-label">Keep Margin &ge;</label>
                         <div class="input-group">
-                            <input type="number" name="order_margin" value="50" 
-                                   id="order_overmargin" class="margin_input">
+                            <input type="number" name="order-overmargin" value="50" 
+                                   id="order-overmargin" class="margin-input">
                             <span class="percent">%</span>
                         </div>
                         <div class="checkbox-wrapper">
                             <input type="checkbox" checked="true" 
-                                   id="order_overmargin_apply" class="grid-checkbox">
+                                   id="order-overmargin-apply" class="grid-checkbox">
                         </div>
                     </div>
                 </form>
@@ -83,14 +83,14 @@
         });
     };
 
-    const toggleCustomFiltersHeader = (enable = false, orders_len = 0) => {
+    const toggleCustomFiltersHeader = (enable = false, ordersLen = 0) => {
         const header = document.querySelector('.custom-filter-header')
         const label = header.querySelector('#orders-read-header');
 
         if(enable) {
             label.classList.remove('red-label');
             label.classList.add('green-label');
-            label.innerHTML = `${orders_len} ORDERS READED`;
+            label.innerHTML = `${ordersLen} ORDERS READED`;
         } else {
             label.classList.remove('green-label');
             label.classList.add('red-label');
@@ -173,14 +173,14 @@
         }
 
         setValues(){
-            this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-            this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
-            this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
-            this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-            this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
-            this.fee    = this.fee * -1;
+            // this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+            // this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
+            // this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
+            // this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+            // this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
+            // this.fee    = this.fee * -1;
             this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
-            this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
+            // this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
         }
     }       
 
@@ -196,22 +196,22 @@
 
 
     const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
+        const setHiddenClassToOrders = (order) =>{
+            order.orderTopRow.classList.add('hidden-margin-filter');
+            order.orderBottomRow.classList.add('hidden-margin-filter');
+            order.orderMidRowsList.forEach((midRow) => {
+                midRow.midRow.classList.add('hidden-margin-filter');
+            });
+        }
+
         virtualOrdersList.forEach((order) => {
             if (overmarginApply == false){
-                if (order.margin > margin){
-                    order.orderTopRow.classList.add('hidden-margin-filter');
-                    order.orderBottomRow.classList.add('hidden-margin-filter');
-                    order.orderMidRowsList.forEach((midRow) => {
-                        midRow.midRow.classList.add('hidden-margin-filter');
-                    });
+                if (order.margin >= margin){
+                    setHiddenClassToOrders(order);
                 }            
             } else {
-                if (order.margin > margin && order.margin < overmargin){
-                    order.orderTopRow.classList.add('hidden-margin-filter');
-                    order.orderBottomRow.classList.add('hidden-margin-filter');
-                    order.orderMidRowsList.forEach((midRow) => {
-                        midRow.midRow.classList.add('hidden-margin-filter');
-                    });
+                if (order.margin >= margin && order.margin <= overmargin){
+                    setHiddenClassToOrders(order);
                 }
             }
         });
@@ -240,7 +240,7 @@
 
         toggleCustomElements(false);
 
-        document.getElementById('orders_read_table').addEventListener('click', async () => {
+        document.getElementById('orders-read-table').addEventListener('click', async () => {
             try {
                 let ordersLenght = scrapOrders();
                 toggleCustomFiltersHeader(true, ordersLenght);
@@ -251,10 +251,10 @@
             }
         });
 
-        document.getElementById('order_margin_apply').addEventListener('click', () => {
-            const margin = parseFloat(document.getElementById('order_margin').value);
-            const overmargin = parseFloat(document.getElementById('order_overmargin').value);
-            const overmarginApply = document.getElementById('order_overmargin_apply').checked;
+        document.getElementById('order-margin-filter-apply').addEventListener('click', () => {
+            const margin = parseFloat(document.getElementById('order-margin-thr').value);
+            const overmargin = parseFloat(document.getElementById('order-overmargin').value);
+            const overmarginApply = document.getElementById('order-overmargin-apply').checked;
 
             applyHiddenMarginFilter(margin, overmargin, overmarginApply);
         });

@@ -40,7 +40,7 @@
     margin-bottom: 10px;
 }
 
-.custom-filter.bordered{
+.custom-filter.bordered-filter{
     border-width: 1px;
     border-color: black;
     border-style: dotted;
@@ -78,7 +78,7 @@
     border-radius: 4px;
 }
 
-.custom-filter .margin_input{
+.custom-filter .margin-input{
     max-width: 60px;
     margin-right: auto;
 }
@@ -135,7 +135,7 @@
     gap: 4px;
 }
 
-.margin_input {
+.margin-input {
     width: 100px;
     padding: 6px;
     border: 1px solid #ddd;
