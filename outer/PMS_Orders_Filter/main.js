@@ -259,21 +259,24 @@
         return rows.length;
     };
 
+    const filtersClasses = {
+        hiddenMargin: 'hidden-margin-filter',
+        hiddenRefund: 'hidden-refund-filter',
+        hiddenNonRefund: 'hidden-non-refund-filter'
+    }
+
+    const filtersClassesVals = Object.values(filtersClasses);
 
     const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
         const setHiddenMarginClassToRows = (order) =>{
-            order.orderTopRow.classList.add('hidden-margin-filter');
-            order.orderBottomRow.classList.add('hidden-margin-filter');
+            order.orderTopRow.classList.add(filtersClasses.hiddenMargin);
+            order.orderBottomRow.classList.add(filtersClasses.hiddenMargin);
             order.orderMidRowsList.forEach((midRow) => {
-                midRow.midRow.classList.add('hidden-margin-filter');
+                midRow.midRow.classList.add(filtersClasses.hiddenMargin);
             });
         }
 
         virtualOrdersList.forEach((order) => {
-            if (refundApply == false && order.isRefundOrder == true){
-                setHiddenMarginClassToRows(order);
-            }
-
             if (overmarginApply == false){
                 if (order.margin >= margin){
                     setHiddenMarginClassToRows(order);
@@ -289,10 +292,10 @@
     const applyHiddenRefundFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isRefundOrder == true){
-                order.orderTopRow.classList.add('hidden-refund-filter');
-                order.orderBottomRow.classList.add('hidden-refund-filter');
+                order.orderTopRow.classList.add(filtersClasses.hiddenRefund);
+                order.orderBottomRow.classList.add(filtersClasses.hiddenRefund);
                 order.orderMidRowsList.forEach((midRow) => {
-                    midRow.midRow.classList.add('hidden-refund-filter');
+                    midRow.midRow.classList.add(filtersClasses.hiddenRefund);
                 });
             }
         });
@@ -301,23 +304,21 @@
     const applyHiddenNonRefundFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isRefundOrder == false){
-                order.orderTopRow.classList.add('hidden-non-refund-filter');
-                order.orderBottomRow.classList.add('hidden-non-refund-filter');
+                order.orderTopRow.classList.add(filtersClasses.hiddenNonRefund);
+                order.orderBottomRow.classList.add(filtersClasses.hiddenNonRefund);
                 order.orderMidRowsList.forEach((midRow) => {
-                    midRow.midRow.classList.add('hidden-non-refund-filter');
+                    midRow.midRow.classList.add(filtersClasses.hiddenNonRefund);
                 });
             }
         });
     }
 
-    const filtersClasses = ['hidden-margin-filter', 'hidden-refund-filter', 'hidden-non-refund-filter'];
-
     const applyResetFilters = () => {
         virtualOrdersList.forEach((order) => {
-            order.orderTopRow.classList.remove(...filtersClasses);
-            order.orderBottomRow.classList.remove(...filtersClasses);
+            order.orderTopRow.classList.remove(...filtersClassesVals);
+            order.orderBottomRow.classList.remove(...filtersClassesVals);
             order.orderMidRowsList.forEach((midRow) => {
-                midRow.midRow.classList.remove(...filtersClasses);
+                midRow.midRow.classList.remove(...filtersClassesVals);
             });
         });
     };
@@ -351,7 +352,7 @@
             const overmargin = parseFloat(document.getElementById('order-overmargin').value);
             const overmarginApply = document.getElementById('order-overmargin-apply').checked;
 
-            applyHiddenMarginFilter(margin, overmargin, overmarginApply, refundApply);
+            applyHiddenMarginFilter(margin, overmargin, overmarginApply);
         });
 
         document.getElementById('order-refund-filter-apply').addEventListener('click', () => {
