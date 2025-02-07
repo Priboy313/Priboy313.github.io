@@ -202,6 +202,12 @@
     left: 2%!important;
 }
 
+.dev-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
 .visiable{
     display: block;
 }

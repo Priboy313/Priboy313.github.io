@@ -18,7 +18,7 @@
                 id="orders-read-table" class="custom-filter-oneline-button">
             </div>
 
-            <div class="custom-filter">
+            <div class="custom-filter dev-disabled">
                 <input type="button" value="Calculate Sales per SKUs" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
 
