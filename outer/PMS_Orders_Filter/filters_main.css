@@ -184,6 +184,16 @@
     display: none!important;
 }
 
+/* Hidden Refund Filter */
+
+.hidden-refund-filter {
+    display: none!important;
+}
+
+.hidden-non-refund-filter {
+    display: none!important;
+}
+
 /* DEV */
 
 .dev-window{

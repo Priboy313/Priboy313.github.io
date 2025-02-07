@@ -29,7 +29,7 @@
             <div class="custom-filter bordered-filter">
                 <form class="filter-grid">
                     <div class="grid-row">
-                        <label for="order-margin-thr" class="grid-label">Hide Margin &ge;</label>
+                        <label class="grid-label">Hide Margin &ge;</label>
                         <div class="input-group">
                             <input type="number" name="order-margin-thr" value="15" 
                                    id="order-margin-thr" class="margin-input">
@@ -40,7 +40,7 @@
                     </div>
                     
                     <div class="grid-row">
-                        <label for="order-overmargin" class="grid-label">Keep Margin &ge;</label>
+                        <label class="grid-label">Keep Margin &ge;</label>
                         <div class="input-group">
                             <input type="number" name="order-overmargin" value="50" 
                                    id="order-overmargin" class="margin-input">
@@ -52,16 +52,24 @@
                         </div>
                     </div>
 
-                    <div class="grid-row">
-                        <label for="order-refund" class="grid-label">Keep Refund</label>
-                        <div class="input-group">
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" checked="true" 
-                                   id="order-refund-apply" class="grid-checkbox">
-                        </div>
-                    </div>
+                </form>
+            </div>
 
+            <div class="custom-filter bordered-filter">
+                <form class="filter-grid">
+                    <div class="grid-row">
+                        <label class="grid-label">Hide Refund Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply" 
+                               id="order-refund-filter-apply" class="grid-button">
+                    </div>
+                    
+                    <div class="grid-row">
+                        <label class="grid-label">Hide Non-Refund Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply" 
+                               id="order-non-refund-filter-apply" class="grid-button">
+                    </div>
                 </form>
             </div>
 
@@ -195,7 +203,7 @@
 
         setValues(){
             this.isRefundOrder = this.checkFeeIsRefund();
-            this.isCostNotSet = this.checkCostIsSet();
+            this.isCostNotSet = this.checkCostIsNotSet();
 
             if (this.isRefundOrder == false){
 
@@ -234,7 +242,7 @@
             }
         }
 
-        checkCostIsSet(){
+        checkCostIsNotSet(){
             if (this.midRow.querySelector('.col3').innerHTML.includes('Not Set')){
                 return true;
             }
@@ -252,8 +260,8 @@
     };
 
 
-    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true, refundApply=true) => {
-        const setHiddenClassToOrders = (order) =>{
+    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
+        const setHiddenMarginClassToRows = (order) =>{
             order.orderTopRow.classList.add('hidden-margin-filter');
             order.orderBottomRow.classList.add('hidden-margin-filter');
             order.orderMidRowsList.forEach((midRow) => {
@@ -263,27 +271,53 @@
 
         virtualOrdersList.forEach((order) => {
             if (refundApply == false && order.isRefundOrder == true){
-                setHiddenClassToOrders(order);
+                setHiddenMarginClassToRows(order);
             }
 
             if (overmarginApply == false){
                 if (order.margin >= margin){
-                    setHiddenClassToOrders(order);
+                    setHiddenMarginClassToRows(order);
                 }            
             } else {
                 if (order.margin >= margin && order.margin <= overmargin){
-                    setHiddenClassToOrders(order);
+                    setHiddenMarginClassToRows(order);
                 }
             }
         });
     };
 
+    const applyHiddenRefundFilter = () => {
+        virtualOrdersList.forEach((order) => {
+            if (order.isRefundOrder == true){
+                order.orderTopRow.classList.add('hidden-refund-filter');
+                order.orderBottomRow.classList.add('hidden-refund-filter');
+                order.orderMidRowsList.forEach((midRow) => {
+                    midRow.midRow.classList.add('hidden-refund-filter');
+                });
+            }
+        });
+    };
+
+    const applyHiddenNonRefundFilter = () => {
+        virtualOrdersList.forEach((order) => {
+            if (order.isRefundOrder == false){
+                order.orderTopRow.classList.add('hidden-non-refund-filter');
+                order.orderBottomRow.classList.add('hidden-non-refund-filter');
+                order.orderMidRowsList.forEach((midRow) => {
+                    midRow.midRow.classList.add('hidden-non-refund-filter');
+                });
+            }
+        });
+    }
+
+    const filtersClasses = ['hidden-margin-filter', 'hidden-refund-filter', 'hidden-non-refund-filter'];
+
     const applyResetFilters = () => {
         virtualOrdersList.forEach((order) => {
-            order.orderTopRow.classList.remove('hidden-margin-filter');
-            order.orderBottomRow.classList.remove('hidden-margin-filter');
+            order.orderTopRow.classList.remove(...filtersClasses);
+            order.orderBottomRow.classList.remove(...filtersClasses);
             order.orderMidRowsList.forEach((midRow) => {
-                midRow.midRow.classList.remove('hidden-margin-filter');
+                midRow.midRow.classList.remove(...filtersClasses);
             });
         });
     };
@@ -316,9 +350,16 @@
             const margin = parseFloat(document.getElementById('order-margin-thr').value);
             const overmargin = parseFloat(document.getElementById('order-overmargin').value);
             const overmarginApply = document.getElementById('order-overmargin-apply').checked;
-            const refundApply = document.getElementById('order-refund-apply').checked;
 
             applyHiddenMarginFilter(margin, overmargin, overmarginApply, refundApply);
+        });
+
+        document.getElementById('order-refund-filter-apply').addEventListener('click', () => {
+            applyHiddenRefundFilter();
+        });
+
+        document.getElementById('order-non-refund-filter-apply').addEventListener('click', () => {
+            applyHiddenNonRefundFilter();
         });
 
         document.getElementById('reset-orders-filters').addEventListener('click', () => {
