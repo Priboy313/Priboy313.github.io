@@ -265,9 +265,12 @@
 }
 
 .custom-orders-table th::after {
-    content: '';
+    content: '●';
+    color: gray;
+    font-size: 10px;
     position: absolute;
-    right: 8px;
+    right: 1px;
+    transform: translateY(-25%);
     border: 5px solid transparent;
     border-top-color: transparent;
     border-bottom-color: transparent;
@@ -280,7 +283,8 @@
     border-top-color: black;
     border-bottom: none;
     top: 50%;
-    transform: translateY(-50%);
+    right: 4px;
+    transform: translateY(-40%);
 }
 
 .custom-orders-table th.desc::after {
@@ -288,7 +292,24 @@
     border-bottom-color: black;
     border-top: none;
     top: 50%;
-    transform: translateY(-50%);
+    right: 4px;
+    transform: translateY(-60%);
+}
+
+.custom-orders-table-row-negative-margin{
+    background:rgb(254, 189, 189);
+}
+
+.custom-orders-table-row-negative-margin:hover{
+    background:rgb(246, 171, 171)!important;
+}
+
+.custom-orders-table-row-low-margin{
+    background: rgb(255, 252, 217);
+}
+
+.custom-orders-table-row-low-margin:hover{
+    background:rgb(251, 235, 196)!important;
 }
 
 .custom-filter-button{
@@ -670,7 +691,6 @@
 
     const calcOrdersCustomSummaryTable = () => {
         const summaryData = {};
-
         virtualOrdersList.forEach((order) => {
             if (!summaryData[order.SKU]) {
                 summaryData[order.SKU] = {
@@ -703,7 +723,16 @@
         tableBody.innerHTML = '';
 
         Object.keys(summaryData).forEach((sku) => {
+            let margin = summaryData[sku].price == 0 ? -100 : (summaryData[sku].profit / summaryData[sku].price * 100).toFixed(2);
+            let profit = margin == -100 ? -summaryData[sku].profit : summaryData[sku].profit;
+
             const row = document.createElement('tr');
+            if (margin < 0) {
+                row.classList.add('custom-orders-table-row-negative-margin');
+            } else if (margin < 15) {
+                row.classList.add('custom-orders-table-row-low-margin');
+            }
+
             row.innerHTML = `
             <td class='sum-user'    >${summaryData[sku].user}</td>
             <td class='sum-sku'     >${sku}</td>
@@ -713,8 +742,8 @@
             <td class='sum-cost'    >${summaryData[sku].cost.toFixed(2)}</td>
             <td class='sum-price'   >${summaryData[sku].price.toFixed(2)}</td>
             <td class='sum-fee'     >${summaryData[sku].fee.toFixed(2)}</td>
-            <td class='sum-margin'  >${(summaryData[sku].profit / summaryData[sku].price * 100).toFixed(2)}</td>
-            <td class='sum-profit'  >${summaryData[sku].profit.toFixed(2)}</td>
+            <td class='sum-margin'  >${margin}</td>
+            <td class='sum-profit'  >${profit.toFixed(2)}</td>
             `;
             tableBody.appendChild(row);
         });
