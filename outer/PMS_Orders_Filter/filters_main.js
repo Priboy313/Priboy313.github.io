@@ -80,36 +80,40 @@
     ordersCustomTableWindow.className = 'custom-orders-table-wrapper';
     ordersCustomTableWindow.innerHTML = `
         <div class="custom-orders-table-header">
-            <span>FBA Orders Custom Summary Table</span>
+            <span class='custom-orders-title'>
+                FBA Orders Custom Summary Table 
+                <span class='table-title-date-range'></span>
+                </span>
             <span class="custom-close-btn">&times;</span>
+        </div>
+        <div class="custom-orders-table-buttons custom-filter">
+            <input type="button" value="Export to XLSX" 
+                   id="orders-export-xlsx" class="custom-filter-oneline-button">
         </div>
         <table class="custom-orders-table">
             <thead>
                 <tr>
                     <th>SKU</th>
-                    <th>Qty</th>
+                    <th>Orders</th>
+                    <th>Sales Qty</th>
                     <th>Refunds</th>
-                    <th>Cost</th>
-                    <th>Price</th>
-                    <th>Fee</th>
-                    <th>Margin</th>
-                    <th>Profit</th>
+                    <th>Cost $</th>
+                    <th>Price $</th>
+                    <th>Fee $ </th>
+                    <th>Margin % </th>
+                    <th>Profit $</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>SKU-1</td>
-                    <td>10</td>
-                    <td>1</td>
-                    <td>$50.00</td>
-                    <td>$500.00</td>
-                    <td>$5.00</td>
-                    <td>20%</td>
-                    <td>$95.00</td>
-                </tr>
+                
+            </tbody>
         </table>
     `;
 
+    const scriptSheetJS = document.createElement('script');
+    scriptSheetJS.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js';
+    
+    document.head.appendChild(scriptSheetJS);
     document.body.appendChild(floatingWindow);
     document.body.appendChild(ordersCustomTableWindow);
 
@@ -168,7 +172,7 @@
             }
         });
 
-        console.log('virtualOrdersList', virtualOrdersList);
+        // console.log('virtualOrdersList', virtualOrdersList);
     }
     
 
@@ -239,42 +243,22 @@
             this.margin = 0;
             this.profit = 0;
 
-            this.isRefundOrder = false;
-            this.isCostNotSet = false;
-
+            this.isRefundOrder = this.checkFeeIsRefund();
+            this.isCostNotSet = this.checkCostIsNotSet();
+            
             this.setValues();
         }
 
         setValues(){
-            this.isRefundOrder = this.checkFeeIsRefund();
-            this.isCostNotSet = this.checkCostIsNotSet();
-
             if (this.isRefundOrder == false){
-
                 if (this.isCostNotSet == false){
-
-                    this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
-                    this.fee    = this.fee * -1;
                     this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-                    this.cost   = parseFloat(this.midRow.querySelector('.col3').innerHTML.split('(')[1].split(')')[0]);
-                    this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
                     this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-                    this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
-                    this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
-                
                 } else {
 
-                    this.fee    = parseFloat(this.midRow.querySelector('.fee').querySelector('b').innerHTML.replace('$', '').replace('−', ''));
-                    this.fee    = this.fee * -1;
                     this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-                    this.cost   = 0;
-                    this.price  = parseFloat(this.midRow.querySelector('.col4').innerHTML.replace('$', ''));
                     this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-                    this.margin = parseFloat(this.midRow.querySelectorAll('.col9')[1].querySelector('span').innerHTML.replace('%', ''));
-                    this.profit = parseFloat(this.midRow.querySelectorAll('.col9')[2].querySelector('b').innerHTML.replace('$', ''));
-                
                 }
-
             } 
         }
 
@@ -363,13 +347,103 @@
         });
     };
 
+
+    const calcOrdersCustomSummaryTable = () => {
+        const summaryData = {};
+
+        virtualOrdersList.forEach((order) => {
+            if (!summaryData[order.SKU]) {
+                summaryData[order.SKU] = {
+                    count: 0,
+                    qty: 0,
+                    refunds: 0,
+                    cost: 0,
+                    price: 0,
+                    fee: 0,
+                    margin: 0,
+                    profit: 0
+                };
+            }
+
+            summaryData[order.SKU].count++;
+            summaryData[order.SKU].qty += order.qty;
+            summaryData[order.SKU].refunds += order.isRefundOrder ? 1 : 0;
+            summaryData[order.SKU].cost += order.cost;
+            summaryData[order.SKU].price += order.price;
+            summaryData[order.SKU].fee += order.fee;
+            summaryData[order.SKU].profit += order.isRefundOrder ? -order.profit : order.profit;
+        });
+
+        const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
+        tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
+
+        const tableBody = ordersCustomTableWindow.querySelector('tbody');
+        tableBody.innerHTML = '';
+
+        Object.keys(summaryData).forEach((sku) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class='sum-sku'     >${sku}</td>
+                <td class='sum-count'   >${summaryData[sku].count}</td>
+                <td class='sum-qty'     >${summaryData[sku].qty}</td>
+                <td class='sum-refunds' >${summaryData[sku].refunds}</td>
+                <td class='sum-cost'    >${summaryData[sku].cost.toFixed(2)}</td>
+                <td class='sum-price'   >${summaryData[sku].price.toFixed(2)}</td>
+                <td class='sum-fee'     >${summaryData[sku].fee.toFixed(2)}</td>
+                <td class='sum-margin'  >${(summaryData[sku].profit / summaryData[sku].price * 100).toFixed(2)}</td>
+                <td class='sum-profit'  >${summaryData[sku].profit.toFixed(2)}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    };
+
+    const makeTableSortable = (table) => {
+        const headers = table.querySelectorAll('th');
+        headers.forEach((header, index) => {
+            header.addEventListener('click', () => {
+                const isAscending = header.classList.contains('asc');
+                sortTableByColumn(table, index, !isAscending);
+                headers.forEach((h) => h.classList.remove('asc', 'desc'));
+                header.classList.toggle('asc', !isAscending);
+                header.classList.toggle('desc', isAscending);
+            });
+        });
+    };
+
+    const sortTableByColumn = (table, column, ascending = true) => {
+        const dirModifier = ascending ? 1 : -1;
+        const rows = Array.from(table.querySelector('tbody').querySelectorAll('tr'));
+
+        const sortedRows = rows.sort((a, b) => {
+            const aColText = a.querySelectorAll(`td:nth-child(${column + 1})`)[0].textContent.trim();
+            const bColText = b.querySelectorAll(`td:nth-child(${column + 1})`)[0].textContent.trim();
+
+            const aColValue = isNaN(aColText) ? aColText : parseFloat(aColText);
+            const bColValue = isNaN(bColText) ? bColText : parseFloat(bColText);
+
+            return aColValue < bColValue ? (1 * dirModifier) : (-1 * dirModifier);
+        });
+
+        while (table.querySelector('tbody').firstChild) {
+            table.querySelector('tbody').removeChild(table.querySelector('tbody').firstChild);
+        };
+
+        table.querySelector('tbody').append(...sortedRows);
+    };
+
+    const exportCustomSummaryTableToXLSX = (table) => {
+        const ws = XLSX.utils.table_to_sheet(table);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Orders Summary');
+        XLSX.writeFile(wb, `Summary_Orders${virtualOrdersList[0].date.split(' ')[0]}-${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]}.xlsx`);
+    };
+
+
     const showWindow = (window) => {
         window.style.display = 'block';
-        console.log('showWindow', window);
     };
     const hideWindow = (window) => {
         window.style.display = 'none';
-        console.log('hideWindow', window);
     };
 
 
@@ -411,7 +485,11 @@
 
         floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
 
-        document.getElementById('orders-calculate-sku').addEventListener('click', () => showWindow(ordersCustomTableWindow));
+        document.getElementById('orders-calculate-sku').addEventListener('click', () => {
+            showWindow(ordersCustomTableWindow)
+            calcOrdersCustomSummaryTable();
+            makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+        });
         
         ordersCustomTableWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(ordersCustomTableWindow));
     };
