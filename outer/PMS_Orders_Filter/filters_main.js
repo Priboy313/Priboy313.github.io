@@ -18,7 +18,7 @@
                 id="orders-read-table" class="custom-filter-oneline-button">
             </div>
 
-            <div class="custom-filter dev-disabled">
+            <div class="custom-filter">
                 <input type="button" value="Calculate Sales per SKUs" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
 
@@ -76,7 +76,42 @@
         </div>
     `;
 
+    const ordersCustomTableWindow = document.createElement('div');
+    ordersCustomTableWindow.className = 'custom-orders-table-wrapper';
+    ordersCustomTableWindow.innerHTML = `
+        <div class="custom-orders-table-header">
+            <span>FBA Orders Custom Summary Table</span>
+            <span class="custom-close-btn">&times;</span>
+        </div>
+        <table class="custom-orders-table">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Qty</th>
+                    <th>Refunds</th>
+                    <th>Cost</th>
+                    <th>Price</th>
+                    <th>Fee</th>
+                    <th>Margin</th>
+                    <th>Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SKU-1</td>
+                    <td>10</td>
+                    <td>1</td>
+                    <td>$50.00</td>
+                    <td>$500.00</td>
+                    <td>$5.00</td>
+                    <td>20%</td>
+                    <td>$95.00</td>
+                </tr>
+        </table>
+    `;
+
     document.body.appendChild(floatingWindow);
+    document.body.appendChild(ordersCustomTableWindow);
 
 
     // ====== Функции управления ======= \\
@@ -328,11 +363,13 @@
         });
     };
 
-    const showWindow = () => {
-        floatingWindow.style.display = 'block';
+    const showWindow = (window) => {
+        window.style.display = 'block';
+        console.log('showWindow', window);
     };
-    const hideWindow = () => {
-        floatingWindow.style.display = 'none';
+    const hideWindow = (window) => {
+        window.style.display = 'none';
+        console.log('hideWindow', window);
     };
 
 
@@ -372,7 +409,11 @@
             applyResetFilters();
         });
 
-        floatingWindow.querySelector('.custom-close-btn').addEventListener('click', hideWindow);
+        floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
+
+        document.getElementById('orders-calculate-sku').addEventListener('click', () => showWindow(ordersCustomTableWindow));
+        
+        ordersCustomTableWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(ordersCustomTableWindow));
     };
 
     const handleKeyPress = (e) => {
@@ -380,7 +421,7 @@
 
         if (e.ctrlKey && e.shiftKey && e.code === 'KeyL') {
             e.preventDefault();
-            showWindow();
+            showWindow(floatingWindow);
         }
     };
 
