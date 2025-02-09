@@ -558,16 +558,18 @@
                 chars.push(char);
             });
 
+            console.log('textContentSplit', bottomRow.querySelector('b').textContent.split('\n'));
+            console.log('chars', chars);
+
             this.margin = parseFloat(chars[chars.length - 1].replace('%', ''));
-            this.price = parseFloat(chars[0].split('$')[1]);
-            this.cost = parseFloat(chars[1].split('$')[1]);
+            this.price = parseFloat(chars[0].replace('$', '').split(': ')[1]);
+            this.cost = parseFloat(chars[1].replace('$', '').split(': ')[1]);
             this.fee = parseFloat(chars[2].split(': ')[1].replace('$', ''));
-            this.profit = parseFloat(chars[3].split('$')[1]);
+            this.profit = parseFloat(chars[3].replace('$', '').split(': ')[1]);
 
             this.orderMidRowsList.forEach((midRow) => {
                 this.qty += midRow.qty;
             });
-
         }
     	
     }
@@ -713,7 +715,7 @@
             summaryData[order.SKU].cost += order.cost;
             summaryData[order.SKU].price += order.price;
             summaryData[order.SKU].fee += order.fee;
-            summaryData[order.SKU].profit += order.isRefundOrder ? -order.profit : order.profit;
+            summaryData[order.SKU].profit += order.profit;
         });
 
         const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
@@ -724,8 +726,6 @@
 
         Object.keys(summaryData).forEach((sku) => {
             let margin = summaryData[sku].price == 0 ? -100 : (summaryData[sku].profit / summaryData[sku].price * 100).toFixed(2);
-            let profit = margin == -100 ? -summaryData[sku].profit : summaryData[sku].profit;
-
             const row = document.createElement('tr');
             if (margin < 0) {
                 row.classList.add('custom-orders-table-row-negative-margin');
@@ -743,7 +743,7 @@
             <td class='sum-price'   >${summaryData[sku].price.toFixed(2)}</td>
             <td class='sum-fee'     >${summaryData[sku].fee.toFixed(2)}</td>
             <td class='sum-margin'  >${margin}</td>
-            <td class='sum-profit'  >${profit.toFixed(2)}</td>
+            <td class='sum-profit'  >${summaryData[sku].profit.toFixed(2)}</td>
             `;
             tableBody.appendChild(row);
         });
