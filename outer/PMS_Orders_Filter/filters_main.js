@@ -361,7 +361,7 @@
             </div>
 
             <div class="custom-filter">
-                <input type="button" value="Calculate Sales per SKUs" id="orders-calculate-sku" class="custom-filter-oneline-button">
+                <input type="button" value="Calculate Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
 
             <div class="custom-filter">
@@ -787,7 +787,12 @@
         const ws = XLSX.utils.table_to_sheet(table);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Orders Summary');
-        XLSX.writeFile(wb, `Summary_Orders_${virtualOrdersList[0].date.split(' ')[0]}-${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]}.xlsx`);
+        let corp = ""
+        if (window.location.href.includes('plexsupply') == true){ corp = 'PlexSupply'; }
+        if (window.location.href.includes('officechase') == true){ corp = 'OfficeChase'; }
+        if (window.location.href.includes('marksonsupply') == true){ corp = 'Markson'; }
+
+        XLSX.writeFile(wb, `${corp}_Summary_Orders_${virtualOrdersList[0].date.split(' ')[0]}-${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]}.xlsx`);
     };
 
 
