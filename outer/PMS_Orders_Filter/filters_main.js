@@ -558,8 +558,8 @@
                 chars.push(char);
             });
 
-            console.log('textContentSplit', bottomRow.querySelector('b').textContent.split('\n'));
-            console.log('chars', chars);
+            // console.log('textContentSplit', bottomRow.querySelector('b').textContent.split('\n'));
+            // console.log('chars', chars);
 
             this.margin = parseFloat(chars[chars.length - 1].replace('%', ''));
             this.price = parseFloat(chars[0].replace('$', '').split(': ')[1]);
@@ -856,19 +856,25 @@
     };
 
     const handleKeyPress = (e) => {
-        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+        try{
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyL') {
-            e.preventDefault();
-            showWindow(floatingWindow);
-        }
-
-        if (e.key === 'Escape') {
-            if (ordersCustomTableWindow.style.display === 'block') {
-                hideWindow(ordersCustomTableWindow);
-            } else if (floatingWindow.style.display === 'block') {
-                hideWindow(floatingWindow);
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyL') {
+                e.preventDefault();
+                showWindow(floatingWindow);
+                return;
             }
+
+            if (e.key === 'Escape') {
+                if (ordersCustomTableWindow.style.display === 'block') {
+                    hideWindow(ordersCustomTableWindow);
+                } else if (floatingWindow.style.display === 'block') {
+                    hideWindow(floatingWindow);
+                }
+                return;
+            }
+        } catch (error) {
+            console.error('Error on key press:', error);
         }
     };
 
