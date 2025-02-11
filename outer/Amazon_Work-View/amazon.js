@@ -1,3 +1,8 @@
+
+// Amazon Work View
+// https://www.amazon.com, https://www.amazon.com.mx/, https://www.amazon.ca/
+
+
 console.log('--------------- AmazonWorkView injected!');
 
 

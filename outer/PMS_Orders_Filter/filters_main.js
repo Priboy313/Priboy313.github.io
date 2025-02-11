@@ -858,7 +858,7 @@
     const handleKeyPress = (e) => {
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
-        if (e.ctrlKey && e.shiftKey && e.code === 'KeyL') {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyL') {
             e.preventDefault();
             showWindow(floatingWindow);
         }

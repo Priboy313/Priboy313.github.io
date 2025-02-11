@@ -1,11 +1,11 @@
-/* // navigation */
+ /* navigation */
 #nav-progressive-subnav,
 #nav-main,
 
-/* // get prime button */
+ /* get prime button */
 #primeDPUpsellContainer,
 
-/* // Google quick search title */
+ /* Google quick search title */
 
 #title .aic-ext-show-hint,
 
@@ -15,28 +15,28 @@
 #detailPageGifting_feature_div,
 
 
-/* // deliver|pick-up */
+ /* deliver|pick-up */
 #offerDisplayGroupTabSet,
 
-/* //grabley */
+/* grabley */
 .pvv-ext-wrap-buttons,
 .pvv-ext-wrap-sellers,
 .pvv-ext-wrap-TotalQuantity,
 .pvv-ext-wrap-ProductDetailsLink,
 .pvv-ext-wrap-footer,
 
-/* // revseller popup */
+ /* revseller popup */
 .aic-ext-title,
-/* // #aic-ext-hint-popup, */
-/* // .aic-ext-dropdown, */
+ #aic-ext-hint-popup,
+ .aic-ext-dropdown,
 
 
-/* // Frequently bought together */
+ /* Frequently bought together */
 #similarities_feature_div {
 	display: none !important;
 }
 
-/* //*price no discound */
+/* *price no discound */
 #corePrice_desktop,
 #corePriceDisplay_desktop_feature_div {
 	background-color: rgba(0, 255, 0, 0.3);
@@ -46,19 +46,19 @@
 	background-color: rgba(2, 141, 194, 0.3);
 }
 
-/* //*price w/ discound */
+/* *price w/ discound */
 .price_box_w_disc {
 	background-color: rgba(255, 216, 20, 0.3) !important;
 }
 
-/* // custom full price */
+ /* custom full price */
 .custom-full-price {
 	font-size: 23px !important;
 	padding: 5px 0 4px 0;
 	background-color: rgba(0, 255, 0, 0.3);
 }
 
-/* // amazon mirror links */
+ /* amazon mirror links */
 .title_link_section {
 	padding-left: 2px;
 }
@@ -74,7 +74,7 @@
 }
 
 
-/* // fix keepa window */
-#keepaContainer{
-	height: 900px!important;
-}
+ /* fix keepa window */
+ #keepaContainer{
+ 	height: 900px!important;
+ }
