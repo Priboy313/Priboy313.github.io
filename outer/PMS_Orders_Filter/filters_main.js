@@ -2,6 +2,23 @@
 
     const customFiltersStyle = document.createElement('style');
     customFiltersStyle.innerHTML = `
+.custom-filters-button{
+	  background-color: #ffffff;
+    border: 1px solid #a0a0a0;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    padding: 2px 15px;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.custom-filters-button:hover{
+	background-color: #e6e2e1;
+}
+
+
 .custom-floating-window {
     position: fixed;
     right: 20px;
@@ -341,6 +358,14 @@
 }
     `;
     document.head.appendChild(customFiltersStyle);
+    
+    const customFiltersButton = document.createElement('input');
+    customFiltersButton.type = 'button';
+    customFiltersButton.value = 'Show Custom Filters';
+    customFiltersButton.className = 'custom-filters-button';
+    
+    const barBlue = document.querySelector('.titlebar-blue').querySelector('form')
+		barBlue.appendChild(customFiltersButton);
 
     const floatingWindow = document.createElement('div');
     floatingWindow.className = 'custom-floating-window';
@@ -852,6 +877,12 @@
  
         ordersCustomTableWindow.querySelector('#orders-export-xlsx').addEventListener('click', () => {
             exportCustomSummaryTableToXLSX(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+        });
+        
+        document.querySelector('.custom-filters-button').addEventListener('click', () => {
+        	if (floatingWindow.style.display != 'block'){
+        		showWindow(floatingWindow);
+        	}
         });
     };
 
