@@ -1,7 +1,19 @@
-(function() {
+// ==UserScript==
+// @name         PMS FBA Orders Custom Filters
+// @version      1.1
+// @author       Priboy313
+// @description  PMS FBA Orders Custom Filters
+// @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
+// @match        https://pms.officechase.com/pms/listfbaorderscomm.xhtml
+// @match        https://pms.marksonsupply.com/pms/listfbaorderscomm.xhtml
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
+// ==/UserScript==
 
-    const customFiltersStyle = document.createElement('style');
-    customFiltersStyle.innerHTML = `
+(function() {
+    'use strict';
+
+const customFiltersStyle = document.createElement('style');
+customFiltersStyle.innerHTML = `
 .custom-filters-button{
 	  background-color: #ffffff;
     border: 1px solid #a0a0a0;
@@ -223,8 +235,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80%; 
-    max-width: 1200px; 
+    width: 80%;
+    max-width: 1200px;
     max-height: 80vh;
     overflow-y: auto;
     background: white;
@@ -358,12 +370,12 @@
 }
     `;
     document.head.appendChild(customFiltersStyle);
-    
+
     const customFiltersButton = document.createElement('input');
     customFiltersButton.type = 'button';
     customFiltersButton.value = 'Show Custom Filters';
     customFiltersButton.className = 'custom-filters-button';
-    
+
     const barBlue = document.querySelector('.titlebar-blue').querySelector('form')
 		barBlue.appendChild(customFiltersButton);
 
@@ -381,7 +393,7 @@
             </div>
 
             <div class="custom-filter">
-                <input type="button" value="READ ORDERS TABLE" 
+                <input type="button" value="READ ORDERS TABLE"
                 id="orders-read-table" class="custom-filter-oneline-button">
             </div>
 
@@ -392,29 +404,29 @@
             <div class="custom-filter">
                 <input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
             </div>
-            
+
             <div class="custom-filter bordered-filter">
                 <form class="filter-grid">
                     <div class="grid-row">
                         <label class="grid-label">Hide Margin &ge;</label>
                         <div class="input-group">
-                            <input type="number" name="order-margin-thr" value="15" 
+                            <input type="number" name="order-margin-thr" value="15"
                                    id="order-margin-thr" class="margin-input">
                             <span class="percent">%</span>
                         </div>
-                        <input type="button" value="Apply" 
+                        <input type="button" value="Apply"
                                id="order-margin-filter-apply" class="grid-button">
                     </div>
-                    
+
                     <div class="grid-row">
                         <label class="grid-label">Keep Margin &ge;</label>
                         <div class="input-group">
-                            <input type="number" name="order-overmargin" value="50" 
+                            <input type="number" name="order-overmargin" value="50"
                                    id="order-overmargin" class="margin-input">
                             <span class="percent">%</span>
                         </div>
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" checked="true" 
+                            <input type="checkbox" checked="true"
                                    id="order-overmargin-apply" class="grid-checkbox">
                         </div>
                     </div>
@@ -427,14 +439,14 @@
                     <div class="grid-row">
                         <label class="grid-label">Hide Refund Orders </label>
                         <div class="input-group"></div>
-                        <input type="button" value="Apply" 
+                        <input type="button" value="Apply"
                                id="order-refund-filter-apply" class="grid-button">
                     </div>
-                    
+
                     <div class="grid-row">
                         <label class="grid-label">Hide Non-Refund Orders </label>
                         <div class="input-group"></div>
-                        <input type="button" value="Apply" 
+                        <input type="button" value="Apply"
                                id="order-non-refund-filter-apply" class="grid-button">
                     </div>
                 </form>
@@ -448,13 +460,13 @@
     ordersCustomTableWindow.innerHTML = `
         <div class="custom-orders-table-header">
             <span class='custom-orders-title'>
-                FBA Orders Custom Summary Table 
+                FBA Orders Custom Summary Table
                 <span class='table-title-date-range'></span>
                 </span>
             <span class="custom-close-btn">&times;</span>
         </div>
         <div class="custom-orders-table-buttons custom-filter">
-            <input type="button" value="Export to XLSX" 
+            <input type="button" value="Export to XLSX"
                    id="orders-export-xlsx" class="custom-filter-oneline-button">
         </div>
         <table class="custom-orders-table">
@@ -473,12 +485,12 @@
                 </tr>
             </thead>
             <tbody></tbody>
-        </table>  
+        </table>
     `;
 
     const scriptSheetJS = document.createElement('script');
     scriptSheetJS.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js';
-    
+
     document.head.appendChild(scriptSheetJS);
     document.body.appendChild(floatingWindow);
     document.body.appendChild(ordersCustomTableWindow);
@@ -491,7 +503,7 @@
     const toggleCustomElements = (enable = false) => {
         const container = document.querySelector('.custom-content');
         const elementsToToggle = Array.from(container.children).slice(2);
-        
+
         elementsToToggle.forEach(el => {
             if(enable) {
                 el.classList.remove('disabled');
@@ -540,7 +552,7 @@
 
         // console.log('virtualOrdersList', virtualOrdersList);
     }
-    
+
 
     class Order {
     	constructor(topRow) {
@@ -576,7 +588,7 @@
         setOrderBottomRow(bottomRow){
             this.orderBottomRow = bottomRow;
             let chars = Array();
-            
+
             bottomRow.querySelector('b').textContent.split('\n').forEach((char) => {
                 char = char.trim();
                 if (char == '') return;
@@ -596,7 +608,7 @@
                 this.qty += midRow.qty;
             });
         }
-    	
+
     }
 
     class OrderMidRow {
@@ -613,7 +625,7 @@
 
             this.isRefundOrder = this.checkFeeIsRefund();
             this.isCostNotSet = this.checkCostIsNotSet();
-            
+
             this.setValues();
         }
 
@@ -627,7 +639,7 @@
                     this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
                     this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
                 }
-            } 
+            }
         }
 
         checkFeeIsRefund(){
@@ -643,7 +655,7 @@
                 return true;
             }
         }
-    }       
+    }
 
     const scrapOrders = () => {
         const tableHover = document.querySelector('.table-hover');
@@ -677,7 +689,7 @@
 
                 if (order.margin >= margin){
                     addFilterClassToOrders(order, filtersClasses.hiddenMargin);
-                }            
+                }
 
             } else {
 
@@ -839,7 +851,7 @@
                 let ordersLenght = scrapOrders();
                 toggleCustomFiltersHeader(true, ordersLenght);
                 toggleCustomElements(true);
-                
+
             } catch (error) {
                 console.error('Error loading orders:', error);
             }
@@ -872,13 +884,13 @@
             calcOrdersCustomSummaryTable();
             makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
         });
-        
+
         ordersCustomTableWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(ordersCustomTableWindow));
- 
+
         ordersCustomTableWindow.querySelector('#orders-export-xlsx').addEventListener('click', () => {
             exportCustomSummaryTableToXLSX(ordersCustomTableWindow.querySelector('.custom-orders-table'));
         });
-        
+
         document.querySelector('.custom-filters-button').addEventListener('click', () => {
         	if (floatingWindow.style.display != 'block'){
         		showWindow(floatingWindow);
