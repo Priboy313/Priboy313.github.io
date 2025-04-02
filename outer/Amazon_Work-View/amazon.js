@@ -28,6 +28,86 @@ setTimeout(function() {
 
 console.log('--------------- AmazonWorkView Started!');
 
+const customAmazonStyle = document.createElement('style');
+customAmazonStyle.innerHTML = `
+#nav-progressive-subnav,
+#nav-main,
+#nav-flyout-rufus,
+
+/* // get prime button */
+#primeDPUpsellContainer,
+
+/* // Google quick search title */
+
+#title .aic-ext-show-hint,
+
+#returnsInfoFeature_feature_div,
+#secureTransactionReorderT1_feature_div,
+#mbb_feature_div,
+#detailPageGifting_feature_div,
+
+
+/* // deliver|pick-up */
+#offerDisplayGroupTabSet,
+
+/* //grabley */
+.pvv-ext-wrap-buttons,
+.pvv-ext-wrap-sellers,
+.pvv-ext-wrap-TotalQuantity,
+.pvv-ext-wrap-ProductDetailsLink,
+.pvv-ext-wrap-footer,
+
+/* // revseller popup */
+.aic-ext-title
+/* // #aic-ext-hint-popup, */
+/* // .aic-ext-dropdown, */
+
+
+/* // Frequently bought together */
+/* #similarities_feature_div  */
+{
+	display: none !important;
+}
+
+/* //*price no discound */
+#corePrice_desktop,
+#corePriceDisplay_desktop_feature_div {
+	background-color: rgba(0, 255, 0, 0.3);
+}
+#promoMessagingDiscountValue_feature_div,
+#promoMessaging {
+	background-color: rgba(2, 141, 194, 0.3);
+}
+
+/* //*price w/ discound */
+.price_box_w_disc {
+	background-color: rgba(255, 216, 20, 0.3) !important;
+}
+
+/* // custom full price */
+.custom-full-price {
+	font-size: 23px !important;
+	padding: 5px 0 4px 0;
+	background-color: rgba(0, 255, 0, 0.3);
+}
+
+/* // amazon mirror links */
+.title_link_section {
+	padding-left: 2px;
+}
+
+.title_link_section .amazon_mirror_link {
+	margin-right: 10px;
+
+	border-radius: 15%;
+}
+
+#dp {
+	margin-left: 0 !important;
+}
+`;
+
+document.head.appendChild(customAmazonStyle);
 
 function check_discount(){
 	var price_to_pay_high = ""
