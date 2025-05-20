@@ -55,6 +55,14 @@ customFiltersStyle.innerHTML = `
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 10px;
+
+    position: fixed;
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+
+    background: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
 .custom-close-btn {
