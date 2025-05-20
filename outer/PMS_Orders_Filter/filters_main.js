@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.1
+// @version      1.2
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -186,6 +186,28 @@ customFiltersStyle.innerHTML = `
 .grid-checkbox {
     transform: scale(1.2);
 }
+
+.custom-filter-header-stats{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 4px;
+}
+
+.custom-filter-header-stats .grid-header-label {
+    grid-row: 1;
+    text-align: center;
+    color: #000;
+    padding: 2px 0;
+}
+
+.custom-filter-header-stats .grid-header-value {
+    grid-row: 2;
+    text-align: center;
+    color: #000;
+    padding: 2px 0;
+}
+
 
 /* DISABLED */
 
@@ -392,6 +414,15 @@ customFiltersStyle.innerHTML = `
                 <span id="orders-read-header" class="custom-filter-header-label red-label">ORDERS NOT READED</span>
             </div>
 
+			<div class=" custom-filter-header-stats">
+                <span class="grid-header-label">Hidden</span>
+                <span class="grid-header-label">Keep</span>
+                <span class="grid-header-label">Refund</span>
+                <span class="grid-header-value" id="orders-hidden-stat">0</span>
+                <span class="grid-header-value" id="orders-keep-stat">0</span>
+                <span class="grid-header-value" id="orders-refund-stat">0</span>
+            </div>
+
             <div class="custom-filter">
                 <input type="button" value="READ ORDERS TABLE"
                 id="orders-read-table" class="custom-filter-oneline-button">
@@ -399,6 +430,14 @@ customFiltersStyle.innerHTML = `
 
             <div class="custom-filter">
                 <input type="button" value="Calculate Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
+            </div>
+
+            <div class="custom-filter">
+                <input type="button" value="Add Age Marks for SKUs" id="orders-add-age-marks" class="disabled custom-filter-oneline-button">
+            </div>
+
+            <div class="custom-filter">
+                <input type="button" value="Add Hiding Points for SKUs" id="orders-add-hiding-points" class="disabled custom-filter-oneline-button">
             </div>
 
             <div class="custom-filter">
@@ -431,6 +470,64 @@ customFiltersStyle.innerHTML = `
                         </div>
                     </div>
 
+                </form>
+            </div>
+
+            <div class="custom-filter bordered-filter">
+                <form class="filter-grid">
+                    <div class="grid-row">
+                        <label class="grid-label">91 &ge;</label>
+                        <input type="button" value="Hide"
+                               id="" class="grid-button disabled">
+                        <input type="button" value="Show"
+                               id="" class="grid-button disabled">
+
+                        <label class="grid-label">271 &ge;</label>
+                        <input type="button" value="Hide"
+                               id="" class="grid-button disabled">
+                        <input type="button" value="Show"
+                               id="" class="grid-button disabled">
+                    </div>
+                        <div class="grid-row">
+                        <label class="grid-label">181 &ge;</label>
+                        <input type="button" value="Hide"
+                               id="" class="grid-button disabled">
+                        <input type="button" value="Show"
+                               id="" class="grid-button disabled">
+
+                        <label class="grid-label">365 &ge;</label>
+                        <input type="button" value="Hide"
+                               id="" class="grid-button disabled">
+                        <input type="button" value="Show"
+                               id="" class="grid-button disabled">
+                    </div>
+
+                    <div class="custom-filter">
+                       <input type="button" value="Hide Oldest Skus" id="orders-hide-oldest-skus" class="disabled custom-filter-oneline-button">
+                    </div>
+
+                    <div class="custom-filter">
+                       <input type="button" value="Hide Newest Skus" id="orders-hide-newest-skus" class="disabled custom-filter-oneline-button">
+                    </div>
+
+                </form>
+            </div>
+
+			<div class="custom-filter bordered-filter">
+                <form class="filter-grid">
+                    <div class="grid-row">
+                        <label class="grid-label">Show Cost Not Set SKUs </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                               id="orders-show-nocost-skus-apply" class="disabled grid-button">
+                    </div>
+
+                    <div class="grid-row">
+                        <label class="grid-label">Hide Cost Not Set SKUs </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                               id="orders-hide-nocost-skus-apply" class="disabled grid-button">
+                    </div>
                 </form>
             </div>
 
@@ -502,7 +599,7 @@ customFiltersStyle.innerHTML = `
 
     const toggleCustomElements = (enable = false) => {
         const container = document.querySelector('.custom-content');
-        const elementsToToggle = Array.from(container.children).slice(2);
+        const elementsToToggle = Array.from(container.children).slice(3);
 
         elementsToToggle.forEach(el => {
             if(enable) {
@@ -568,8 +665,11 @@ customFiltersStyle.innerHTML = `
             this.qty = 0;
             this.profit = 0;
             this.fee = 0;
+
+            this.isHidden = false;
             this.orderMidRowsList = Array();
             this.isRefundOrder = false;
+			// this.isCostNotSet = false;
     	}
 
 
@@ -577,6 +677,7 @@ customFiltersStyle.innerHTML = `
             this.orderMidRowsList.push(new OrderMidRow(midRow));
             this.SKU = this.orderMidRowsList[0].SKU;
             this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
+			// this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
         }
 
         checkFeeIsRefund(midRow){
@@ -675,12 +776,31 @@ customFiltersStyle.innerHTML = `
 
     const filtersClassesVals = Object.values(filtersClasses);
 
+    const calcOrdersHeaderStats = () => {
+        const cellHiddenStat = floatingWindow.querySelector("#orders-hidden-stat");
+        const cellKeepStat = floatingWindow.querySelector("#orders-keep-stat");
+        const cellRefundStat = floatingWindow.querySelector("#orders-refund-stat");
+
+        let hiddenCound = 0;
+        let refundCount = 0;
+
+        virtualOrdersList.forEach(order => {
+            if (order.isRefundOrder) refundCount++;
+            if (order.isHidden) hiddenCound++;
+        })
+
+        // refresh vals
+        cellHiddenStat.innerHTML = hiddenCound;
+        cellKeepStat.innerHTML = virtualOrdersList.length - hiddenCound;
+        cellRefundStat.innerHTML = refundCount;
+    }
     const addFilterClassToOrders = (order, filterClass) => {
         order.orderTopRow.classList.add(filterClass);
         order.orderBottomRow.classList.add(filterClass);
         order.orderMidRowsList.forEach((midRow) => {
             midRow.midRow.classList.add(filterClass);
         });
+        order.isHidden = true;
     };
 
     const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
@@ -719,6 +839,7 @@ customFiltersStyle.innerHTML = `
 
     const applyResetFilters = () => {
         virtualOrdersList.forEach((order) => {
+            order.isHidden = false;
             order.orderTopRow.classList.remove(...filtersClassesVals);
             order.orderBottomRow.classList.remove(...filtersClassesVals);
             order.orderMidRowsList.forEach((midRow) => {
@@ -851,6 +972,7 @@ customFiltersStyle.innerHTML = `
                 let ordersLenght = scrapOrders();
                 toggleCustomFiltersHeader(true, ordersLenght);
                 toggleCustomElements(true);
+                calcOrdersHeaderStats();
 
             } catch (error) {
                 console.error('Error loading orders:', error);
@@ -863,18 +985,22 @@ customFiltersStyle.innerHTML = `
             const overmarginApply = document.getElementById('order-overmargin-apply').checked;
 
             applyHiddenMarginFilter(margin, overmargin, overmarginApply);
+            calcOrdersHeaderStats();
         });
 
         document.getElementById('order-refund-filter-apply').addEventListener('click', () => {
             applyHiddenRefundFilter();
+            calcOrdersHeaderStats();
         });
 
         document.getElementById('order-non-refund-filter-apply').addEventListener('click', () => {
             applyHiddenNonRefundFilter();
+            calcOrdersHeaderStats();
         });
 
         document.getElementById('reset-orders-filters').addEventListener('click', () => {
             applyResetFilters();
+            calcOrdersHeaderStats();
         });
 
         floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
@@ -917,7 +1043,7 @@ customFiltersStyle.innerHTML = `
                 return;
             }
         } catch (error) {
-            console.error('Error on key press:', error);
+            console.error('+++ Error on key press:', error);
         }
     };
 
