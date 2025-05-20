@@ -58,11 +58,11 @@ customFiltersStyle.innerHTML = `
 
     position: fixed;
     width: 400px;
-    max-height: 80vh;
+    max-height: 85vh;
     overflow-y: auto;
 
     background: white;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .custom-close-btn {
@@ -200,7 +200,8 @@ customFiltersStyle.innerHTML = `
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto;
     gap: 4px;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
+    margin-top: -5px;
 }
 
 .custom-filter-header-stats .grid-header-label {
