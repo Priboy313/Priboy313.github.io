@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.2
+// @version      1.2dev
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -189,9 +189,10 @@ customFiltersStyle.innerHTML = `
 
 .custom-filter-header-stats{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto;
     gap: 4px;
+    margin-bottom: 2px;
 }
 
 .custom-filter-header-stats .grid-header-label {
@@ -233,13 +234,11 @@ customFiltersStyle.innerHTML = `
 }
 
 
-/* Hidden Margin Filter */
+/* Hidden Filters */
 
 .hidden-margin-filter {
     display: none!important;
 }
-
-/* Hidden Refund Filter */
 
 .hidden-refund-filter {
     display: none!important;
@@ -248,6 +247,15 @@ customFiltersStyle.innerHTML = `
 .hidden-non-refund-filter {
     display: none!important;
 }
+
+.hidden-costnotset-filter {
+    display: none!important;
+}
+
+.hidden-costset-filter {
+    display: none!important;
+}
+
 
 /* Orders Custom Summary Table */
 
@@ -417,9 +425,11 @@ customFiltersStyle.innerHTML = `
 			<div class=" custom-filter-header-stats">
                 <span class="grid-header-label">Hidden</span>
                 <span class="grid-header-label">Keep</span>
+                <span class="grid-header-label">NoCost</span>
                 <span class="grid-header-label">Refund</span>
                 <span class="grid-header-value" id="orders-hidden-stat">0</span>
                 <span class="grid-header-value" id="orders-keep-stat">0</span>
+                <span class="grid-header-value" id="orders-nocost-stat">0</span>
                 <span class="grid-header-value" id="orders-refund-stat">0</span>
             </div>
 
@@ -519,14 +529,14 @@ customFiltersStyle.innerHTML = `
                         <label class="grid-label">Show Cost Not Set SKUs </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="orders-show-nocost-skus-apply" class="disabled grid-button">
+                               id="orders-show-nocost-skus-apply" class="grid-button">
                     </div>
 
                     <div class="grid-row">
                         <label class="grid-label">Hide Cost Not Set SKUs </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="orders-hide-nocost-skus-apply" class="disabled grid-button">
+                               id="orders-hide-nocost-skus-apply" class="grid-button">
                     </div>
                 </form>
             </div>
@@ -669,7 +679,7 @@ customFiltersStyle.innerHTML = `
             this.isHidden = false;
             this.orderMidRowsList = Array();
             this.isRefundOrder = false;
-			// this.isCostNotSet = false;
+			this.isCostNotSet = false;
     	}
 
 
@@ -677,12 +687,18 @@ customFiltersStyle.innerHTML = `
             this.orderMidRowsList.push(new OrderMidRow(midRow));
             this.SKU = this.orderMidRowsList[0].SKU;
             this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
-			// this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
+			this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
         }
 
         checkFeeIsRefund(midRow){
             if (midRow.isRefundOrder == true){
                 this.isRefundOrder = true;
+            }
+        }
+
+        checkIsCostNotSet(midRow){
+            if (midRow.isCostNotSet == true){
+                this.isCostNotSet = true;
             }
         }
 
@@ -771,7 +787,9 @@ customFiltersStyle.innerHTML = `
     const filtersClasses = {
         hiddenMargin: 'hidden-margin-filter',
         hiddenRefund: 'hidden-refund-filter',
-        hiddenNonRefund: 'hidden-non-refund-filter'
+        hiddenNonRefund: 'hidden-non-refund-filter',
+        hiddenCostNotSet: 'hidden-costnotset-filter',
+        hiddenCostSet: 'hidden-costset-filter'
     };
 
     const filtersClassesVals = Object.values(filtersClasses);
@@ -779,21 +797,25 @@ customFiltersStyle.innerHTML = `
     const calcOrdersHeaderStats = () => {
         const cellHiddenStat = floatingWindow.querySelector("#orders-hidden-stat");
         const cellKeepStat = floatingWindow.querySelector("#orders-keep-stat");
+        const cellNoCostStat = floatingWindow.querySelector("#orders-nocost-stat");
         const cellRefundStat = floatingWindow.querySelector("#orders-refund-stat");
 
-        let hiddenCound = 0;
+        let hiddenCount = 0;
+        let noCostCount = 0;
         let refundCount = 0;
 
         virtualOrdersList.forEach(order => {
             if (order.isRefundOrder) refundCount++;
-            if (order.isHidden) hiddenCound++;
+            if (order.isHidden) hiddenCount++;
+            if (order.isCostNotSet) noCostCount++;
         })
 
-        // refresh vals
-        cellHiddenStat.innerHTML = hiddenCound;
-        cellKeepStat.innerHTML = virtualOrdersList.length - hiddenCound;
+        cellHiddenStat.innerHTML = hiddenCount;
+        cellKeepStat.innerHTML = virtualOrdersList.length - hiddenCount;
+        cellNoCostStat.innerHTML = noCostCount;
         cellRefundStat.innerHTML = refundCount;
     }
+
     const addFilterClassToOrders = (order, filterClass) => {
         order.orderTopRow.classList.add(filterClass);
         order.orderBottomRow.classList.add(filterClass);
@@ -836,6 +858,22 @@ customFiltersStyle.innerHTML = `
             }
         });
     }
+
+    const applyHiddenNoCostFilter = () => {
+        virtualOrdersList.forEach((order) => {
+            if (order.isCostNotSet == true){
+                addFilterClassToOrders(order, filtersClasses.hiddenCostNotSet);
+            }
+        });
+    };
+
+    const applyShowNoCostFilter = () => {
+        virtualOrdersList.forEach((order) => {
+            if (order.isCostNotSet == false){
+                addFilterClassToOrders(order, filtersClasses.hiddenCostSet);
+            }
+        });
+    };
 
     const applyResetFilters = () => {
         virtualOrdersList.forEach((order) => {
@@ -1000,6 +1038,16 @@ customFiltersStyle.innerHTML = `
 
         document.getElementById('reset-orders-filters').addEventListener('click', () => {
             applyResetFilters();
+            calcOrdersHeaderStats();
+        });
+
+        document.getElementById("orders-show-nocost-skus-apply").addEventListener('click', () => {
+            applyShowNoCostFilter();
+            calcOrdersHeaderStats();
+        });
+
+        document.getElementById("orders-hide-nocost-skus-apply").addEventListener('click', () => {
+            applyHiddenNoCostFilter();
             calcOrdersHeaderStats();
         });
 
