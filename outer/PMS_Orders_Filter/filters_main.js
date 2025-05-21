@@ -422,7 +422,7 @@ customFiltersStyle.innerHTML = `
     floatingWindow.className = 'custom-floating-window';
     floatingWindow.innerHTML = `
         <div class="custom-header">
-            <span>PMS FBA Orders Custom Filters</span>
+            <span>PMS FBA Orders Custom Filters ` + GM_info.script.version + `</span>
             <span class="custom-close-btn">&times;</span>
         </div>
         <div class="custom-content">
@@ -433,7 +433,7 @@ customFiltersStyle.innerHTML = `
 
 			<div class=" custom-filter-header-stats">
                 <span class="grid-header-label">Hidden</span>
-                <span class="grid-header-label">Keep</span>
+                <span class="grid-header-label">Shown</span>
                 <span class="grid-header-label">NoCost</span>
                 <span class="grid-header-label">Refund</span>
                 <span class="grid-header-value" id="orders-hidden-stat">0</span>
@@ -450,14 +450,12 @@ customFiltersStyle.innerHTML = `
             <div class="custom-filter">
                 <input type="button" value="Calculate Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
-
-            <div class="custom-filter">
-                <input type="button" value="Add Age Marks for SKUs" id="orders-add-age-marks" class="disabled custom-filter-oneline-button">
-            </div>
-
+            
+            <!-- 
             <div class="custom-filter">
                 <input type="button" value="Add Hiding Points for SKUs" id="orders-add-hiding-points" class="disabled custom-filter-oneline-button">
             </div>
+            -->
 
             <div class="custom-filter">
                 <input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
@@ -487,46 +485,6 @@ customFiltersStyle.innerHTML = `
                             <input type="checkbox" checked="true"
                                    id="order-overmargin-apply" class="grid-checkbox">
                         </div>
-                    </div>
-
-                </form>
-            </div>
-
-            <div class="custom-filter bordered-filter">
-                <form class="filter-grid">
-                    <div class="grid-row">
-                        <label class="grid-label">91 &ge;</label>
-                        <input type="button" value="Hide"
-                               id="" class="grid-button disabled">
-                        <input type="button" value="Show"
-                               id="" class="grid-button disabled">
-
-                        <label class="grid-label">271 &ge;</label>
-                        <input type="button" value="Hide"
-                               id="" class="grid-button disabled">
-                        <input type="button" value="Show"
-                               id="" class="grid-button disabled">
-                    </div>
-                        <div class="grid-row">
-                        <label class="grid-label">181 &ge;</label>
-                        <input type="button" value="Hide"
-                               id="" class="grid-button disabled">
-                        <input type="button" value="Show"
-                               id="" class="grid-button disabled">
-
-                        <label class="grid-label">365 &ge;</label>
-                        <input type="button" value="Hide"
-                               id="" class="grid-button disabled">
-                        <input type="button" value="Show"
-                               id="" class="grid-button disabled">
-                    </div>
-
-                    <div class="custom-filter">
-                       <input type="button" value="Hide Oldest Skus" id="orders-hide-oldest-skus" class="disabled custom-filter-oneline-button">
-                    </div>
-
-                    <div class="custom-filter">
-                       <input type="button" value="Hide Newest Skus" id="orders-hide-newest-skus" class="disabled custom-filter-oneline-button">
                     </div>
 
                 </form>
