@@ -208,14 +208,14 @@ customFiltersStyle.innerHTML = `
     grid-row: 1;
     text-align: center;
     color: #000;
-    padding: 2px 0;
+    padding: 1px 0;
 }
 
 .custom-filter-header-stats .grid-header-value {
     grid-row: 2;
     text-align: center;
     color: #000;
-    padding: 2px 0;
+    padding: 0 0 2px 0;
 }
 
 
@@ -450,7 +450,7 @@ customFiltersStyle.innerHTML = `
             <div class="custom-filter">
                 <input type="button" value="Calculate Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
-            
+
             <!-- 
             <div class="custom-filter">
                 <input type="button" value="Add Hiding Points for SKUs" id="orders-add-hiding-points" class="disabled custom-filter-oneline-button">
@@ -493,14 +493,14 @@ customFiltersStyle.innerHTML = `
 			<div class="custom-filter bordered-filter">
                 <form class="filter-grid">
                     <div class="grid-row">
-                        <label class="grid-label">Show Cost Not Set SKUs </label>
+                        <label class="grid-label">Show NoCost Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
                                id="orders-show-nocost-skus-apply" class="grid-button">
                     </div>
 
                     <div class="grid-row">
-                        <label class="grid-label">Hide Cost Not Set SKUs </label>
+                        <label class="grid-label">Hide NoCost Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
                                id="orders-hide-nocost-skus-apply" class="grid-button">
@@ -511,17 +511,17 @@ customFiltersStyle.innerHTML = `
             <div class="custom-filter bordered-filter">
                 <form class="filter-grid">
                     <div class="grid-row">
+                        <label class="grid-label">Show Refund Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                               id="order-non-refund-filter-apply" class="grid-button">
+                    </div>
+
+                    <div class="grid-row">
                         <label class="grid-label">Hide Refund Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
                                id="order-refund-filter-apply" class="grid-button">
-                    </div>
-
-                    <div class="grid-row">
-                        <label class="grid-label">Hide Non-Refund Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                               id="order-non-refund-filter-apply" class="grid-button">
                     </div>
                 </form>
             </div>
