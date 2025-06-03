@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.2dev
+// @version      1.21dev
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -8,6 +8,15 @@
 // @match        https://pms.marksonsupply.com/pms/listfbaorderscomm.xhtml
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
+
+let script_version = ""; 
+
+try {
+	script_version = GM_info.script.version;
+} catch (e) {
+	script_version = "1.21dev";
+}
+
 
 (function() {
     'use strict';
@@ -422,7 +431,7 @@ customFiltersStyle.innerHTML = `
     floatingWindow.className = 'custom-floating-window';
     floatingWindow.innerHTML = `
         <div class="custom-header">
-            <span>PMS FBA Orders Custom Filters ` + GM_info.script.version + `</span>
+            <span>PMS FBA Orders Custom Filters ` + script_version + `</span>
             <span class="custom-close-btn">&times;</span>
         </div>
         <div class="custom-content">
@@ -451,7 +460,7 @@ customFiltersStyle.innerHTML = `
                 <input type="button" value="Calculate Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
 
-            <!-- 
+            <!--
             <div class="custom-filter">
                 <input type="button" value="Add Hiding Points for SKUs" id="orders-add-hiding-points" class="disabled custom-filter-oneline-button">
             </div>
@@ -609,6 +618,7 @@ customFiltersStyle.innerHTML = `
     };
 
     const createVirtualOrdersList = (tableBody) => {
+        virtualOrdersList = Array();
         let virtualOrder;
 
         Array.from(tableBody.children).forEach((childEl) => {
