@@ -24,7 +24,7 @@ try {
 const customFiltersStyle = document.createElement('style');
 customFiltersStyle.innerHTML = `
 .custom-filters-button{
-	  background-color: #ffffff;
+	background-color: #ffffff;
     border: 1px solid #a0a0a0;
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
     display: inline-block;
@@ -274,6 +274,13 @@ customFiltersStyle.innerHTML = `
     display: none!important;
 }
 
+.hidden-amzngr-filter {
+    display: none!important;
+}
+	
+.hidden-noamzngr-filter {
+    display: none!important;
+}
 
 /* Orders Custom Summary Table */
 
@@ -463,7 +470,7 @@ customFiltersStyle.innerHTML = `
             </div>
 
             <div class="custom-filter">
-                <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
+                <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button disabled">
             </div>
 
             <!--
@@ -681,15 +688,23 @@ customFiltersStyle.innerHTML = `
             this.orderMidRowsList = Array();
             this.isRefundOrder = false;
 			this.isCostNotSet = false;
+			this.isAmznGr = false;
     	}
 
 
         addOrderMidRow(midRow){
             this.orderMidRowsList.push(new OrderMidRow(midRow));
             this.SKU = this.orderMidRowsList[0].SKU;
+			this.checkIsAmznGr(this.orderMidRowsList[0].SKU);
             this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
 			this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
         }
+
+		checkIsAmznGr(SKU){
+			if(SKU.includes("amzn.gr")){
+				this.isAmznGr = true;
+			}
+		}
 
         checkFeeIsRefund(midRow){
             if (midRow.isRefundOrder == true){
@@ -790,7 +805,9 @@ customFiltersStyle.innerHTML = `
         hiddenRefund: 'hidden-refund-filter',
         hiddenNonRefund: 'hidden-non-refund-filter',
         hiddenCostNotSet: 'hidden-costnotset-filter',
-        hiddenCostSet: 'hidden-costset-filter'
+        hiddenCostSet: 'hidden-costset-filter',
+		hiddenAmznGr: "hidden-amzngr-filter",
+		hiddenNoAmznGr: 'hidden-noamzngr-filter'
     };
 
     const filtersClassesVals = Object.values(filtersClasses);
@@ -799,21 +816,25 @@ customFiltersStyle.innerHTML = `
         const cellHiddenStat = floatingWindow.querySelector("#orders-hidden-stat");
         const cellKeepStat = floatingWindow.querySelector("#orders-keep-stat");
         const cellNoCostStat = floatingWindow.querySelector("#orders-nocost-stat");
+		const cellAmznGrStat = floatingWindow.querySelector("#orders-amzngr-stat");
         const cellRefundStat = floatingWindow.querySelector("#orders-refund-stat");
 
         let hiddenCount = 0;
         let noCostCount = 0;
+		let amzngrCount = 0;
         let refundCount = 0;
 
         virtualOrdersList.forEach(order => {
             if (order.isRefundOrder) refundCount++;
             if (order.isHidden) hiddenCount++;
+			if (order.isAmznGr) amzngrCount++;
             if (order.isCostNotSet) noCostCount++;
         })
 
         cellHiddenStat.innerHTML = hiddenCount;
         cellKeepStat.innerHTML = virtualOrdersList.length - hiddenCount;
         cellNoCostStat.innerHTML = noCostCount;
+		cellAmznGrStat.innerHTML = amzngrCount;
         cellRefundStat.innerHTML = refundCount;
     }
 
@@ -875,6 +896,22 @@ customFiltersStyle.innerHTML = `
             }
         });
     };
+
+	const applyShowNoAmznGrFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isAmznGr == true){
+				addFilterClassToOrders(order, filtersClasses.hiddenAmznGr);
+			}
+		});
+	}
+
+	const applyShowAmznGrFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isAmznGr == false){
+				addFilterClassToOrders(order, filtersClasses.hiddenNoAmznGr);
+			}
+		});
+	}
 
     const applyResetFilters = () => {
         virtualOrdersList.forEach((order) => {
@@ -1049,6 +1086,16 @@ customFiltersStyle.innerHTML = `
 
         document.getElementById("orders-hide-nocost-skus-apply").addEventListener('click', () => {
             applyHiddenNoCostFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("orders-show-amzngr-skus-apply").addEventListener('click', () => {
+            applyShowAmznGrFilter();
+            calcOrdersHeaderStats();
+        });
+
+        document.getElementById("orders-hide-amzngr-skus-apply").addEventListener('click', () => {
+            applyShowNoAmznGrFilter();
             calcOrdersHeaderStats();
         });
 
