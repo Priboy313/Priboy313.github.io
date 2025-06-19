@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.21dev
+// @version      1.3dev
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -9,12 +9,12 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-let script_version = ""; 
+let script_version = "";
 
 try {
 	script_version = GM_info.script.version;
 } catch (e) {
-	script_version = "1.21dev";
+	script_version = "dev";
 }
 
 
@@ -206,7 +206,7 @@ customFiltersStyle.innerHTML = `
 
 .custom-filter-header-stats{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: auto auto;
     gap: 4px;
     margin-bottom: 3px;
@@ -444,10 +444,12 @@ customFiltersStyle.innerHTML = `
                 <span class="grid-header-label">Hidden</span>
                 <span class="grid-header-label">Shown</span>
                 <span class="grid-header-label">NoCost</span>
+                <span class="grid-header-label">AmznGr</span>
                 <span class="grid-header-label">Refund</span>
                 <span class="grid-header-value" id="orders-hidden-stat">0</span>
                 <span class="grid-header-value" id="orders-keep-stat">0</span>
                 <span class="grid-header-value" id="orders-nocost-stat">0</span>
+                <span class="grid-header-value" id="orders-amzngr-stat">0</span>
                 <span class="grid-header-value" id="orders-refund-stat">0</span>
             </div>
 
@@ -457,7 +459,11 @@ customFiltersStyle.innerHTML = `
             </div>
 
             <div class="custom-filter">
-                <input type="button" value="Calculate Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
+                <input type="button" value="Calculate Readed Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
+            </div>
+
+            <div class="custom-filter">
+                <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
             </div>
 
             <!--
@@ -513,6 +519,24 @@ customFiltersStyle.innerHTML = `
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
                                id="orders-hide-nocost-skus-apply" class="grid-button">
+                    </div>
+                </form>
+            </div>
+
+            <div class="custom-filter bordered-filter">
+                <form class="filter-grid">
+                    <div class="grid-row">
+                        <label class="grid-label">Show AmznGr Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                               id="orders-show-amzngr-skus-apply" class="grid-button">
+                    </div>
+
+                    <div class="grid-row">
+                        <label class="grid-label">Hide AmznGr Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                               id="orders-hide-amzngr-skus-apply" class="grid-button">
                     </div>
                 </form>
             </div>
