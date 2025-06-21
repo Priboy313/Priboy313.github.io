@@ -21,6 +21,18 @@ try {
 (function() {
     'use strict';
 
+    const filtersClasses = {
+        hiddenMargin: 'hidden-margin-filter',
+        hiddenRefund: 'hidden-refund-filter',
+        hiddenNonRefund: 'hidden-non-refund-filter',
+        hiddenCostNotSet: 'hidden-costnotset-filter',
+        hiddenCostSet: 'hidden-costset-filter',
+		hiddenAmznGr: "hidden-amzngr-filter",
+		hiddenNoAmznGr: 'hidden-noamzngr-filter'
+    };
+
+    const filtersClassesVals = Object.values(filtersClasses);
+
 const customFiltersStyle = document.createElement('style');
 customFiltersStyle.innerHTML = `
 .custom-filters-button{
@@ -157,8 +169,20 @@ customFiltersStyle.innerHTML = `
 .green-label{
     color: green;
 }
+    `;
 
-/* Content GRID */
+
+const customFiltersHiddenStyle = document.createElement('style');
+filtersClassesVals.forEach(filterClass => {
+	customFiltersHiddenStyle.innerHTML += `
+	.${filterClass} {
+		display: none!important;
+	}
+	`
+});
+
+const customFiltersGridStyle = document.createElement('style');
+customFiltersGridStyle.innerHTML = `
 
 .filter-grid {
     display: grid;
@@ -226,9 +250,10 @@ customFiltersStyle.innerHTML = `
     color: #000;
     padding: 0 0 2px 0;
 }
+`;
 
-
-/* DISABLED */
+const customFiltersDisabledStyle = document.createElement('style');
+customFiltersDisabledStyle.innerHTML = `
 
 .custom-content .disabled {
     opacity: 0.6;
@@ -250,39 +275,10 @@ customFiltersStyle.innerHTML = `
 .custom-content .disabled .grid-checkbox {
     filter: grayscale(1);
 }
+`;
 
-
-/* Hidden Filters */
-
-.hidden-margin-filter {
-    display: none!important;
-}
-
-.hidden-refund-filter {
-    display: none!important;
-}
-
-.hidden-non-refund-filter {
-    display: none!important;
-}
-
-.hidden-costnotset-filter {
-    display: none!important;
-}
-
-.hidden-costset-filter {
-    display: none!important;
-}
-
-.hidden-amzngr-filter {
-    display: none!important;
-}
-	
-.hidden-noamzngr-filter {
-    display: none!important;
-}
-
-/* Orders Custom Summary Table */
+const customFiltersSummaryTableStyle = document.createElement('style');
+customFiltersSummaryTableStyle.innerHTML = `
 
 .custom-orders-table-wrapper {
     display: none;
@@ -327,7 +323,6 @@ customFiltersStyle.innerHTML = `
     border-collapse: collapse;
     margin: 0;
 }
-
 
 .custom-orders-table th,
 .custom-orders-table td {
@@ -401,9 +396,10 @@ customFiltersStyle.innerHTML = `
     border-radius: 4px;
     cursor: pointer;
 }
+`;
 
-/* DEV */
-
+const customFiltersDevStyle = document.createElement('style');
+customFiltersDevStyle.innerHTML = `
 .dev-window{
     position: fixed;
     display: block;
@@ -423,8 +419,14 @@ customFiltersStyle.innerHTML = `
 .hidden{
     display: none;
 }
-    `;
+`;
+
     document.head.appendChild(customFiltersStyle);
+	document.head.appendChild(customFiltersHiddenStyle);
+	document.head.appendChild(customFiltersGridStyle);
+	document.head.appendChild(customFiltersDisabledStyle);
+	document.head.appendChild(customFiltersSummaryTableStyle);
+	document.head.appendChild(customFiltersDevStyle);
 
     const customFiltersButton = document.createElement('input');
     customFiltersButton.type = 'button';
@@ -799,18 +801,6 @@ customFiltersStyle.innerHTML = `
 
         return rows.length;
     };
-
-    const filtersClasses = {
-        hiddenMargin: 'hidden-margin-filter',
-        hiddenRefund: 'hidden-refund-filter',
-        hiddenNonRefund: 'hidden-non-refund-filter',
-        hiddenCostNotSet: 'hidden-costnotset-filter',
-        hiddenCostSet: 'hidden-costset-filter',
-		hiddenAmznGr: "hidden-amzngr-filter",
-		hiddenNoAmznGr: 'hidden-noamzngr-filter'
-    };
-
-    const filtersClassesVals = Object.values(filtersClasses);
 
     const calcOrdersHeaderStats = () => {
         const cellHiddenStat = floatingWindow.querySelector("#orders-hidden-stat");
