@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.3dev
+// @version      1.3
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -14,7 +14,7 @@ let script_version = "";
 try {
 	script_version = GM_info.script.version;
 } catch (e) {
-	script_version = "dev";
+	script_version = "±";
 }
 
 
@@ -30,7 +30,6 @@ try {
 		hiddenAmznGr: "hidden-amzngr-filter",
 		hiddenNoAmznGr: 'hidden-noamzngr-filter'
     };
-
     const filtersClassesVals = Object.values(filtersClasses);
 
 const customFiltersStyle = document.createElement('style');
@@ -472,7 +471,7 @@ customFiltersDevStyle.innerHTML = `
             </div>
 
             <div class="custom-filter">
-                <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button disabled">
+                <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
             </div>
 
             <!--
@@ -914,10 +913,9 @@ customFiltersDevStyle.innerHTML = `
         });
     };
 
-
-    const calcOrdersCustomSummaryTable = () => {
-        const summaryData = {};
-        virtualOrdersList.forEach((order) => {
+	const calcOrdersCustomSummaryTable = (virtualList) => {
+		const summaryData = {};
+        virtualList.forEach((order) => {
             if (!summaryData[order.SKU]) {
                 summaryData[order.SKU] = {
                     user: "",
@@ -971,6 +969,14 @@ customFiltersDevStyle.innerHTML = `
             `;
             tableBody.appendChild(row);
         });
+	};
+
+    const calcOrdersCustomReadedSummaryTable = () => {
+        calcOrdersCustomSummaryTable(virtualOrdersList)
+    };
+
+	const calcOrdersCustomShownSummaryTable = () => {
+		calcOrdersCustomSummaryTable(virtualOrdersList.filter(order => !order.isHidden))
     };
 
     const makeTableSortable = (table) => {
@@ -1093,7 +1099,13 @@ customFiltersDevStyle.innerHTML = `
 
         document.getElementById('orders-calculate-sku').addEventListener('click', () => {
             showWindow(ordersCustomTableWindow)
-            calcOrdersCustomSummaryTable();
+            calcOrdersCustomReadedSummaryTable();
+            makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+        });
+
+		document.getElementById('orders-calculate-shown-sku').addEventListener('click', () => {
+            showWindow(ordersCustomTableWindow)
+            calcOrdersCustomShownSummaryTable();
             makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
         });
 
