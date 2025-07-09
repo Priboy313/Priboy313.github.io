@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.3
+// @version      1.4
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -9,14 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-let script_version = "";
-
-try {
-	script_version = GM_info.script.version;
-} catch (e) {
-	script_version = "±";
-}
-
+let script_version = "1.4";
 
 (function() {
     'use strict';
@@ -28,7 +21,9 @@ try {
         hiddenCostNotSet: 'hidden-costnotset-filter',
         hiddenCostSet: 'hidden-costset-filter',
 		hiddenAmznGr: "hidden-amzngr-filter",
-		hiddenNoAmznGr: 'hidden-noamzngr-filter'
+		hiddenNoAmznGr: 'hidden-noamzngr-filter',
+		hiddenReplacement: "hidden-replacement-filter",
+		hiddenNoReplacement: "hidden-noreplacement-filter",
     };
     const filtersClassesVals = Object.values(filtersClasses);
 
@@ -170,7 +165,6 @@ customFiltersStyle.innerHTML = `
 }
     `;
 
-
 const customFiltersHiddenStyle = document.createElement('style');
 filtersClassesVals.forEach(filterClass => {
 	customFiltersHiddenStyle.innerHTML += `
@@ -229,7 +223,7 @@ customFiltersGridStyle.innerHTML = `
 
 .custom-filter-header-stats{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-template-rows: auto auto;
     gap: 4px;
     margin-bottom: 3px;
@@ -439,7 +433,7 @@ customFiltersDevStyle.innerHTML = `
     floatingWindow.className = 'custom-floating-window';
     floatingWindow.innerHTML = `
         <div class="custom-header">
-            <span>PMS FBA Orders Custom Filters ` + script_version + `</span>
+            <span>PMS FBA Orders Custom Filters ${script_version}</span>
             <span class="custom-close-btn">&times;</span>
         </div>
         <div class="custom-content">
@@ -454,11 +448,13 @@ customFiltersDevStyle.innerHTML = `
                 <span class="grid-header-label">NoCost</span>
                 <span class="grid-header-label">AmznGr</span>
                 <span class="grid-header-label">Refund</span>
+                <span class="grid-header-label">Replace</span>
                 <span class="grid-header-value" id="orders-hidden-stat">0</span>
                 <span class="grid-header-value" id="orders-keep-stat">0</span>
                 <span class="grid-header-value" id="orders-nocost-stat">0</span>
                 <span class="grid-header-value" id="orders-amzngr-stat">0</span>
                 <span class="grid-header-value" id="orders-refund-stat">0</span>
+                <span class="grid-header-value" id="orders-replacement-stat">0</span>
             </div>
 
             <div class="custom-filter">
@@ -490,23 +486,23 @@ customFiltersDevStyle.innerHTML = `
                         <label class="grid-label">Hide Margin &ge;</label>
                         <div class="input-group">
                             <input type="number" name="order-margin-thr" value="15"
-                                   id="order-margin-thr" class="margin-input">
+                                id="order-margin-thr" class="margin-input">
                             <span class="percent">%</span>
                         </div>
                         <input type="button" value="Apply"
-                               id="order-margin-filter-apply" class="grid-button">
+                            id="order-margin-filter-apply" class="grid-button">
                     </div>
 
                     <div class="grid-row">
                         <label class="grid-label">Keep Margin &ge;</label>
                         <div class="input-group">
                             <input type="number" name="order-overmargin" value="50"
-                                   id="order-overmargin" class="margin-input">
+                                id="order-overmargin" class="margin-input">
                             <span class="percent">%</span>
                         </div>
                         <div class="checkbox-wrapper">
                             <input type="checkbox" checked="true"
-                                   id="order-overmargin-apply" class="grid-checkbox">
+                                id="order-overmargin-apply" class="grid-checkbox">
                         </div>
                     </div>
 
@@ -519,14 +515,14 @@ customFiltersDevStyle.innerHTML = `
                         <label class="grid-label">Show NoCost Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="orders-show-nocost-skus-apply" class="grid-button">
+                            id="orders-show-nocost-skus-apply" class="grid-button">
                     </div>
 
                     <div class="grid-row">
                         <label class="grid-label">Hide NoCost Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="orders-hide-nocost-skus-apply" class="grid-button">
+                            id="orders-hide-nocost-skus-apply" class="grid-button">
                     </div>
                 </form>
             </div>
@@ -537,14 +533,14 @@ customFiltersDevStyle.innerHTML = `
                         <label class="grid-label">Show AmznGr Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="orders-show-amzngr-skus-apply" class="grid-button">
+                            id="orders-show-amzngr-skus-apply" class="grid-button">
                     </div>
 
                     <div class="grid-row">
                         <label class="grid-label">Hide AmznGr Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="orders-hide-amzngr-skus-apply" class="grid-button">
+                            id="orders-hide-amzngr-skus-apply" class="grid-button">
                     </div>
                 </form>
             </div>
@@ -555,14 +551,32 @@ customFiltersDevStyle.innerHTML = `
                         <label class="grid-label">Show Refund Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="order-non-refund-filter-apply" class="grid-button">
+                            id="order-non-refund-filter-apply" class="grid-button">
                     </div>
 
                     <div class="grid-row">
                         <label class="grid-label">Hide Refund Orders </label>
                         <div class="input-group"></div>
                         <input type="button" value="Apply"
-                               id="order-refund-filter-apply" class="grid-button">
+                            id="order-refund-filter-apply" class="grid-button">
+                    </div>
+                </form>
+            </div>
+
+			<div class="custom-filter bordered-filter">
+                <form class="filter-grid">
+                    <div class="grid-row">
+                        <label class="grid-label">Show Replacement Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                            id="order-non-replacement-filter-apply" class="grid-button">
+                    </div>
+
+                    <div class="grid-row">
+                        <label class="grid-label">Hide Replacement Orders </label>
+                        <div class="input-group"></div>
+                        <input type="button" value="Apply"
+                            id="order-replacement-filter-apply" class="grid-button">
                     </div>
                 </form>
             </div>
@@ -666,6 +680,8 @@ customFiltersDevStyle.innerHTML = `
             }
         });
 
+		// --- ОТЛАДКА --- //
+		// Выводит в консоль содержание виртуального списка ордеров.
         // console.log('virtualOrdersList', virtualOrdersList);
     }
 
@@ -690,8 +706,8 @@ customFiltersDevStyle.innerHTML = `
             this.isRefundOrder = false;
 			this.isCostNotSet = false;
 			this.isAmznGr = false;
+			this.isReplacement = false;
     	}
-
 
         addOrderMidRow(midRow){
             this.orderMidRowsList.push(new OrderMidRow(midRow));
@@ -700,6 +716,14 @@ customFiltersDevStyle.innerHTML = `
             this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
 			this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
         }
+
+		checkIsReplacement(){
+			if (this.isCostNotSet == false){
+				if (this.price == 0 && this.isRefundOrder == false){
+					this.isReplacement = true;
+				}
+			}
+		}
 
 		checkIsAmznGr(SKU){
 			if(SKU.includes("amzn.gr")){
@@ -729,9 +753,6 @@ customFiltersDevStyle.innerHTML = `
                 chars.push(char);
             });
 
-            // console.log('textContentSplit', bottomRow.querySelector('b').textContent.split('\n'));
-            // console.log('chars', chars);
-
             this.margin = parseFloat(chars[chars.length - 1].replace('%', ''));
             this.price = parseFloat(chars[0].replace('$', '').split(': ')[1]);
             this.cost = parseFloat(chars[1].replace('$', '').split(': ')[1]);
@@ -741,6 +762,8 @@ customFiltersDevStyle.innerHTML = `
             this.orderMidRowsList.forEach((midRow) => {
                 this.qty += midRow.qty;
             });
+
+			this.checkIsReplacement();
         }
 
     }
@@ -807,17 +830,20 @@ customFiltersDevStyle.innerHTML = `
         const cellNoCostStat = floatingWindow.querySelector("#orders-nocost-stat");
 		const cellAmznGrStat = floatingWindow.querySelector("#orders-amzngr-stat");
         const cellRefundStat = floatingWindow.querySelector("#orders-refund-stat");
+		const cellReplacementStat = floatingWindow.querySelector("#orders-replacement-stat");
 
         let hiddenCount = 0;
         let noCostCount = 0;
 		let amzngrCount = 0;
         let refundCount = 0;
+		let replacementCount = 0;
 
         virtualOrdersList.forEach(order => {
             if (order.isRefundOrder) refundCount++;
             if (order.isHidden) hiddenCount++;
 			if (order.isAmznGr) amzngrCount++;
             if (order.isCostNotSet) noCostCount++;
+			if (order.isReplacement) replacementCount++;
         })
 
         cellHiddenStat.innerHTML = hiddenCount;
@@ -825,6 +851,7 @@ customFiltersDevStyle.innerHTML = `
         cellNoCostStat.innerHTML = noCostCount;
 		cellAmznGrStat.innerHTML = amzngrCount;
         cellRefundStat.innerHTML = refundCount;
+		cellReplacementStat.innerHTML = replacementCount;
     }
 
     const addFilterClassToOrders = (order, filterClass) => {
@@ -898,6 +925,22 @@ customFiltersDevStyle.innerHTML = `
 		virtualOrdersList.forEach((order) => {
 			if (order.isAmznGr == false){
 				addFilterClassToOrders(order, filtersClasses.hiddenNoAmznGr);
+			}
+		});
+	}
+
+	const applyShowReplacementFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isReplacement == false){
+				addFilterClassToOrders(order, filtersClasses.hiddenNoReplacement);
+			}
+		});
+	}
+
+	const applyShowNoReplacementFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isReplacement == true){
+				addFilterClassToOrders(order, filtersClasses.hiddenReplacement);
 			}
 		});
 	}
@@ -1092,6 +1135,16 @@ customFiltersDevStyle.innerHTML = `
 
         document.getElementById("orders-hide-amzngr-skus-apply").addEventListener('click', () => {
             applyShowNoAmznGrFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("order-non-replacement-filter-apply").addEventListener('click', () => {
+            applyShowReplacementFilter();
+            calcOrdersHeaderStats();
+        });
+
+        document.getElementById("order-replacement-filter-apply").addEventListener('click', () => {
+            applyShowNoReplacementFilter();
             calcOrdersHeaderStats();
         });
 
