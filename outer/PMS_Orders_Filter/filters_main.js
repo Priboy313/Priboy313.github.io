@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.5dev
+// @version      1.5
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -9,21 +9,34 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-let script_version = "1.5dev";
+let script_version = "1.5";
 
 (function() {
     'use strict';
 
     const filtersClasses = {
         hiddenMargin: 'hidden-margin-filter',
+
         hiddenRefund: 'hidden-refund-filter',
         hiddenNonRefund: 'hidden-non-refund-filter',
+
         hiddenCostNotSet: 'hidden-costnotset-filter',
         hiddenCostSet: 'hidden-costset-filter',
+
 		hiddenAmznGr: "hidden-amzngr-filter",
 		hiddenNoAmznGr: 'hidden-noamzngr-filter',
+
 		hiddenReplacement: "hidden-replacement-filter",
 		hiddenNoReplacement: "hidden-noreplacement-filter",
+
+		hiddenUS: "hidden-US-filter",
+		hiddenNoUS: "hidden-no-US-filter",
+		hiddenCA: "hidden-CA-filter",
+		hiddenNoCA: "hidden-no-CA-filter",
+		hiddenMX: "hidden-MX-filter",
+		hiddenNoMX: "hidden-no-MX-filter",
+		hiddenOtherCountry: "hidden-other-country-filter",
+		hiddenNoOtherCountry: "hidden-no-other-country-filter"
     };
     const filtersClassesVals = Object.values(filtersClasses);
 
@@ -551,6 +564,37 @@ customFiltersDevStyle.innerHTML = `
 
 				</form>
             </div>
+
+			<div class="custom-filter bordered-filter">
+                <form class="filter-grid">
+
+					<div class="grid-row-3">
+                        <label class="grid-label">US Orders </label>
+                        <input type="button" value="Show" id="orders-show-us-country-apply" class="grid-button">
+						<input type="button" value="Hide" id="orders-hide-us-country-apply" class="grid-button">
+                    </div>
+
+					<div class="grid-row-3">
+                        <label class="grid-label">CA Orders </label>
+                        <input type="button" value="Show" id="orders-show-ca-country-apply" class="grid-button">
+						<input type="button" value="Hide" id="orders-hide-ca-country-apply" class="grid-button">
+                    </div>
+
+					<div class="grid-row-3">
+                        <label class="grid-label">MX Orders </label>
+                        <input type="button" value="Show" id="order-show-mx-country-apply" class="grid-button">
+						<input type="button" value="Hide" id="order-hide-mx-country-apply" class="grid-button">
+                    </div>
+
+                    <div class="grid-row-3">
+                        <label class="grid-label">Other Orders </label>
+                        <input type="button" value="Show" id="order-show-other-country-apply" class="grid-button">
+						<input type="button" value="Hide" id="order-hide-other-country-apply" class="grid-button">
+                    </div>
+
+				</form>
+            </div>
+
         </div>
     `;
 
@@ -661,6 +705,7 @@ customFiltersDevStyle.innerHTML = `
             this.orderTopRow = topRow;
             this.orderBottomRow = null;
     		this.orderNum = topRow.querySelector('.table-order').querySelector('a').textContent.replace('\n', '');
+			this.country = this.getCountry(topRow.querySelector('.table-order'))
     		this.owner = topRow.querySelector('.green').innerHTML;
             this.date = topRow.querySelectorAll('.table-order')[1].innerHTML.replace('\n', '').split('<br>')[0].trim();
             this.SKU = null;
@@ -679,10 +724,14 @@ customFiltersDevStyle.innerHTML = `
 			this.isReplacement = false;
     	}
 
+		getCountry(tableOrder){
+			const countryTag = tableOrder.querySelector('b');
+
+			return countryTag && countryTag.textContent.trim() ? countryTag.textContent.trim() : "US";
+		}
+
         addOrderMidRow(midRow){
             this.orderMidRowsList.push(new OrderMidRow(midRow));
-            this.SKU = this.orderMidRowsList[0].SKU;
-			this.checkIsAmznGr(this.orderMidRowsList[0].SKU);
             this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
 			this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
         }
@@ -734,6 +783,8 @@ customFiltersDevStyle.innerHTML = `
             });
 
 			this.checkIsReplacement();
+			this.SKU = this.orderMidRowsList[0].SKU;
+			this.checkIsAmznGr(this.orderMidRowsList[0].SKU);
         }
 
     }
@@ -912,6 +963,73 @@ customFiltersDevStyle.innerHTML = `
 			if (order.isReplacement == true){
 				addFilterClassToOrders(order, filtersClasses.hiddenReplacement);
 			}
+		});
+	}
+
+
+	const noOtherCountrys = ["US", "CA", "MX"]
+
+	const applyShowUSFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.country != "US"){
+				addFilterClassToOrders(order, filtersClasses.hiddenNoUS);
+			}
+		});
+	}
+
+	const applyShowNoUSFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.country == "US"){
+				addFilterClassToOrders(order, filtersClasses.hiddenUS);
+			}
+		});
+	}
+
+	const applyShowCAFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.country != "CA"){
+				addFilterClassToOrders(order, filtersClasses.hiddenNoCA);
+			}
+		});
+	}
+
+	const applyShowNoCAFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.country == "CA"){
+				addFilterClassToOrders(order, filtersClasses.hiddenCA);
+			}
+		});
+	}
+
+	const applyShowMXFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.country != "MX"){
+				addFilterClassToOrders(order, filtersClasses.hiddenNoMX);
+			}
+		});
+	}
+
+	const applyShowNoMXFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.country == "US"){
+				addFilterClassToOrders(order, filtersClasses.hiddenMX);
+			}
+		});
+	}
+
+	const applyShowOtherCountryFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (noOtherCountrys.includes(order.country)) {
+            	addFilterClassToOrders(order, filtersClasses.hiddenNoOtherCountry);
+        	}
+		});
+	}
+
+	const applyShowNoOtherCountryFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (!noOtherCountrys.includes(order.country)) {
+            	addFilterClassToOrders(order, filtersClasses.hiddenOtherCountry);
+        	}
 		});
 	}
 
@@ -1113,8 +1231,43 @@ customFiltersDevStyle.innerHTML = `
             calcOrdersHeaderStats();
         });
 
-        document.getElementById("order-replacement-filter-apply").addEventListener('click', () => {
-            applyShowNoReplacementFilter();
+        document.getElementById("orders-show-us-country-apply").addEventListener('click', () => {
+            applyShowUSFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("orders-hide-us-country-apply").addEventListener('click', () => {
+            applyShowNoUSFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("orders-show-ca-country-apply").addEventListener('click', () => {
+            applyShowCAFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("orders-hide-ca-country-apply").addEventListener('click', () => {
+            applyShowNoCAFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("order-show-mx-country-apply").addEventListener('click', () => {
+            applyShowMXFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("order-hide-mx-country-apply").addEventListener('click', () => {
+            applyShowNoMXFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("order-show-other-country-apply").addEventListener('click', () => {
+            applyShowOtherCountryFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("order-hide-other-country-apply").addEventListener('click', () => {
+            applyShowNoOtherCountryFilter();
             calcOrdersHeaderStats();
         });
 
