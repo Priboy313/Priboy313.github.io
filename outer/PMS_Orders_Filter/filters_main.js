@@ -15,28 +15,7 @@ let script_version = "1.5";
     'use strict';
 
     const filtersClasses = {
-        hiddenMargin: 'hidden-margin-filter',
-
-        hiddenRefund: 'hidden-refund-filter',
-        hiddenNonRefund: 'hidden-non-refund-filter',
-
-        hiddenCostNotSet: 'hidden-costnotset-filter',
-        hiddenCostSet: 'hidden-costset-filter',
-
-		hiddenAmznGr: "hidden-amzngr-filter",
-		hiddenNoAmznGr: 'hidden-noamzngr-filter',
-
-		hiddenReplacement: "hidden-replacement-filter",
-		hiddenNoReplacement: "hidden-noreplacement-filter",
-
-		hiddenUS: "hidden-US-filter",
-		hiddenNoUS: "hidden-no-US-filter",
-		hiddenCA: "hidden-CA-filter",
-		hiddenNoCA: "hidden-no-CA-filter",
-		hiddenMX: "hidden-MX-filter",
-		hiddenNoMX: "hidden-no-MX-filter",
-		hiddenOtherCountry: "hidden-other-country-filter",
-		hiddenNoOtherCountry: "hidden-no-other-country-filter"
+        hidden: 'hidden-filter',
     };
     const filtersClassesVals = Object.values(filtersClasses);
 
@@ -461,6 +440,9 @@ customFiltersDevStyle.innerHTML = `
     const barBlue = document.querySelector('.titlebar-blue').querySelector('form')
 		barBlue.appendChild(customFiltersButton);
 
+
+		// Плавающее окно
+
     const floatingWindow = document.createElement('div');
     floatingWindow.className = 'custom-floating-window';
     floatingWindow.innerHTML = `
@@ -492,10 +474,6 @@ customFiltersDevStyle.innerHTML = `
             <div class="custom-filter">
                 <input type="button" value="READ ORDERS TABLE"
                 id="orders-read-table" class="custom-filter-oneline-button">
-            </div>
-
-            <div class="custom-filter">
-                <input type="button" value="Calculate Readed Summary Table" id="orders-calculate-sku" class="custom-filter-oneline-button">
             </div>
 
             <div class="custom-filter">
@@ -884,6 +862,8 @@ customFiltersDevStyle.innerHTML = `
         order.isHidden = true;
     };
 
+
+
     const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
         virtualOrdersList.forEach((order) => {
             if (overmarginApply == false){
@@ -905,7 +885,7 @@ customFiltersDevStyle.innerHTML = `
     const applyHiddenRefundFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isRefundOrder == true){
-                addFilterClassToOrders(order, filtersClasses.hiddenRefund);
+                addFilterClassToOrders(order, filtersClasses.hidden);
             }
         });
     };
@@ -913,7 +893,7 @@ customFiltersDevStyle.innerHTML = `
     const applyHiddenNonRefundFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isRefundOrder == false){
-                addFilterClassToOrders(order, filtersClasses.hiddenRefund);
+                addFilterClassToOrders(order, filtersClasses.hidden);
             }
         });
     }
@@ -921,7 +901,7 @@ customFiltersDevStyle.innerHTML = `
     const applyHiddenNoCostFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isCostNotSet == true){
-                addFilterClassToOrders(order, filtersClasses.hiddenCostNotSet);
+                addFilterClassToOrders(order, filtersClasses.hidden);
             }
         });
     };
@@ -929,7 +909,7 @@ customFiltersDevStyle.innerHTML = `
     const applyShowNoCostFilter = () => {
         virtualOrdersList.forEach((order) => {
             if (order.isCostNotSet == false){
-                addFilterClassToOrders(order, filtersClasses.hiddenCostSet);
+                addFilterClassToOrders(order, filtersClasses.hidden);
             }
         });
     };
@@ -937,7 +917,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowNoAmznGrFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.isAmznGr == true){
-				addFilterClassToOrders(order, filtersClasses.hiddenAmznGr);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -945,7 +925,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowAmznGrFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.isAmznGr == false){
-				addFilterClassToOrders(order, filtersClasses.hiddenNoAmznGr);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -953,7 +933,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowReplacementFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.isReplacement == false){
-				addFilterClassToOrders(order, filtersClasses.hiddenNoReplacement);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -961,7 +941,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowNoReplacementFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.isReplacement == true){
-				addFilterClassToOrders(order, filtersClasses.hiddenReplacement);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -972,7 +952,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowUSFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.country != "US"){
-				addFilterClassToOrders(order, filtersClasses.hiddenNoUS);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -980,7 +960,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowNoUSFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.country == "US"){
-				addFilterClassToOrders(order, filtersClasses.hiddenUS);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -988,7 +968,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowCAFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.country != "CA"){
-				addFilterClassToOrders(order, filtersClasses.hiddenNoCA);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -996,7 +976,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowNoCAFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.country == "CA"){
-				addFilterClassToOrders(order, filtersClasses.hiddenCA);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -1004,7 +984,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowMXFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.country != "MX"){
-				addFilterClassToOrders(order, filtersClasses.hiddenNoMX);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -1012,7 +992,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowNoMXFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (order.country == "MX"){
-				addFilterClassToOrders(order, filtersClasses.hiddenMX);
+				addFilterClassToOrders(order, filtersClasses.hidden);
 			}
 		});
 	}
@@ -1020,7 +1000,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowOtherCountryFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (noOtherCountrys.includes(order.country)) {
-            	addFilterClassToOrders(order, filtersClasses.hiddenNoOtherCountry);
+            	addFilterClassToOrders(order, filtersClasses.hidden);
         	}
 		});
 	}
@@ -1028,7 +1008,7 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowNoOtherCountryFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (!noOtherCountrys.includes(order.country)) {
-            	addFilterClassToOrders(order, filtersClasses.hiddenOtherCountry);
+            	addFilterClassToOrders(order, filtersClasses.hidden);
         	}
 		});
 	}
@@ -1101,10 +1081,6 @@ customFiltersDevStyle.innerHTML = `
             tableBody.appendChild(row);
         });
 	};
-
-    const calcOrdersCustomReadedSummaryTable = () => {
-        calcOrdersCustomSummaryTable(virtualOrdersList)
-    };
 
 	const calcOrdersCustomShownSummaryTable = () => {
 		calcOrdersCustomSummaryTable(virtualOrdersList.filter(order => !order.isHidden))
@@ -1277,12 +1253,6 @@ customFiltersDevStyle.innerHTML = `
         });
 
         floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
-
-        document.getElementById('orders-calculate-sku').addEventListener('click', () => {
-            showWindow(ordersCustomTableWindow)
-            calcOrdersCustomReadedSummaryTable();
-            makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
-        });
 
 		document.getElementById('orders-calculate-shown-sku').addEventListener('click', () => {
             showWindow(ordersCustomTableWindow)
