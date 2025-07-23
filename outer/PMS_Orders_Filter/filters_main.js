@@ -1011,7 +1011,7 @@ customFiltersDevStyle.innerHTML = `
 
 	const applyShowNoMXFilter = () => {
 		virtualOrdersList.forEach((order) => {
-			if (order.country == "US"){
+			if (order.country == "MX"){
 				addFilterClassToOrders(order, filtersClasses.hiddenMX);
 			}
 		});
@@ -1228,6 +1228,11 @@ customFiltersDevStyle.innerHTML = `
 
 		document.getElementById("order-non-replacement-filter-apply").addEventListener('click', () => {
             applyShowReplacementFilter();
+            calcOrdersHeaderStats();
+        });
+
+		document.getElementById("order-replacement-filter-apply").addEventListener('click', () => {
+            applyShowNoReplacementFilter();
             calcOrdersHeaderStats();
         });
 
