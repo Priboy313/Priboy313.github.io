@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.4
+// @version      1.5dev
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -9,7 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-let script_version = "1.4";
+let script_version = "1.5dev";
 
 (function() {
     'use strict';
@@ -189,6 +189,25 @@ customFiltersGridStyle.innerHTML = `
     grid-template-columns: 1fr auto 100px;
     align-items: center;
     gap: 8px;
+}
+
+.grid-row-3 {
+    display: grid;
+	grid-template-columns: 1fr 1fr 1fr;;
+    align-items: center;
+    gap: 4px;
+	margin: 1px 0;
+}
+
+.grid-row-3 .grid-label {
+	min-width: 180px;
+    white-space: nowrap;
+    padding-right: 2px;
+}
+
+.grid-row-3 .grid-button{
+    padding: 6px 2px;
+	min-width: 60px;
 }
 
 .grid-label {
@@ -470,12 +489,6 @@ customFiltersDevStyle.innerHTML = `
                 <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
             </div>
 
-            <!--
-            <div class="custom-filter">
-                <input type="button" value="Add Hiding Points for SKUs" id="orders-add-hiding-points" class="disabled custom-filter-oneline-button">
-            </div>
-            -->
-
             <div class="custom-filter">
                 <input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
             </div>
@@ -511,76 +524,33 @@ customFiltersDevStyle.innerHTML = `
 
 			<div class="custom-filter bordered-filter">
                 <form class="filter-grid">
-                    <div class="grid-row">
-                        <label class="grid-label">Show NoCost Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="orders-show-nocost-skus-apply" class="grid-button">
+
+					<div class="grid-row-3">
+                        <label class="grid-label">NoCost Orders </label>
+                        <input type="button" value="Show" id="orders-show-nocost-skus-apply" class="grid-button">
+						<input type="button" value="Hide" id="orders-hide-nocost-skus-apply" class="grid-button">
                     </div>
 
-                    <div class="grid-row">
-                        <label class="grid-label">Hide NoCost Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="orders-hide-nocost-skus-apply" class="grid-button">
+					<div class="grid-row-3">
+                        <label class="grid-label">AmznGr Orders </label>
+                        <input type="button" value="Show" id="orders-show-amzngr-skus-apply" class="grid-button">
+						<input type="button" value="Hide" id="orders-hide-amzngr-skus-apply" class="grid-button">
                     </div>
-                </form>
+
+					<div class="grid-row-3">
+                        <label class="grid-label">Refund Orders </label>
+                        <input type="button" value="Show" id="order-non-refund-filter-apply" class="grid-button">
+						<input type="button" value="Hide" id="order-refund-filter-apply" class="grid-button">
+                    </div>
+
+                    <div class="grid-row-3">
+                        <label class="grid-label">Replace Orders </label>
+                        <input type="button" value="Show" id="order-non-replacement-filter-apply" class="grid-button">
+						<input type="button" value="Hide" id="order-replacement-filter-apply" class="grid-button">
+                    </div>
+
+				</form>
             </div>
-
-            <div class="custom-filter bordered-filter">
-                <form class="filter-grid">
-                    <div class="grid-row">
-                        <label class="grid-label">Show AmznGr Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="orders-show-amzngr-skus-apply" class="grid-button">
-                    </div>
-
-                    <div class="grid-row">
-                        <label class="grid-label">Hide AmznGr Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="orders-hide-amzngr-skus-apply" class="grid-button">
-                    </div>
-                </form>
-            </div>
-
-            <div class="custom-filter bordered-filter">
-                <form class="filter-grid">
-                    <div class="grid-row">
-                        <label class="grid-label">Show Refund Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="order-non-refund-filter-apply" class="grid-button">
-                    </div>
-
-                    <div class="grid-row">
-                        <label class="grid-label">Hide Refund Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="order-refund-filter-apply" class="grid-button">
-                    </div>
-                </form>
-            </div>
-
-			<div class="custom-filter bordered-filter">
-                <form class="filter-grid">
-                    <div class="grid-row">
-                        <label class="grid-label">Show Replacement Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="order-non-replacement-filter-apply" class="grid-button">
-                    </div>
-
-                    <div class="grid-row">
-                        <label class="grid-label">Hide Replacement Orders </label>
-                        <div class="input-group"></div>
-                        <input type="button" value="Apply"
-                            id="order-replacement-filter-apply" class="grid-button">
-                    </div>
-                </form>
-            </div>
-
         </div>
     `;
 
