@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      2.0dev
+// @version      2.0
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -9,7 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-let script_version = "2.0dev";
+let script_version = "2.0";
 
 (function() {
     'use strict';
@@ -400,6 +400,19 @@ customFiltersSummaryTableStyle.innerHTML = `
     border-radius: 4px;
     cursor: pointer;
 }
+
+.table-us-header{
+	background-color: rgb(206, 215, 246)!important;
+}
+
+.table-ca-header{
+	background-color: rgb(244, 204, 204)!important;
+}
+
+.table-mx-header{
+	background-color: rgba(250, 233, 203, 1)!important;
+}
+
 `;
 
 const customFiltersDevStyle = document.createElement('style');
@@ -1169,17 +1182,17 @@ customFiltersDevStyle.innerHTML = `
 			<th>SKU</th>
 			<th>Orders</th>
 
-			<th>US Qty</th>
-			<th>US % </th>
-			<th>US $ </th>
+			<th class='table-us-header'>US Qty</th>
+			<th class='table-us-header'>US % </th>
+			<th class='table-us-header'>US $ </th>
 
-			<th>CA Qty</th>
-			<th>CA % </th>
-			<th>CA $ </th>
+			<th class='table-ca-header'>CA Qty</th>
+			<th class='table-ca-header'>CA % </th>
+			<th class='table-ca-header'>CA $ </th>
 
-			<th>MX Qty</th>
-			<th>MX % </th>
-			<th>MX $ </th>
+			<th class='table-mx-header'>MX Qty</th>
+			<th class='table-mx-header'>MX % </th>
+			<th class='table-mx-header'>MX $ </th>
 
 			<th>OT Qty</th>
 			<th>OT % </th>
@@ -1197,11 +1210,18 @@ customFiltersDevStyle.innerHTML = `
 			let marginOT = summaryData[sku].qtyOT == 0 ? 0 : (summaryData[sku].profitOT / summaryData[sku].priceOT * 100).toFixed(2);
 
             const row = document.createElement('tr');
-            // if (marginUS < 0 || marginCA < 0 || marginMX < 0 || marginOT < 0) {
-            //     row.classList.add('custom-orders-table-row-negative-margin');
-            // } else if (marginUS < 15 || marginCA < 15 || marginMX < 15 || marginOT < 15) {
-            //     row.classList.add('custom-orders-table-row-low-margin');
-            // }
+            if ((summaryData[sku].qtyUS > 0 && marginUS < 0) || 
+				(summaryData[sku].qtyCA > 0 && marginCA < 0) || 
+				(summaryData[sku].qtyMX > 0 && marginMX < 0) || 
+				(summaryData[sku].qtyOT > 0 && marginOT < 0)) {
+				row.classList.add('custom-orders-table-row-negative-margin');
+			}
+			else if ((summaryData[sku].qtyUS > 0 && marginUS < 15) || 
+					(summaryData[sku].qtyCA > 0 && marginCA < 15) || 
+					(summaryData[sku].qtyMX > 0 && marginMX < 15) || 
+					(summaryData[sku].qtyOT > 0 && marginOT < 15)) {
+				row.classList.add('custom-orders-table-row-low-margin');
+			}
 
             row.innerHTML = `
             <td class='sum-user'    >${summaryData[sku].user}</td>
