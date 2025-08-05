@@ -291,7 +291,7 @@ customFiltersSummaryTableStyle.innerHTML = `
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80%;
-    max-width: 1200px;
+    max-width: 1300px;
     max-height: 80vh;
     overflow-y: auto;
     background: white;
