@@ -1182,21 +1182,21 @@ customFiltersDevStyle.innerHTML = `
 			<th>SKU</th>
 			<th>Orders</th>
 
-			<th class='table-us-header'>US Qty</th>
-			<th class='table-us-header'>US % </th>
-			<th class='table-us-header'>US $ </th>
+			<th class='table-us-header'>US <br>Qty</th>
+			<th class='table-us-header'>US<br>%</th>
+			<th class='table-us-header'>US<br>$</th>
 
-			<th class='table-ca-header'>CA Qty</th>
-			<th class='table-ca-header'>CA % </th>
-			<th class='table-ca-header'>CA $ </th>
+			<th class='table-ca-header'>CA <br>Qty</th>
+			<th class='table-ca-header'>CA <br>%</th>
+			<th class='table-ca-header'>CA <br>$</th>
 
-			<th class='table-mx-header'>MX Qty</th>
-			<th class='table-mx-header'>MX % </th>
-			<th class='table-mx-header'>MX $ </th>
+			<th class='table-mx-header'>MX <br>Qty</th>
+			<th class='table-mx-header'>MX <br>%</th>
+			<th class='table-mx-header'>MX <br>$</th>
 
-			<th>OT Qty</th>
-			<th>OT % </th>
-			<th>OT $ </th>
+			<th>OT <br>Qty</th>
+			<th>OT <br>%</th>
+			<th>OT <br>$</th>
 			</tr>
 		`;
 
