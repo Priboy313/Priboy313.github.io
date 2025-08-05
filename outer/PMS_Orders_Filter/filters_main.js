@@ -1128,30 +1128,29 @@ customFiltersDevStyle.innerHTML = `
 
             summaryData[order.SKU].user = order.owner;
             summaryData[order.SKU].count++;
-            summaryData[order.SKU].qty += order.qty;
 
 			switch (order.country) {
 				case "US":
 					summaryData[order.SKU].qtyUS += order.qty;
-					summaryData[order.SKU].priceUS += order.qty;
+					summaryData[order.SKU].priceUS += order.price;
             		summaryData[order.SKU].profitUS += order.profit;
 					break;
 
 				case "CA":
 					summaryData[order.SKU].qtyCA += order.qty;
-					summaryData[order.SKU].priceCA += order.qty;
+					summaryData[order.SKU].priceCA += order.price;
             		summaryData[order.SKU].profitCA += order.profit;
 					break;
 
 				case "MX":
 					summaryData[order.SKU].qtyMX += order.qty;
-					summaryData[order.SKU].priceMX += order.qty;
+					summaryData[order.SKU].priceMX += order.price;
             		summaryData[order.SKU].profitMX += order.profit;
 					break;
 			
 				default:
 					summaryData[order.SKU].qtyOT += order.qty;
-					summaryData[order.SKU].priceOT += order.qty;
+					summaryData[order.SKU].priceOT += order.price;
             		summaryData[order.SKU].profitOT += order.profit;
 					break;
 			}
@@ -1192,10 +1191,10 @@ customFiltersDevStyle.innerHTML = `
         tableBody.innerHTML = '';
 
         Object.keys(summaryData).forEach((sku) => {
-            let marginUS = summaryData[sku].priceUS == 0 ? -100 : (summaryData[sku].profitUS / summaryData[sku].priceUS * 100).toFixed(2);
-			let marginCA = summaryData[sku].priceCA == 0 ? -100 : (summaryData[sku].profitCA / summaryData[sku].priceCA * 100).toFixed(2);
-			let marginMX = summaryData[sku].priceMX == 0 ? -100 : (summaryData[sku].profitMX / summaryData[sku].priceMX * 100).toFixed(2);
-			let marginOT = summaryData[sku].priceOT == 0 ? -100 : (summaryData[sku].profitOT / summaryData[sku].priceOT * 100).toFixed(2);
+            let marginUS = summaryData[sku].qtyUS == 0 ? 0 : (summaryData[sku].profitUS / summaryData[sku].priceUS * 100).toFixed(2);
+			let marginCA = summaryData[sku].qtyCA == 0 ? 0 : (summaryData[sku].profitCA / summaryData[sku].priceCA * 100).toFixed(2);
+			let marginMX = summaryData[sku].qtyMX == 0 ? 0 : (summaryData[sku].profitMX / summaryData[sku].priceMX * 100).toFixed(2);
+			let marginOT = summaryData[sku].qtyOT == 0 ? 0 : (summaryData[sku].profitOT / summaryData[sku].priceOT * 100).toFixed(2);
 
             const row = document.createElement('tr');
             // if (marginUS < 0 || marginCA < 0 || marginMX < 0 || marginOT < 0) {
