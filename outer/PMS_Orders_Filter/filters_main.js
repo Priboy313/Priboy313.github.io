@@ -576,6 +576,9 @@ customFiltersDevStyle.innerHTML = `
         </div>
     `;
 
+
+		// Сводная таблица
+		
     const ordersCustomTableWindow = document.createElement('div');
     ordersCustomTableWindow.className = 'custom-orders-table-wrapper';
     ordersCustomTableWindow.innerHTML = `
@@ -869,13 +872,13 @@ customFiltersDevStyle.innerHTML = `
             if (overmarginApply == false){
 
                 if (order.margin >= margin){
-                    addFilterClassToOrders(order, filtersClasses.hiddenMargin);
+                    addFilterClassToOrders(order, filtersClasses.hidden);
                 }
 
             } else {
 
                 if (order.margin >= margin && order.margin <= overmargin){
-                    addFilterClassToOrders(order, filtersClasses.hiddenMargin);
+                    addFilterClassToOrders(order, filtersClasses.hidden);
                 }
 
             }
