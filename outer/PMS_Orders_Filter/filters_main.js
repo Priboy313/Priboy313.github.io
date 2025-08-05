@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA Orders Custom Filters
-// @version      1.5
+// @version      2.0dev
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
@@ -9,7 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-let script_version = "1.5";
+let script_version = "2.0dev";
 
 (function() {
     'use strict';
@@ -480,6 +480,10 @@ customFiltersDevStyle.innerHTML = `
                 <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
             </div>
 
+			<div class="custom-filter">
+                <input type="button" value="Calculate Countries Summary Table" id="orders-calculate-country-sku" class="custom-filter-oneline-button">
+            </div>
+
             <div class="custom-filter">
                 <input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
             </div>
@@ -577,37 +581,23 @@ customFiltersDevStyle.innerHTML = `
     `;
 
 
-		// Сводная таблица
+		// Сводная таблица по СКУ
 		
     const ordersCustomTableWindow = document.createElement('div');
     ordersCustomTableWindow.className = 'custom-orders-table-wrapper';
     ordersCustomTableWindow.innerHTML = `
         <div class="custom-orders-table-header">
             <span class='custom-orders-title'>
-                FBA Orders Custom Summary Table
+                <span class='table-title'></span>
                 <span class='table-title-date-range'></span>
-                </span>
+            </span>
             <span class="custom-close-btn">&times;</span>
         </div>
         <div class="custom-orders-table-buttons custom-filter">
-            <input type="button" value="Export to XLSX"
-                   id="orders-export-xlsx" class="custom-filter-oneline-button">
+            <input type="button" value="Export to XLSX" id="orders-export-xlsx" class="custom-filter-oneline-button">
         </div>
         <table class="custom-orders-table">
-            <thead>
-                <tr>
-                <th>User</th>
-                <th>SKU</th>
-                <th>Orders</th>
-                <th>Sales Qty</th>
-                <th>Refunds</th>
-                <th>Cost $</th>
-                <th>Price $</th>
-                <th>Fee $ </th>
-                <th>Margin % </th>
-                <th>Profit $</th>
-                </tr>
-            </thead>
+            <thead></thead>
             <tbody></tbody>
         </table>
     `;
@@ -866,6 +856,8 @@ customFiltersDevStyle.innerHTML = `
     };
 
 
+	// ФИЛЬТРЫ
+
 
     const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
         virtualOrdersList.forEach((order) => {
@@ -1054,8 +1046,27 @@ customFiltersDevStyle.innerHTML = `
             summaryData[order.SKU].profit += order.profit;
         });
 
+		const tableTitle = ordersCustomTableWindow.querySelector('.table-title');
+		tableTitle.textContent = "FBA Orders Custom Summary Table ";
+
         const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
         tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
+
+		const tableHead = ordersCustomTableWindow.querySelector('thead');
+		tableHead.innerHTML = `
+			<tr>
+			<th>User</th>
+			<th>SKU</th>
+			<th>Orders</th>
+			<th>Sales Qty</th>
+			<th>Refunds</th>
+			<th>Cost $</th>
+			<th>Price $</th>
+			<th>Fee $ </th>
+			<th>Margin % </th>
+			<th>Profit $</th>
+			</tr>
+		`;
 
         const tableBody = ordersCustomTableWindow.querySelector('tbody');
         tableBody.innerHTML = '';
@@ -1085,8 +1096,145 @@ customFiltersDevStyle.innerHTML = `
         });
 	};
 
+	const calcCountriesCustomSummaryTable = (virtualList) => {
+		const summaryData = {};
+        virtualList.forEach((order) => {
+            if (!summaryData[order.SKU]) {
+                summaryData[order.SKU] = {
+                    user: "",
+                    count: 0,
+					
+                    qtyUS: 0,
+					priceUS: 0,
+                    marginUS: 0,
+                    profitUS: 0,
+
+					qtyCA: 0,
+					priceCA: 0,
+					marginCA: 0,
+                    profitCA: 0,
+
+					qtyMX: 0,
+					priceMX: 0,
+					marginMX: 0,
+                    profitMX: 0,
+
+					qtyOT: 0,
+					priceOT: 0,
+					marginOT: 0,
+                    profitOT: 0,
+                };
+            }
+
+            summaryData[order.SKU].user = order.owner;
+            summaryData[order.SKU].count++;
+            summaryData[order.SKU].qty += order.qty;
+
+			switch (order.country) {
+				case "US":
+					summaryData[order.SKU].qtyUS += order.qty;
+					summaryData[order.SKU].priceUS += order.qty;
+            		summaryData[order.SKU].profitUS += order.profit;
+					break;
+
+				case "CA":
+					summaryData[order.SKU].qtyCA += order.qty;
+					summaryData[order.SKU].priceCA += order.qty;
+            		summaryData[order.SKU].profitCA += order.profit;
+					break;
+
+				case "MX":
+					summaryData[order.SKU].qtyMX += order.qty;
+					summaryData[order.SKU].priceMX += order.qty;
+            		summaryData[order.SKU].profitMX += order.profit;
+					break;
+			
+				default:
+					summaryData[order.SKU].qtyOT += order.qty;
+					summaryData[order.SKU].priceOT += order.qty;
+            		summaryData[order.SKU].profitOT += order.profit;
+					break;
+			}
+        });
+
+		const tableTitle = ordersCustomTableWindow.querySelector('.table-title');
+		tableTitle.textContent = "FBA Orders Countries Summary Table ";
+
+        const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
+        tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
+
+		const tableHead = ordersCustomTableWindow.querySelector('thead');
+		tableHead.innerHTML = `
+			<tr>
+			<th>User</th>
+			<th>SKU</th>
+			<th>Orders</th>
+
+			<th>US Qty</th>
+			<th>US % </th>
+			<th>US $ </th>
+
+			<th>CA Qty</th>
+			<th>CA % </th>
+			<th>CA $ </th>
+
+			<th>MX Qty</th>
+			<th>MX % </th>
+			<th>MX $ </th>
+
+			<th>OT Qty</th>
+			<th>OT % </th>
+			<th>OT $ </th>
+			</tr>
+		`;
+
+        const tableBody = ordersCustomTableWindow.querySelector('tbody');
+        tableBody.innerHTML = '';
+
+        Object.keys(summaryData).forEach((sku) => {
+            let marginUS = summaryData[sku].priceUS == 0 ? -100 : (summaryData[sku].profitUS / summaryData[sku].priceUS * 100).toFixed(2);
+			let marginCA = summaryData[sku].priceCA == 0 ? -100 : (summaryData[sku].profitCA / summaryData[sku].priceCA * 100).toFixed(2);
+			let marginMX = summaryData[sku].priceMX == 0 ? -100 : (summaryData[sku].profitMX / summaryData[sku].priceMX * 100).toFixed(2);
+			let marginOT = summaryData[sku].priceOT == 0 ? -100 : (summaryData[sku].profitOT / summaryData[sku].priceOT * 100).toFixed(2);
+
+            const row = document.createElement('tr');
+            // if (marginUS < 0 || marginCA < 0 || marginMX < 0 || marginOT < 0) {
+            //     row.classList.add('custom-orders-table-row-negative-margin');
+            // } else if (marginUS < 15 || marginCA < 15 || marginMX < 15 || marginOT < 15) {
+            //     row.classList.add('custom-orders-table-row-low-margin');
+            // }
+
+            row.innerHTML = `
+            <td class='sum-user'    >${summaryData[sku].user}</td>
+            <td class='sum-sku'     >${sku}</td>
+            <td class='sum-count'   >${summaryData[sku].count}</td>
+
+            <td class='sum-qty'     >${summaryData[sku].qtyUS}</td>
+            <td class='sum-margin'  >${marginUS}</td>
+            <td class='sum-profit'  >${summaryData[sku].profitUS.toFixed(2)}</td>
+
+			<td class='sum-qty'     >${summaryData[sku].qtyCA}</td>
+            <td class='sum-margin'  >${marginCA}</td>
+            <td class='sum-profit'  >${summaryData[sku].profitCA.toFixed(2)}</td>
+
+			<td class='sum-qty'     >${summaryData[sku].qtyMX}</td>
+            <td class='sum-margin'  >${marginMX}</td>
+            <td class='sum-profit'  >${summaryData[sku].profitMX.toFixed(2)}</td>
+
+			<td class='sum-qty'     >${summaryData[sku].qtyOT}</td>
+            <td class='sum-margin'  >${marginOT}</td>
+            <td class='sum-profit'  >${summaryData[sku].profitOT.toFixed(2)}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+	};
+
 	const calcOrdersCustomShownSummaryTable = () => {
 		calcOrdersCustomSummaryTable(virtualOrdersList.filter(order => !order.isHidden))
+    };
+
+	const calcOrdersCountriesShownSummaryTable = () => {
+		calcCountriesCustomSummaryTable(virtualOrdersList.filter(order => !order.isHidden))
     };
 
     const makeTableSortable = (table) => {
@@ -1258,8 +1406,16 @@ customFiltersDevStyle.innerHTML = `
         floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
 
 		document.getElementById('orders-calculate-shown-sku').addEventListener('click', () => {
-            showWindow(ordersCustomTableWindow)
+			// hideWindow(ordersCustomTableWindow);
+            showWindow(ordersCustomTableWindow);
             calcOrdersCustomShownSummaryTable();
+            makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+        });
+
+		document.getElementById('orders-calculate-country-sku').addEventListener('click', () => {
+            // hideWindow(ordersCustomTableWindow);
+            showWindow(ordersCustomTableWindow);
+            calcOrdersCountriesShownSummaryTable();
             makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
         });
 
