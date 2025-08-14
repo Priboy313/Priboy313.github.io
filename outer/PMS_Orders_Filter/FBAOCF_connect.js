@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         PMS FBA Orders Custom Filters (connect)
+// @name         PMS FBA Orders Custom Filters
 // @version      1.0
 // @author       Priboy313
 // @description  PMS FBA Orders Custom Filters - connect script
