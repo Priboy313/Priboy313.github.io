@@ -283,7 +283,6 @@ customFiltersDisabledStyle.innerHTML = `
 
 const customFiltersSummaryTableStyle = document.createElement('style');
 customFiltersSummaryTableStyle.innerHTML = `
-
 .custom-orders-table-wrapper {
     display: none;
     position: fixed;
