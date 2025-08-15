@@ -2,7 +2,7 @@
 // @name         PMS FBA Orders Custom Filters
 // @version      2.0r
 // @author       Priboy313
-// @description  PMS FBA Orders Custom Filters
+// @description  PMS FBA Orders Custom Filters Public Release
 // @match        https://pms.plexsupply.com/pms/listfbaorderscomm.xhtml
 // @match        https://pms.officechase.com/pms/listfbaorderscomm.xhtml
 // @match        https://pms.marksonsupply.com/pms/listfbaorderscomm.xhtml

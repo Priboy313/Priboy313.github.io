@@ -9,7 +9,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-const url = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io/outer/PMS_Orders_Filter/FBAOCF_public.js";
+const url = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@latest/outer/PMS_Orders_Filter/FBAOCF_public.js";
 
 (function() {
 'use strict';
