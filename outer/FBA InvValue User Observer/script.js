@@ -85,6 +85,10 @@ function addCustomCSS(){
         .${wrongUserClass} {
             color: red !important;
         }
+
+		.${wrongUserClass} .number-col span{
+            color: black !important;
+        }
     `;
     document.head.appendChild(style);
 }
