@@ -89,6 +89,14 @@ function addCustomCSS(){
 		.${wrongUserClass} .number-col span{
             color: black !important;
         }
+
+		.${wrongUserClass} td:nth-child(6){
+            color: black !important;
+        }
+
+		.${wrongUserClass} td:nth-child(7){
+            color: black !important;
+        }
     `;
     document.head.appendChild(style);
 }
