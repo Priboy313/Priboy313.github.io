@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         PMS FBA InvValue Users Observer
-// @version      1.0
+// @version      1.1
 // @description  Checking current user in rows!
 // @author       Priboy313
 // @match        https://pms.plexsupply.com/pms/listfbavalue.xhtml*
@@ -22,43 +22,37 @@ const wrongUserClass = "wrong-user";
 
 	addCustomCSS();
 
-	const table = document.querySelector('.table-hover');
-	const tableBody = table.querySelector('tbody');
-	// console.log(tableBody);
-
-	const observer = subscribeToTableUpdates(table, (updatedTable) => {
-		// console.log('Таблица обновлена!');
-
-		checkTableRows(updatedTable);
-	});
+	setSubcribe();
 })();
 
-function checkTableRows(tableBody){
-	let rows = tableBody.querySelectorAll('tr');
-	rows = Array.from(rows).slice(1);
+function setSubcribe(){
+	const table = document.querySelector('.table-hover');
+	const observer = subscribeToTableUpdates(table, (updatedTable) => {
+		checkTableRows(updatedTable);
+	});
+}
+
+function checkTableRows(table){
+	let tableBody = table.querySelector('tbody');
+	let rows = Array.from(tableBody.querySelectorAll('tr'));
+
+	if (rows.length <= 0){
+		return;
+	}
 	
 	rows.forEach(row => {
 		let cells = row.querySelectorAll('td');
 		let user = cells[cells.length - 2].innerText;
 
-		// console.log("Row: ", row);
-		// console.log("User: ", user);
-
 		if (SuitableUsers.includes(user) == false){
-			setCustomClass(row);
+			row.classList.add(wrongUserClass);
 		}
 
 	});
 }
 
-function setCustomClass(row){
-	if (!row.classList.contains(wrongUserClass)) {
-        row.classList.add(wrongUserClass);
-    }
-}
-
 function subscribeToTableUpdates(tableElement, callback) {
-	if (!tableElement || !(tableElement instanceof Node)) {
+	if (!tableElement || (tableElement instanceof Node) == false) {
 		console.error('Table element is not a valid Node', tableElement);
 		return;
 	}
