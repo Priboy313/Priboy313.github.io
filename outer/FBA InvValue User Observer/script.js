@@ -1,14 +1,11 @@
 // ==UserScript==
 // @name         PMS FBA InvValue Users Observer
-// @version      2025-10-06
-// @description  Checking current user for rows!
+// @version      1.0
+// @description  Checking current user in rows!
 // @author       Priboy313
-// @match        https://pms.plexsupply.com/pms/listfbavalue.xhtml
-// @match        https://pms.officechase.com/pms/listfbavalue.xhtml
-// @match        https://pms.marksonsupply.com/pms/listfbavalue.xhtml
-// @match        https://pms.plexsupply.com/pms/listfbavalue.xhtml?showPage
-// @match        https://pms.officechase.com/pms/listfbavalue.xhtml?showPage
-// @match        https://pms.marksonsupply.com/pms/listfbavalue.xhtml?showPage
+// @match        https://pms.plexsupply.com/pms/listfbavalue.xhtml*
+// @match        https://pms.officechase.com/pms/listfbavalue.xhtml*
+// @match        https://pms.marksonsupply.com/pms/listfbavalue.xhtml*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
@@ -27,10 +24,10 @@ const wrongUserClass = "wrong-user";
 
 	const table = document.querySelector('.table-hover');
 	const tableBody = table.querySelector('tbody');
-	console.log(tableBody);
+	// console.log(tableBody);
 
 	const observer = subscribeToTableUpdates(table, (updatedTable) => {
-		console.log('Таблица обновлена!');
+		// console.log('Таблица обновлена!');
 
 		checkTableRows(updatedTable);
 	});
@@ -44,8 +41,8 @@ function checkTableRows(tableBody){
 		let cells = row.querySelectorAll('td');
 		let user = cells[cells.length - 2].innerText;
 
-		console.log("Row: ", row);
-		console.log("User: ", user);
+		// console.log("Row: ", row);
+		// console.log("User: ", user);
 
 		if (SuitableUsers.includes(user) == false){
 			setCustomClass(row);
