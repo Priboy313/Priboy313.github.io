@@ -77,19 +77,7 @@ function addCustomCSS(){
 	const style = document.createElement('style');
     style.textContent = `
         .${wrongUserClass} {
-            color: red !important;
-        }
-
-		.${wrongUserClass} .number-col span{
-            color: black !important;
-        }
-
-		.${wrongUserClass} td:nth-child(6){
-            color: black !important;
-        }
-
-		.${wrongUserClass} td:nth-child(7){
-            color: black !important;
+            background-color: rgba(255, 146, 146, 0.5) !important;
         }
     `;
     document.head.appendChild(style);
