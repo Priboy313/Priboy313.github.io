@@ -34,14 +34,7 @@ function sendGETRequest(asin, url, corp, responses){
 
 			if (data && data.aaData && data.aaData.length > 0){
 				data.aaData.forEach(item => {
-					const referenceId = item.referenceId;
-					const price = item.price;
-					const estimatedFee = item.estimatedFee;
-					const user = item.userName;
-
-					// console.log("---- REQUEST ----\n", `${corp}: ${referenceId} - $${estimatedFee}`);
-
-					responses.addSKU(corp, referenceId, price, estimatedFee, user);
+					responses.addSKU(corp, item.referenceId, item.price, item.estimatedFee, item.userName);
 				});
 			} else {
 				console.log("Массив aaData не найден или пуст");
