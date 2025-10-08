@@ -256,35 +256,6 @@ function set_fee_in_revseller_calc(){
 			fee_row_fba_cell.innerText = fba_fee;
 			fee_row_fbm_cell.innerText = fbm_fee;
 		}
-
-	}
-
-
-}
-
-
-function check_hidden_price(){
-	var price_hide_box = document.getElementById("corePriceDisplay_desktop_feature_div");
-		// price_hide_box.className += " price_box_w_disc";
-
-	if (price_hide_box){
-		if (price_hide_box.innerText.includes("See price in cart")){
-			console.log("HIDDEN PRICE FINDED!");
-
-			// hidden_price = document.getElementsByClassName("aic-ext-offers-row")[0]
-			// hidden_price = hidden_price.getElementsByClassName("aic-ext-offers-item")[3]
-			// hidden_price = hidden_price.getElementsByClassName("aic-ext-offers-item-body-price")[0]
-			// hidden_price = parseFloat(hidden_price.innerText.substring(1))
-
-			// console.log(hidden_price)
-
-			// var full_price_span = document.createElement('div')
-  	// 	full_price_span.className = "a-section a-spacing-none aok-align-center aok-relative custom-full-price"
-  	// 	full_price_span.innerHTML = `Hidden price: $${hidden_price}`;
-
-  		price_hide_box.className += " price_box_w_disc";
-  		// price_hide_box.appendChild(full_price_span)
-		}
 	}
 }
 
@@ -293,9 +264,9 @@ function set_mirror_links(){
 	var title_section = document.getElementById("titleSection")
 
 	let currentURL = window.location.href;
-  let regex = /\bB0\w*\b/g;
-  let asin = currentURL.match(regex);
-  		asin = asin[0]
+	let regex = /\bB0\w*\b/g;
+	let asin = currentURL.match(regex);
+		asin = asin[0]
 
 
 	var title_link_section = document.createElement("div")
