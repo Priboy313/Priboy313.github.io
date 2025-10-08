@@ -4,8 +4,6 @@
 // @description  Add fee from PMS
 // @author       Priboy313
 // @match        https://www.amazon.com/*
-// @match        https://www.amazon.ca/*
-// @match        https://www.amazon.com.mx/*
 // @connect      pms.plexsupply.com
 // @connect      pms.officechase.com
 // @connect      pms.marksonsupply.com
