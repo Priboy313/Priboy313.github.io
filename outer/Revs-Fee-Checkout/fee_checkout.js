@@ -53,22 +53,22 @@ function sendGETRequest(asin, url, corp, responses){
 	});
 }
 
+prohibitedSKU = [
+	"amzn.gr",
+	"RMRT"
+]
+
 class Responses{
 	constructor(){
 		this.skuPL = [];
 		this.skuOC = [];
 		this.skuMK = [];
-	
-		this.prohibitedSKU = [
-			"amzn.gr",
-			"RMRT"
-		]
 	}
 
 	addSKU(corp, sku, price, fee, user){
 		const lowerCaseSku = sku.toLowerCase();
 
-		const isProhibited = this.prohibitedSKU.some(pro => 
+		const isProhibited = prohibitedSKU.some(pro => 
 			lowerCaseSku.includes(pro.toLowerCase()) 
 		);
 
@@ -76,17 +76,19 @@ class Responses{
 			return;
 		}
 
+		let newSKU = new SKU(sku, price, fee, user);
+
 		switch (corp) {
 			case "PL":
-				this.skuPL.push(new SKU(sku, price, fee, user));
+				this.skuPL.push(newSKU);
 				break;
 
 			case "OC":
-				this.skuOC.push(new SKU(sku, price, fee, user));
+				this.skuOC.push(newSKU);
 				break;
 
 			case "MK":
-				this.skuMK.push(new SKU(sku, price, fee, user));
+				this.skuMK.push(newSKU);
 				break;
 			
 			default:
