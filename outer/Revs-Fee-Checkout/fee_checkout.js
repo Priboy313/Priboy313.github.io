@@ -19,44 +19,15 @@ const requestURLs = {
 	"MK": "https://pms.marksonsupply.com/pms/listfbavalue.xhtml?fba-inventory-value-dt&marketPlaceId=5&searchBy=asin&searchValue=ASIN&userId=Not%20selected%20-%20All"
 };
 
-function getCurrentURL(asin, url){
-	return url.replace("ASIN", asin);
-}
-
-function sendGETRequest(asin, url, corp, responses){
-	GM_xmlhttpRequest({
-		method: 'GET',
-		url: getCurrentURL(asin, url),
-		onload: function(response) {
-			const data = JSON.parse(response.responseText);
-
-			// console.log("-- aaData: ", data.aaData);
-
-			if (data && data.aaData && data.aaData.length > 0){
-				data.aaData.forEach(item => {
-					responses.addSKU(corp, item.referenceId, item.price, item.estimatedFee, item.userName);
-				});
-			} else {
-				console.log("Массив aaData не найден или пуст");
-			}
-		},
-		onerror: function(error) {
-			console.error('"---- REQUEST ----\n"Request failed:', error);
-		}
-	});
-}
-
-prohibitedSKU = [
+const prohibitedSKU = [
 	"amzn.gr",
 	"RMRT"
-]
+];
 
 class Responses{
-	constructor(){
-		this.skuPL = [];
-		this.skuOC = [];
-		this.skuMK = [];
-	}
+	constructor() {
+        this.data = {};
+    }
 
 	addSKU(corp, sku, price, fee, user){
 		const lowerCaseSku = sku.toLowerCase();
@@ -69,24 +40,11 @@ class Responses{
 			return;
 		}
 
-		let newSKU = new SKU(sku, price, fee, user);
+		if (!this.data[corp]) {
+            this.data[corp] = [];
+        }
 
-		switch (corp) {
-			case "PL":
-				this.skuPL.push(newSKU);
-				break;
-
-			case "OC":
-				this.skuOC.push(newSKU);
-				break;
-
-			case "MK":
-				this.skuMK.push(newSKU);
-				break;
-			
-			default:
-				break;
-		}
+        this.data[corp].push(new SKU(sku, price, fee, user));
 	}
 }
 
@@ -99,24 +57,58 @@ class SKU{
 	}
 }
 
-function getASIN(){
+function getASIN() {
 	let currentURL = window.location.href;
 	let regex = /\bB0\w*\b/g;
 	let asin = currentURL.match(regex);
 	return asin[0]
 }
 
-
-(function() {
-    'use strict';
-
-	let asin = getASIN();
-
-	const responses = new Responses();
-
-	Object.keys(requestURLs).forEach((corp) => {
-		sendGETRequest(asin, requestURLs[corp], corp, responses);
+function sendGETRequest(asin, url, corp, responses) {
+	return new Promise((resolve, reject) => {
+		GM_xmlhttpRequest({
+			method: 'GET',
+			url: url.replace("ASIN", asin),
+			onload: function(response) {
+				try {
+					const data = JSON.parse(response.responseText);
+					if (data && data.aaData && data.aaData.length > 0) {
+						data.aaData.forEach(item => {
+							responses.addSKU(corp, item.referenceId, item.price, item.estimatedFee, item.userName);
+						});
+					}
+					resolve();
+				} catch (e) {
+					console.error(`Ошибка парсинга JSON для ${corp}:`, e);
+					reject(e);
+				}
+			},
+			onerror: function(error) {
+				console.error(`Ошибка запроса для ${corp}:`, error);
+				reject(error);
+			}
+		});
 	});
-	
-	console.log(responses);
+}
+
+(async function() {
+	'use strict';
+
+	const asin = getASIN();
+	const responses = new Responses();
+	const requestPromises = Object.keys(requestURLs).map(corp => {
+		return sendGETRequest(asin, requestURLs[corp], corp, responses);
+	});
+
+	try {
+		await Promise.all(requestPromises);
+
+		console.log("Все запросы успешно завершены. Результат:");
+		console.log(responses.data);
+
+		// Место под функцию которая будет отображать эти данные на странице
+
+	} catch (error) {
+		console.error("Один из запросов завершился с ошибкой:", error);
+	}
 })();
