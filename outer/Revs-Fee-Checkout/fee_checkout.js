@@ -132,6 +132,43 @@ function sendGETRequest(asin, reqUrl, corp, responses, parser) {
 	});
 }
 
+function waitForElement(selector) {
+        return new Promise(resolve => {
+            if (document.querySelector(selector)) {
+                return resolve(document.querySelector(selector));
+            }
+            const observer = new MutationObserver(mutations => {
+                if (document.querySelector(selector)) {
+                    resolve(document.querySelector(selector));
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+    }
+
+async function getSKUCustomTableFromRevSeller(){
+	
+	await waitForElement("#aic-ext-calculator");
+	
+	let revWrapper = document.getElementById("aic-ext-calculator");
+	let revCustomTableRoot = revWrapper.getElementsByTagName("div")[0];
+	
+	const customTable = document.createElement("div");
+	customTable.classList.add("custom-pms-fee-table-div");
+
+	revCustomTableRoot.appendChild(customTable);
+
+	console.log(revCustomTableRoot);
+	
+
+	return customTable;
+}
+
+function setRequestedSKUToCustomTable(responses, customTable){
+
+}
+
 (async function() {
 	'use strict';
 
@@ -145,22 +182,22 @@ function sendGETRequest(asin, reqUrl, corp, responses, parser) {
 	const responses = new Responses();
 	const parser = new DOMParser();
 
-	const requestPromises = Object.keys(requestURLs).map(corp => {
-		return sendGETRequest(asin, requestURLs[corp], corp, responses, parser);
-	});
+	// const requestPromises = Object.keys(requestURLs).map(corp => {
+	// 	return sendGETRequest(asin, requestURLs[corp], corp, responses, parser);
+	// });
 
-	const results = await Promise.allSettled(requestPromises);
+	// const results = await Promise.allSettled(requestPromises);
 
-	results.forEach((result, index) => {
-		if (result.status === 'rejected') {
-			const corp = Object.keys(requestPromises)[index];
-			console.error(`Запрос для ${corp} завершился критической ошибкой:`, result.reason);
-		}
-	});
+	// results.forEach((result, index) => {
+	// 	if (result.status === 'rejected') {
+	// 		const corp = Object.keys(requestPromises)[index];
+	// 		console.error(`Запрос для ${corp} завершился критической ошибкой:`, result.reason);
+	// 	}
+	// });
 
-	console.log(" ----- RESPONSES ----- \nВсе запросы успешно завершены. Результат:");
+	console.log(" ----- RESPONSES ----- \nЗапросы успешно завершены. Результат:");
 	console.log(responses.data);
 
-	// Место под функцию которая будет отображать эти данные на странице
-
+	const customTable = await getSKUCustomTableFromRevSeller();
+	setRequestedSKUToCustomTable(responses, customTable);
 })();
