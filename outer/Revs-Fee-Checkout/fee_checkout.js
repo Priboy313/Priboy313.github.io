@@ -12,9 +12,9 @@
 // ==/UserScript==
 
 const requestURLs = {
-	"PL": "https://pms.plexsupply.com/pms/listfbavalue.xhtml?fba-inventory-value-dt&marketPlaceId=5&searchBy=asin&searchValue=ASIN&userId=Not%20selected%20-%20All",
-	"OC": "https://pms.officechase.com/pms/listfbavalue.xhtml?fba-inventory-value-dt&marketPlaceId=5&searchBy=asin&searchValue=ASIN&userId=Not%20selected%20-%20All",
-	"MK": "https://pms.marksonsupply.com/pms/listfbavalue.xhtml?fba-inventory-value-dt&marketPlaceId=5&searchBy=asin&searchValue=ASIN&userId=Not%20selected%20-%20All"
+	"PL": "https://pms.plexsupply.com/pms/listfba.xhtml?searchByAsin=ASINPLC",
+	"OC": "https://pms.officechase.com/pms/listfba.xhtml?searchByAsin=ASINPLC",
+	"MK": "https://pms.marksonsupply.com/pms/listfba.xhtml?searchByAsin=ASINPLC"
 };
 
 const prohibitedSKU = [
@@ -46,6 +46,29 @@ class Responses{
 
         this.data[corp].push(new SKU(sku, price, fee, user));
 	}
+
+	parseResponseTableBody(corp, tableBody){
+		const rows = tableBody.querySelectorAll(".table-order");
+
+		Array.from(rows).forEach((row) => {
+			const cells = row.querySelectorAll("td");
+
+			const sku = cells[1].querySelector("a").innerText;
+			const price = cells[4].innerText.replace('$', '').split(': ')[0];
+			let fee = 0
+			try {
+				fee = cells[14].innerText.split('$')[1].split(': ')[0];
+			} catch {}
+
+			const user = cells[17].innerText;
+
+			if (!sku || !price || !fee || !user) {
+				return;
+			}
+
+			this.addSKU(corp, sku, price, fee, user);
+		});
+	}
 }
 
 class SKU{
@@ -60,26 +83,40 @@ class SKU{
 function getASIN() {
 	let currentURL = window.location.href;
 	let regex = /\bB0\w*\b/g;
-	let asin = currentURL.match(regex);
-	return asin[0]
+	let match = currentURL.match(regex);
+
+	return match ? match[0] : null;
 }
 
-function sendGETRequest(asin, url, corp, responses) {
+function sendGETRequest(asin, reqUrl, corp, responses, parser) {
 	return new Promise((resolve, reject) => {
 		GM_xmlhttpRequest({
 			method: 'GET',
-			url: url.replace("ASIN", asin),
+			url: reqUrl.replace("ASINPLC", asin),
 			onload: function(response) {
 				try {
-					const data = JSON.parse(response.responseText);
-					if (data && data.aaData && data.aaData.length > 0) {
-						data.aaData.forEach(item => {
-							responses.addSKU(corp, item.referenceId, item.price, item.estimatedFee, item.userName);
-						});
+					const data = parser.parseFromString(response.responseText, "text/html");
+					const responseTable = data.querySelector("#dt_list");
+
+					if (!responseTable){
+						console.log(`--> Таблица #dt_list не найдена для ${corp}.`);
+						resolve();
+						return;
 					}
+
+					const responseTableBody = responseTable.querySelector("tbody");
+
+					if (!responseTableBody){
+						console.log(`--> Тело таблицы #dt_list не найдена для ${corp}.`);
+						resolve();
+						return;
+					}
+
+					responses.parseResponseTableBody(corp, responseTableBody);
+
 					resolve();
 				} catch (e) {
-					console.error(`----- Ошибка парсинга JSON для ${corp}:`, e);
+					console.error(`----- Ошибка парсинга для ${corp}:`, e);
 					reject(e);
 				}
 			},
@@ -95,9 +132,16 @@ function sendGETRequest(asin, url, corp, responses) {
 	'use strict';
 
 	const asin = getASIN();
+
+	if (asin == null){
+		console.error("ASIN не найден!");
+	}
+
 	const responses = new Responses();
+	const parser = new DOMParser();
+
 	const requestPromises = Object.keys(requestURLs).map(corp => {
-		return sendGETRequest(asin, requestURLs[corp], corp, responses);
+		return sendGETRequest(asin, requestURLs[corp], corp, responses, parser);
 	});
 
 	try {
