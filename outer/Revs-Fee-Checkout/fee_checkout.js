@@ -34,7 +34,9 @@ class Responses{
 			lowerCaseSku.includes(pro.toLowerCase()) 
 		);
 
-		if (isProhibited) {
+		if (isProhibited
+			|| fee <= 0
+		) {
 			return;
 		}
 
@@ -77,12 +79,12 @@ function sendGETRequest(asin, url, corp, responses) {
 					}
 					resolve();
 				} catch (e) {
-					console.error(`Ошибка парсинга JSON для ${corp}:`, e);
+					console.error(`----- Ошибка парсинга JSON для ${corp}:`, e);
 					reject(e);
 				}
 			},
 			onerror: function(error) {
-				console.error(`Ошибка запроса для ${corp}:`, error);
+				console.error(`----- Ошибка запроса для ${corp}:`, error);
 				reject(error);
 			}
 		});
@@ -101,7 +103,7 @@ function sendGETRequest(asin, url, corp, responses) {
 	try {
 		await Promise.all(requestPromises);
 
-		console.log("Все запросы успешно завершены. Результат:");
+		console.log(" ----- \nВсе запросы успешно завершены. Результат:");
 		console.log(responses.data);
 
 		// Место под функцию которая будет отображать эти данные на странице
