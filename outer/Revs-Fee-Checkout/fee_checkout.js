@@ -54,10 +54,14 @@ class Responses{
 			const cells = row.querySelectorAll("td");
 
 			const sku = cells[1].querySelector("a").innerText;
-			const price = cells[4].innerText.replace('$', '').split(': ')[0];
+
+			let price = cells[4].innerText.replace('$', '').split(': ')[0];
+			price = parseFloat(price);
+			
 			let fee = 0
 			try {
 				fee = cells[14].innerText.split('$')[1].split(': ')[0];
+				fee = parseFloat(fee);
 			} catch {}
 
 			const user = cells[17].innerText;
@@ -135,6 +139,7 @@ function sendGETRequest(asin, reqUrl, corp, responses, parser) {
 
 	if (asin == null){
 		console.error("ASIN не найден!");
+		return;
 	}
 
 	const responses = new Responses();
@@ -144,15 +149,18 @@ function sendGETRequest(asin, reqUrl, corp, responses, parser) {
 		return sendGETRequest(asin, requestURLs[corp], corp, responses, parser);
 	});
 
-	try {
-		await Promise.all(requestPromises);
+	const results = await Promise.allSettled(requestPromises);
 
-		console.log(" ----- \nВсе запросы успешно завершены. Результат:");
-		console.log(responses.data);
+	results.forEach((result, index) => {
+		if (result.status === 'rejected') {
+			const corp = Object.keys(requestPromises)[index];
+			console.error(`Запрос для ${corp} завершился критической ошибкой:`, result.reason);
+		}
+	});
 
-		// Место под функцию которая будет отображать эти данные на странице
+	console.log(" ----- RESPONSES ----- \nВсе запросы успешно завершены. Результат:");
+	console.log(responses.data);
 
-	} catch (error) {
-		console.error("Один из запросов завершился с ошибкой:", error);
-	}
+	// Место под функцию которая будет отображать эти данные на странице
+
 })();
