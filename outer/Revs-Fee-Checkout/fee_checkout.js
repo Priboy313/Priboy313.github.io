@@ -7,8 +7,8 @@
 // @connect      pms.plexsupply.com
 // @connect      pms.officechase.com
 // @connect      pms.marksonsupply.com
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=amazon.com
 // @grant        GM_xmlhttpRequest
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=amazon.com
 // ==/UserScript==
 
 const requestURLs = {

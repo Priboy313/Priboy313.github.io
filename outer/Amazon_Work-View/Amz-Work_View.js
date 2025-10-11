@@ -11,12 +11,16 @@
 
 console.log("------ -AmazonWorkView injected -------");
 
-const FORCELEFT = true;
+const config = {
+	forceLeft: true,
+};
 
 (async function() {
     'use strict';
 
 	addCustomCSS();
+
+	await waitForElement("#titleSection");
 
 	set_mirror_links();
 	check_discount();
@@ -309,13 +313,13 @@ function addCustomCSS(){
 	}
 	`;
 
-	if (FORCELEFT){
+	if (config.forceLeft){
 		customAmazonStyle.innerHTML += `
 		#dp {
 			margin-left: 0 !important;
 		}
-		`
-	}
+		`}
+		
 	document.head.appendChild(customAmazonStyle);
 
 }
