@@ -33,20 +33,35 @@ const config = {
 	
 })();
 
-function waitForElement(selector) {
-	return new Promise(resolve => {
-		if (!selector){
+function waitForElement(selector, timeout = 10000) {
+	return new Promise((resolve, reject) => {
+		if (!selector) {
 			return resolve(null);
 		}
-		if (document.querySelector(selector)) {
-			return resolve(document.querySelector(selector));
+
+		const element = document.querySelector(selector);
+		if (element) {
+			return resolve(element);
 		}
-		const observer = new MutationObserver(mutations => {
-			if (document.querySelector(selector)) {
-				resolve(document.querySelector(selector));
+
+		let observer;
+		let timeoutId;
+
+		observer = new MutationObserver(() => {
+			const foundElement = document.querySelector(selector);
+			if (foundElement) {
+				clearTimeout(timeoutId);
 				observer.disconnect();
+				resolve(foundElement);
 			}
 		});
+
+		timeoutId = setTimeout(() => {
+			observer.disconnect();
+			console.warn(`Элемент "${selector}" не появился за ${timeout} мс.`);
+			resolve(null);
+		}, timeout);
+
 		observer.observe(document.body, { childList: true, subtree: true });
 	});
 }
