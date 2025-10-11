@@ -9,28 +9,51 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
-console.log("------ -AmazonWorkView injected -------");
-
 const config = {
-	forceLeft: true,
+	/*
+		Теперь можно настраивать поведение скрипта по своему вкусу!
+		Измените флаги в конфиге ниже
+
+		true - фича работает
+		false - фича выключена
+	*/
+
+	forcePageToLeft: true,
+
+	addMirrorLinks: true,
+	checkDiscount: true,
+	showFee: true,
+
+	clearAmazon: true,
+	clearGrabley: true,
+	clearRevseller: true,
 };
 
 (async function() {
     'use strict';
 
+    console.log("------ -AmazonWorkView injected -------");
+
 	addCustomCSS();
 
 	await waitForElement("#titleSection");
 
-	set_mirror_links();
-	check_discount();
+	if (config.addMirrorLinks){
+		set_mirror_links();
+	}
 
-	await waitForElement("#aic-ext-popup-fba-result-available");
+	if (config.checkDiscount){
+		check_discount();
+	}
 
-	setInterval(function() {
-		set_fee_in_revseller_calc();
-	}, 100);
-	
+	if (config.showFee){
+		await waitForElement("#aic-ext-popup-fba-result-available");
+
+		setInterval(function() {
+			set_fee_in_revseller_calc();
+		}, 100);
+	}
+
 })();
 
 function waitForElement(selector, timeout = 10000) {
@@ -254,87 +277,102 @@ function set_mirror_links(){
 
 function addCustomCSS(){
 	const customAmazonStyle = document.createElement('style');
-	customAmazonStyle.innerHTML = `
-	#nav-progressive-subnav,
-	#nav-main,
-	#nav-flyout-rufus,
+		customAmazonStyle.id = "custom-amzWV-css";
+		customAmazonStyle.innerHTML = "/* Custom AmznWV CSS */"
 
-	/* // get prime button */
-	#primeDPUpsellContainer,
-
-	/* // Google quick search title */
-
-	#title .aic-ext-show-hint,
-
-	#returnsInfoFeature_feature_div,
-	#secureTransactionReorderT1_feature_div,
-	#mbb_feature_div,
-	#detailPageGifting_feature_div,
-
-
-	/* // deliver|pick-up */
-	#offerDisplayGroupTabSet,
-
-	/* //grabley */
-	.pvv-ext-wrap-buttons,
-	.pvv-ext-wrap-sellers,
-	.pvv-ext-wrap-TotalQuantity,
-	.pvv-ext-wrap-ProductDetailsLink,
-	.pvv-ext-wrap-footer,
-
-	/* // revseller popup */
-	.aic-ext-title
-	/* // #aic-ext-hint-popup, */
-	/* // .aic-ext-dropdown, */
-
-
-	/* // Frequently bought together */
-	/* #similarities_feature_div  */
-	{
-		display: none !important;
+	if (config.clearAmazon){
+		customAmazonStyle.innerHTML += `
+			/*Clear Amazon*/
+			#nav-progressive-subnav,
+			#nav-main,
+			#nav-flyout-rufus,
+			#primeDPUpsellContainer,
+			#returnsInfoFeature_feature_div,
+			#secureTransactionReorderT1_feature_div,
+			#mbb_feature_div,
+			#detailPageGifting_feature_div,
+			#offerDisplayGroupTabSet,
+			#primeDPUpsellStaticContainerNPA,
+			#above-dp-container
+			{
+				display: none !important;
+			}
+		`;
 	}
 
-	/* //*price no discound */
-	#corePrice_desktop,
-	#corePriceDisplay_desktop_feature_div {
-		background-color: rgba(0, 255, 0, 0.3);
-	}
-	#promoMessagingDiscountValue_feature_div,
-	#promoMessaging {
-		background-color: rgba(2, 141, 194, 0.3);
-	}
-
-	/* //*price w/ discound */
-	.price_box_w_disc {
-		background-color: rgba(255, 216, 20, 0.3) !important;
+	if (config.clearRevseller){
+		customAmazonStyle.innerHTML += `
+			#title .aic-ext-show-hint,
+			.aic-ext-title
+			{
+				display: none !important;
+			}
+		`;
 	}
 
-	/* // custom full price */
-	.custom-full-price {
-		font-size: 23px !important;
-		padding: 5px 0 4px 0;
-		background-color: rgba(0, 255, 0, 0.3);
+	if (config.clearGrabley){
+		customAmazonStyle.innerHTML += `
+			.pvv-ext-wrap-buttons,
+			.pvv-ext-wrap-sellers,
+			.pvv-ext-wrap-TotalQuantity,
+			.pvv-ext-wrap-ProductDetailsLink,
+			.pvv-ext-wrap-footer,
+			.aic-ext-title
+			{
+				display: none !important;
+			}
+		`;
 	}
 
-	/* // amazon mirror links */
-	.title_link_section {
-		padding-left: 2px;
+	if (config.checkDiscount){
+		customAmazonStyle.innerHTML += `
+			/* //*price no discound */
+			#corePrice_desktop,
+			#corePriceDisplay_desktop_feature_div {
+				background-color: rgba(0, 255, 0, 0.3);
+			}
+			#promoMessagingDiscountValue_feature_div,
+			#promoMessaging {
+				background-color: rgba(2, 141, 194, 0.3);
+			}
+
+			/* //*price w/ discound */
+			.price_box_w_disc {
+				background-color: rgba(255, 216, 20, 0.3) !important;
+			}
+
+			/* // custom full price */
+			.custom-full-price {
+				font-size: 23px !important;
+				padding: 5px 0 4px 0;
+				background-color: rgba(0, 255, 0, 0.3);
+			}
+		`;
 	}
 
-	.title_link_section .amazon_mirror_link {
-		margin-right: 10px;
+	if (config.addMirrorLinks){
+		customAmazonStyle.innerHTML += `
+			/* // amazon mirror links */
+			.title_link_section {
+				padding-left: 2px;
+			}
 
-		border-radius: 15%;
+			.title_link_section .amazon_mirror_link {
+				margin-right: 10px;
+
+				border-radius: 15%;
+			}
+		`
 	}
-	`;
 
-	if (config.forceLeft){
+	if (config.forcePageToLeft){
 		customAmazonStyle.innerHTML += `
 		#dp {
 			margin-left: 0 !important;
 		}
-		`}
-		
+		`;
+	}
+
 	document.head.appendChild(customAmazonStyle);
 
 }

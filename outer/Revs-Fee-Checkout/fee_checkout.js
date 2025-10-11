@@ -167,7 +167,7 @@ function waitForElement(selector, timeout = 10000) {
 
 async function getSKUCustomTableFromRevSeller(){
 	
-	await waitForElement("#aic-ext-calculator");
+	await waitForElement(".custom-fee-row");
 	
 	let revWrapper = document.getElementById("aic-ext-calculator");
 	let revCustomTableRoot = revWrapper.getElementsByTagName("div")[0];
@@ -175,9 +175,10 @@ async function getSKUCustomTableFromRevSeller(){
 	const customTable = document.createElement("div");
 	customTable.classList.add("custom-pms-fee-table-div");
 
-	revCustomTableRoot.appendChild(customTable);
+	revWrapper.appendChild(customTable);
 
-	console.log(revCustomTableRoot);
+	console.log(document.getElementsByClassName("custom-fee-row")[0]);
+	console.log(revWrapper);
 	
 
 	return customTable;
