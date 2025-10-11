@@ -22,10 +22,10 @@ const wrongUserClass = "wrong-user";
 
 	addCustomCSS();
 
-	setSubcribe();
+	setSubscribe();
 })();
 
-function setSubcribe(){
+function setSubscribe(){
 	const table = document.querySelector('.table-hover');
 	const observer = subscribeToTableUpdates(table, (updatedTable) => {
 		checkTableRows(updatedTable);
