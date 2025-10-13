@@ -300,7 +300,7 @@ function addCustomCSS(){
 			}
 
             .offer-display-features-expander{
-                height: 80px!important;
+                height: 120px!important;
             }
 		`;
 	}
