@@ -26,7 +26,7 @@ const config = {
 
 	clearAmazon: true,
 	clearGrabley: true,
-	clearRevseller: true,
+	clearRevseller: false,
 };
 
 (async function() {
@@ -293,10 +293,15 @@ function addCustomCSS(){
 			#detailPageGifting_feature_div,
 			#offerDisplayGroupTabSet,
 			#primeDPUpsellStaticContainerNPA,
-			#above-dp-container
+			#above-dp-container,
+            .a-expander-header
 			{
 				display: none !important;
 			}
+
+            .offer-display-features-expander{
+                height: 80px!important;
+            }
 		`;
 	}
 
