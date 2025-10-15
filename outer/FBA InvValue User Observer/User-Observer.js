@@ -63,7 +63,13 @@ function checkTableRows(table){
 }
 
 function hideAmzngrRows(row, cells){
-	let sku = cells[1].innerText;
+	let skuCellNum = 1;
+
+	if (!cells[0].classList.contains("sorting_1")){
+		skuCellNum = 0;
+	}
+
+	let sku = cells[skuCellNum].innerText;
 
 	if (sku.includes(amznGrForm)){
 		row.classList.add(amznGrClass);
@@ -101,24 +107,22 @@ function subscribeToTableUpdates(tableElement, callback) {
 }
 
 function addCustomCSS(){
+	const style = document.createElement('style');
+
 	if (config.userObserver){
-		const style = document.createElement('style');
 		style.textContent = `
 			.${wrongUserClass} {
 				background-color: rgba(255, 146, 146, 0.5) !important;
 			}
 		`;
-		document.head.appendChild(style);
 	}
-
+	
 	if (config.rowFixes){
-	    const labelStyle = document.createElement('style');
-		labelStyle.innerHTML = `
+		style.innerHTML += `
 			#dt_list .list-col1 .select2 {
 				display: none!important;
 			}
 		`;
-		document.head.appendChild(labelStyle);
 
 		const tableStyle = document.createElement('style');
 		tableStyle.innerHTML = `
@@ -130,12 +134,13 @@ function addCustomCSS(){
 	}
 
 	if (config.hideAmznGr){
-		const gradeStyle = document.createElement('style');
-		gradeStyle.innerHTML = `
+		style.innerHTML += `
 			.${amznGrClass}{
 				display: none!important;
 			}
 		`;
-		document.head.appendChild(gradeStyle);
 	}
+
+	document.head.appendChild(style);
+
 }
