@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         PMS FBA InvValue Users Observer
-// @version      1.1
-// @description  Checking current user in rows!
+// @name         PMS FBA InvValue Observer
+// @version      1.2
+// @description  Apply fixes for PMS FBA Inventory Value!
 // @author       Priboy313
 // @match        https://pms.plexsupply.com/pms/listfbavalue.xhtml*
 // @match        https://pms.officechase.com/pms/listfbavalue.xhtml*
@@ -9,13 +9,22 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
+const config = {
+	rowFixes: true,
+	userObserver: true,
+	hideAmznGr: true,
+};
+
 const SuitableUsers = [
 	"IgorP",
 	"Jerry",
 	"IgorDemping"
 ];
 
+const amznGrForm = "amzn.gr";
+
 const wrongUserClass = "wrong-user";
+const amznGrClass = "grade-sku";
 
 (function() {
 	'use strict';
@@ -42,13 +51,31 @@ function checkTableRows(table){
 	
 	rows.forEach(row => {
 		let cells = row.querySelectorAll('td');
-		let user = cells[cells.length - 2].innerText;
-
-		if (SuitableUsers.includes(user) == false){
-			row.classList.add(wrongUserClass);
+		
+		if (config.userObserver){
+			setUserMark(row, cells)
 		}
 
+		if (config.hideAmznGr){
+			hideAmzngrRows(row, cells);
+		}
 	});
+}
+
+function hideAmzngrRows(row, cells){
+	let sku = cells[1].innerText;
+
+	if (sku.includes(amznGrForm)){
+		row.classList.add(amznGrClass);
+	}
+}
+
+function setUserMark(row, cells){
+	let user = cells[cells.length - 2].innerText;
+
+	if (SuitableUsers.includes(user) == false){
+		row.classList.add(wrongUserClass);
+	}
 }
 
 function subscribeToTableUpdates(tableElement, callback) {
@@ -74,11 +101,41 @@ function subscribeToTableUpdates(tableElement, callback) {
 }
 
 function addCustomCSS(){
-	const style = document.createElement('style');
-    style.textContent = `
-        .${wrongUserClass} {
-            background-color: rgba(255, 146, 146, 0.5) !important;
-        }
-    `;
-    document.head.appendChild(style);
+	if (config.userObserver){
+		const style = document.createElement('style');
+		style.textContent = `
+			.${wrongUserClass} {
+				background-color: rgba(255, 146, 146, 0.5) !important;
+			}
+		`;
+		document.head.appendChild(style);
+	}
+
+	if (config.rowFixes){
+	    const labelStyle = document.createElement('style');
+		labelStyle.innerHTML = `
+			#dt_list .list-col1 .select2 {
+				display: none!important;
+			}
+		`;
+		document.head.appendChild(labelStyle);
+
+		const tableStyle = document.createElement('style');
+		tableStyle.innerHTML = `
+			.row-highlight{
+				background-color: #ffffff !important;
+			}
+		`;
+		document.body.appendChild(tableStyle);
+	}
+
+	if (config.hideAmznGr){
+		const gradeStyle = document.createElement('style');
+		gradeStyle.innerHTML = `
+			.${amznGrClass}{
+				display: none!important;
+			}
+		`;
+		document.head.appendChild(gradeStyle);
+	}
 }
