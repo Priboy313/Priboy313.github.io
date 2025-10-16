@@ -13,6 +13,7 @@ const config = {
 	rowFixes: true,
 	userObserver: true,
 	hideAmznGr: true,
+	clearYellowRow: true,
 };
 
 const SuitableUsers = [
@@ -59,6 +60,18 @@ function checkTableRows(table){
 		if (config.hideAmznGr){
 			hideAmzngrRows(row, cells);
 		}
+
+		if (config.clearYellowRow){
+			clearYellowRow(row, cells);
+		}
+	});
+}
+
+function clearYellowRow(row, cells){
+	row.style = null;
+
+	cells.forEach(cell => {
+		cell.style = null;
 	});
 }
 
