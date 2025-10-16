@@ -26,7 +26,7 @@ const config = {
 
 	clearAmazon: true,
 	clearGrabley: true,
-	clearRevseller: false,
+	clearRevseller: true,
 };
 
 (async function() {
@@ -293,7 +293,7 @@ function addCustomCSS(){
 			#detailPageGifting_feature_div,
 			#offerDisplayGroupTabSet,
 			#primeDPUpsellStaticContainerNPA,
-			#above-dp-container,
+			#desktop-dp-ilm_feature_div_01,
             .a-expander-header
 			{
 				display: none !important;
