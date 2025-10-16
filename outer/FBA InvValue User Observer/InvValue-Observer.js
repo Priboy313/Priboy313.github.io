@@ -53,17 +53,9 @@ function checkTableRows(table){
 	rows.forEach(row => {
 		let cells = row.querySelectorAll('td');
 		
-		if (config.userObserver){
-			setUserMark(row, cells)
-		}
-
-		if (config.hideAmznGr){
-			hideAmzngrRows(row, cells);
-		}
-
-		if (config.clearYellowRow){
-			clearYellowRow(row, cells);
-		}
+		if (config.userObserver) setUserMark(row, cells)
+		if (config.hideAmznGr) hideAmzngrRows(row, cells);
+		if (config.clearYellowRow) clearYellowRow(row, cells);
 	});
 }
 
@@ -71,7 +63,10 @@ function clearYellowRow(row, cells){
 	row.style = null;
 
 	cells.forEach(cell => {
-		cell.style = null;
+		const hasFK = cell.querySelector('input.factorK');
+		if (!hasFK){
+			cell.style = null;
+		}
 	});
 }
 
