@@ -36,8 +36,6 @@ const config = {
 
 	addCustomCSS();
 
-	await waitForElement("#titleSection");
-
 	if (config.addMirrorLinks){
 		set_mirror_links();
 	}
@@ -239,40 +237,44 @@ function set_mirror_links(){
 		return;
 	}
 
-	var title_section = document.getElementById("titleSection")
+	var title_section = document.getElementById("titleSection");
 
-	var title_link_section = document.createElement("div")
-		title_link_section.className = "title_link_section"
+		if (!title_section){
+			title_section = document.getElementById("titleblock_feature_div");
+		}
 
-	var link_us = document.createElement("a")
-		link_us.className = "amazon_mirror_link"
-		link_us.innerText="AmzUS"
+	var title_link_section = document.createElement("div");
+		title_link_section.className = "title_link_section";
 
-	var link_ca = document.createElement("a")
-		link_ca.className = "amazon_mirror_link"
-		link_ca.innerText="AmzCA"
+	var link_us = document.createElement("a");
+		link_us.className = "amazon_mirror_link";
+		link_us.innerText="AmzUS";
 
-	var link_mx = document.createElement("a")
-		link_mx.className = "amazon_mirror_link"
-		link_mx.innerText="AmzMX"
+	var link_ca = document.createElement("a");
+		link_ca.className = "amazon_mirror_link";
+		link_ca.innerText="AmzCA";
+
+	var link_mx = document.createElement("a");
+		link_mx.className = "amazon_mirror_link";
+		link_mx.innerText="AmzMX";
 
 	if (!title_section.getElementsByClassName("title_link_section")[0]){
-		title_section.appendChild(title_link_section)
+		title_section.appendChild(title_link_section);
 	}
 
-	link_us.innerText="AmzUS"
-	link_us.href = `https://www.amazon.com/gp/product/${asin}`
+	link_us.innerText="AmzUS";
+	link_us.href = `https://www.amazon.com/gp/product/${asin}`;
 
-	link_ca.innerText="AmzCA"
-	link_ca.href = `https://www.amazon.ca/gp/product/${asin}`
+	link_ca.innerText="AmzCA";
+	link_ca.href = `https://www.amazon.ca/gp/product/${asin}`;
 
-	link_mx.innerText="AmzMX"
-	link_mx.href = `https://www.amazon.com.mx/gp/product/${asin}`
+	link_mx.innerText="AmzMX";
+	link_mx.href = `https://www.amazon.com.mx/gp/product/${asin}`;
 
 
-	title_link_section.appendChild(link_us)
-	title_link_section.appendChild(link_ca)
-	title_link_section.appendChild(link_mx)
+	title_link_section.appendChild(link_us);
+	title_link_section.appendChild(link_ca);
+	title_link_section.appendChild(link_mx);
 }
 
 function addCustomCSS(){
