@@ -18,7 +18,7 @@ const config = {
 		false - фича выключена
 	*/
 
-	forcePageToLeft: false,
+	forcePageToLeft: true,
 
 	addMirrorLinks: true,
 	checkDiscount: true,
@@ -293,8 +293,7 @@ function addCustomCSS(){
 			#detailPageGifting_feature_div,
 			#offerDisplayGroupTabSet,
 			#primeDPUpsellStaticContainerNPA,
-			#desktop-dp-ilm_feature_div_01,
-            .a-expander-partial-collapse-header
+			#desktop-dp-ilm_feature_div_01
 			{
 				display: none !important;
 			}
