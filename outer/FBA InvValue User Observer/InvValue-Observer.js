@@ -64,7 +64,7 @@ function clearYellowRow(row, cells){
 
 	cells.forEach(cell => {
 		const hasFK = cell.querySelector('input.factorK');
-		if (!hasFK){
+		if (!hasFK && !cell.innerText.includes('%')){
 			cell.style = null;
 		}
 	});
