@@ -15,34 +15,25 @@
     'use strict';
     const externalScriptUrl = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@latest/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js";
 
-    console.log("========== CONNECT", externalScriptUrl);
+    console.log("========== AMZNWV CONNECT", externalScriptUrl);
 
     GM_xmlhttpRequest({
         method: 'GET',
         url: externalScriptUrl,
         onload: function(response) {
             if (response.status >= 200 && response.status < 400) {
-                console.log("========== RESPONSE SUCCSESS");
-
+                console.log("========== RESPONSE SUCCSESS. EXECUTING SCRIPT...");
                 try {
                     eval(response.responseText);
                 } catch (e) {
-                    console.error("========== EVAL FAILED: Произошла критическая ошибка при выполнении кода. Вероятно, в нем есть синтаксическая ошибка.", e);
-                    return;
-                }
-
-                if (typeof initializeAmazonWorkView === 'function') {
-                    console.log("========== FUNCTION DEF SUCCSESS");
-                    initializeAmazonWorkView();
-                } else {
-                    console.error("========== FUNCTION DEF FAILED: Функция initializeAmazonWorkView не была найдена после выполнения скрипта.");
+                    console.error("========== EVAL FAILED: Критическая ошибка при выполнении публичного скрипта.", e);
                 }
             } else {
-                console.error(`========== Ошибка загрузки внешнего скрипта. Статус: ${response.status}`);
+                console.error(`Ошибка загрузки внешнего скрипта. Статус: ${response.status}`);
             }
         },
         onerror: function(error) {
-            console.error("========== Сетевая ошибка при загрузке внешнего скрипта:", error);
+            console.error("Сетевая ошибка при загрузке внешнего скрипта:", error);
         }
     });
 })();
