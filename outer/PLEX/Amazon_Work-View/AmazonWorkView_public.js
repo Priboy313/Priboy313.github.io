@@ -1,7 +1,5 @@
 (function() {
-	'use strict';
-
-	console.log("========== AMZN PUBLIC");
+	console.log("========== AMZNWV PUBLIC");
 	
 	const SCRIPT_ID = 'amazonWorkView';
 	const SETTINGS_SCHEMA = {
