@@ -8,47 +8,32 @@
 	console.log("========== AMZNWV PUBLIC (проверка зависимостей пройдена)");
 
 	const SCRIPT_ID = 'amazonWorkView';
-	const SETTINGS_SCHEMA = {
-		name: 'Amazon Work View',
-		settings: {
-			forcePageToLeft: { label: 'Сдвинуть страницу влево', type: 'boolean', default: false },
+	const DEFAULTS  = {
+		forcePageToLeft: false,
 
-			addMirrorLinks: { label: 'Добавить ссылки-зеркала', type: 'boolean', default: true },
-			checkDiscount: { label: 'Проверять скидку Amazon', type: 'boolean', default: true },
-			showFee: { label: 'Показывать Fee в RevSeller', type: 'boolean', default: true },
+		addMirrorLinks: true,
+		checkDiscount: true,
+		showFee: true,
 
-			clearAmazon: { label: 'Удалить лишние элементы Амазона', type: 'boolean', default: true },
-			clearGrabley: { label: 'Удалить лишние элементы Grabley', type: 'boolean', default: true },
-			clearRevseller: { label: 'Удалить лишние элементы RevSeller', type: 'boolean', default: true },
-        }
-    };
+		clearAmazon: true ,
+		clearGrabley: true ,
+		clearRevseller: true,
+	};
 
-	const REGISTRY_KEY = 'my_scripts_registry';
 	const SETTINGS_KEY = 'my_scripts_settings';
 
-    const centralConfig = {
-        registerSelf: function() {
-            const registry = GM_getValue(REGISTRY_KEY, {});
-            registry[SCRIPT_ID] = SETTINGS_SCHEMA;
-            GM_setValue(REGISTRY_KEY, registry);
-        },
-        load: function() {
-            const allSettings = GM_getValue(SETTINGS_KEY, {});
-            const mySavedSettings = allSettings[SCRIPT_ID] || {};
-            const myDefaults = {};
-            for(const key in SETTINGS_SCHEMA.settings) {
-                myDefaults[key] = SETTINGS_SCHEMA.settings[key].default;
-            }
-            return { ...myDefaults, ...mySavedSettings };
-        }
-    };
+    function loadConfig() {
+        const allSettings = GM_getValue(SETTINGS_KEY, {});
+        const mySavedSettings = allSettings[SCRIPT_ID] || {};
+        return { ...DEFAULTS, ...mySavedSettings };
+    }
 
     async function main() {
 
 		console.log("========== AMZNWV PUBLIC");
 
         centralConfig.registerSelf();
-        const config = centralConfig.load();
+        const config = loadConfig();
         console.log(`(AmazonWorkView) Запущен с конфигом:`, config);
 
 		addCustomCSS(config);
