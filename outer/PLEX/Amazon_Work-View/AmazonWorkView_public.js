@@ -32,7 +32,6 @@
 
 		console.log("========== AMZNWV PUBLIC");
 
-        centralConfig.registerSelf();
         const config = loadConfig();
         console.log(`(AmazonWorkView) Запущен с конфигом:`, config);
 
