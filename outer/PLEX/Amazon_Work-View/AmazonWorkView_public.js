@@ -1,14 +1,14 @@
-function initializeAmazonWorkView() {
-    'use strict';
-    
-    const SCRIPT_ID = 'amazonWorkView';
-    const SETTINGS_SCHEMA = {
-        name: 'Amazon Work View',
-        settings: {
-            forcePageToLeft: { label: 'Сдвинуть страницу влево', type: 'boolean', default: false },
+(function() {
+	'use strict';
+	
+	const SCRIPT_ID = 'amazonWorkView';
+	const SETTINGS_SCHEMA = {
+		name: 'Amazon Work View',
+		settings: {
+			forcePageToLeft: { label: 'Сдвинуть страницу влево', type: 'boolean', default: false },
 
-            addMirrorLinks: { label: 'Добавить ссылки-зеркала', type: 'boolean', default: true },
-            checkDiscount: { label: 'Проверять скидку Amazon', type: 'boolean', default: true },
+			addMirrorLinks: { label: 'Добавить ссылки-зеркала', type: 'boolean', default: true },
+			checkDiscount: { label: 'Проверять скидку Amazon', type: 'boolean', default: true },
 			showFee: { label: 'Показывать Fee в RevSeller', type: 'boolean', default: true },
 
 			clearAmazon: { label: 'Удалить лишние элементы Амазона', type: 'boolean', default: true },
@@ -26,28 +26,23 @@ function initializeAmazonWorkView() {
             registry[SCRIPT_ID] = SETTINGS_SCHEMA;
             GM_setValue(REGISTRY_KEY, registry);
         },
-
         load: function() {
             const allSettings = GM_getValue(SETTINGS_KEY, {});
             const mySavedSettings = allSettings[SCRIPT_ID] || {};
-            
             const myDefaults = {};
             for(const key in SETTINGS_SCHEMA.settings) {
                 myDefaults[key] = SETTINGS_SCHEMA.settings[key].default;
             }
-
             return { ...myDefaults, ...mySavedSettings };
         }
     };
 
-    (async function() {
+    async function main() {
         centralConfig.registerSelf();
-        
         const config = centralConfig.load();
+        console.log(`(AmazonWorkView) Запущен с конфигом:`, config);
 
-        console.log(`(AmazonWorkView) Загружен с конфигом:`, config);
-
-		addCustomCSS();
+		addCustomCSS(config);
 
         if (config.addMirrorLinks){
 			set_mirror_links();
@@ -59,14 +54,13 @@ function initializeAmazonWorkView() {
 
 		if (config.showFee){
 			await waitForElement("#aic-ext-popup-fba-result-available");
-
 			setInterval(function() {
 				set_fee_in_revseller_calc();
 			}, 100);
 		}
-
-    })();
+    }
     
+    main();
 
 	function waitForElement(selector, timeout = 10000) {
 		return new Promise((resolve, reject) => {
@@ -291,7 +285,7 @@ function initializeAmazonWorkView() {
 		title_link_section.appendChild(link_mx);
 	}
 
-	function addCustomCSS(){
+	function addCustomCSS(config){
 		const customAmazonStyle = document.createElement('style');
 			customAmazonStyle.id = "custom-amzWV-css";
 			customAmazonStyle.innerHTML = "/* Custom AmznWV CSS */"
@@ -396,4 +390,4 @@ function initializeAmazonWorkView() {
 		document.head.appendChild(customAmazonStyle);
 
 	}
-}
+})();
