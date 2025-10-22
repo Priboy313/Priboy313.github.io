@@ -4,21 +4,23 @@
 // @author       Priboy313
 // @description  Централизованные настройки для всех кастомных скриптов
 // @match        *://*/*
+// @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_registerMenuCommand
+// @connect      cdn.jsdelivr.net
 // ==/UserScript==
 
 (function() {
 	'use strict';
 
-	const REGISTRY_KEY = 'my_scripts_registry';
-	const SETTINGS_KEY = 'my_scripts_settings';
+	const MANIFEST_URL = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@latest/outer/PLEX/manifest.json";
+    const SETTINGS_KEY = 'my_scripts_settings';
 
-	function showSettingsUI() {
+	async function showSettingsUI() {
 		if (document.getElementById('my-settings-modal')) return;
 
-		const registry = GM_getValue(REGISTRY_KEY, {});
+		const registry = await fetchManifest();
 		const settings = GM_getValue(SETTINGS_KEY, {});
 
 		let formHTML = '';
@@ -42,6 +44,27 @@
 				formHTML += `<label>${inputHTML} ${settingInfo.label}</label><br>`;
 			}
 			formHTML += `</fieldset>`;
+		}
+
+		function fetchManifest() {
+			return new Promise(resolve => {
+				GM_xmlhttpRequest({
+					method: 'GET',
+					url: MANIFEST_URL,
+					onload: function(response) {
+						try {
+							resolve(JSON.parse(response.responseText));
+						} catch (e) {
+							console.error("Ошибка парсинга манифеста:", e);
+							resolve(null);
+						}
+					},
+					onerror: function() {
+						console.error("Ошибка загрузки манифеста.");
+						resolve(null);
+					}
+				});
+			});
 		}
 		
 		if (formHTML === '') {

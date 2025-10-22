@@ -1,0 +1,15 @@
+{
+	"amazonWorkView": {
+		"name": "Amazon Work View",
+		"description": "Улучшения для страниц товаров Amazon.",
+		"settings": {
+			"forcePageToLeft": { "label": "Сдвинуть страницу влево", "type": "boolean", "default": false },
+			"addMirrorLinks": { "label": "Добавить ссылки-зеркала", "type": "boolean", "default": true },
+			"checkDiscount": { "label": "Проверять скидку Amazon", "type": "boolean", "default": true },
+			"showFee": { "label": "Показывать Fee в RevSeller", "type": "boolean", "default": true },
+			"clearAmazon": { "label": "Удалить лишние элементы Амазона", "type": "boolean", "default": true },
+			"clearGrabley": { "label": "Удалить лишние элементы Grabley", "type": "boolean", "default": true },
+			"clearRevseller": { "label": "Удалить лишние элементы RevSeller", "type": "boolean", "default": true }
+		}
+	}
+}
