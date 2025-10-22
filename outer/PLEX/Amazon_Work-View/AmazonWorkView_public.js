@@ -1,4 +1,12 @@
 (function() {	
+
+	if (typeof GM_getValue === 'undefined' || typeof GM_setValue === 'undefined') {
+        console.error('[AMZNWV PUBLIC] Критическая ошибка: Функции GM_getValue/GM_setValue не были предоставлены загрузчиком. Убедитесь, что в скрипте-установщике есть нужные @grant директивы.');
+        throw new Error("Missing GM functions");
+    }
+
+	console.log("========== AMZNWV PUBLIC (проверка зависимостей пройдена)");
+
 	const SCRIPT_ID = 'amazonWorkView';
 	const SETTINGS_SCHEMA = {
 		name: 'Amazon Work View',
