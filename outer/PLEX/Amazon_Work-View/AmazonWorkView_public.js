@@ -17,8 +17,8 @@
         }
     };
 
-    const REGISTRY_KEY = 'my_scripts_registry';
-    const SETTINGS_KEY = 'my_scripts_settings';
+	const REGISTRY_KEY = 'my_scripts_registry';
+	const SETTINGS_KEY = 'my_scripts_settings';
 
     const centralConfig = {
         registerSelf: function() {
