@@ -1,6 +1,4 @@
-(function() {
-	console.log("========== AMZNWV PUBLIC");
-	
+(function() {	
 	const SCRIPT_ID = 'amazonWorkView';
 	const SETTINGS_SCHEMA = {
 		name: 'Amazon Work View',
@@ -38,6 +36,9 @@
     };
 
     async function main() {
+
+		console.log("========== AMZNWV PUBLIC");
+
         centralConfig.registerSelf();
         const config = centralConfig.load();
         console.log(`(AmazonWorkView) Запущен с конфигом:`, config);
