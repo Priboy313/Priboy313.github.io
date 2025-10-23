@@ -23,7 +23,7 @@
 	const SETTINGS_KEY = 'my_scripts_settings';
 
     function loadConfig() {
-		const allSettings = {};
+		let allSettings = {};
 
 		try {
 			const settingsFromStorage = localStorage.getItem(SETTINGS_KEY);
