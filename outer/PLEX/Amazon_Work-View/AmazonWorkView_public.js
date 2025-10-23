@@ -1,7 +1,7 @@
 (function() {	
 
 	if (typeof GM_getValue === 'undefined' || typeof GM_setValue === 'undefined') {
-        console.error('[AMZNWV PUBLIC] Критическая ошибка: Функции GM_getValue/GM_setValue не были предоставлены загрузчиком. Убедитесь, что в скрипте-установщике есть нужные @grant директивы.');
+        console.error('== [AMZNWV PUBLIC] Критическая ошибка: Функции GM_getValue/GM_setValue не были предоставлены загрузчиком. Убедитесь, что в скрипте-установщике есть нужные @grant директивы.');
         throw new Error("Missing GM functions");
     }
 
@@ -23,17 +23,30 @@
 	const SETTINGS_KEY = 'my_scripts_settings';
 
     function loadConfig() {
-        console.log('[CONFIG_LOADER] Запрашиваю все настройки из хранилища по ключу:', SETTINGS_KEY);
-		const allSettings = GM_getValue(SETTINGS_KEY, {});
+		const allSettings = {};
+
+		try {
+			const settingsFromStorage = localStorage.getItem(SETTINGS_KEY);
+			if (settingsFromStorage){
+				allSettings = JSON.parse(settingsFromStorage);
+			} else{
+				llSettings = GM_getValue(SETTINGS_KEY, {});
+				console.log('== [CONFIG_LOADER] В localStorage пусто, загружаю из GM_storage.');
+			}
+		} catch (e) {
+			
+			console.log('== [CONFIG_LOADER] [CONFIG_LOADER] В localStorage пусто, загружаю из GM_storage по ключю:', SETTINGS_KEY);
+			allSettings = GM_getValue(SETTINGS_KEY, {});
+		}
 		
-		console.log('[CONFIG_LOADER] Полученный объект allSettings:', allSettings);
+		console.log('== [CONFIG_LOADER] Полученный объект allSettings:', allSettings);
 		
-		console.log('[CONFIG_LOADER] Ищу настройки для SCRIPT_ID:', SCRIPT_ID);
+		console.log('== [CONFIG_LOADER] Ищу настройки для SCRIPT_ID:', SCRIPT_ID);
 		const mySavedSettings = allSettings[SCRIPT_ID] || {};
-		console.log('[CONFIG_LOADER] Найденные сохраненные настройки (mySavedSettings):', mySavedSettings);
+		console.log('== [CONFIG_LOADER] Найденные сохраненные настройки (mySavedSettings):', mySavedSettings);
 		
 		const finalConfig = { ...DEFAULTS, ...mySavedSettings };
-		console.log('[CONFIG_LOADER] Финальный конфиг после слияния:', finalConfig);
+		console.log('== [CONFIG_LOADER] Финальный конфиг после слияния:', finalConfig);
 		
 		return finalConfig;
     }

@@ -96,7 +96,15 @@
 					}
 				}
 			}
+
 			GM_setValue(SETTINGS_KEY, newSettings);
+
+			try {
+				localStorage.setItem(SETTINGS_KEY, JSON.stringify(newSettings));
+			} catch (e) {
+				console.error("== [SETTINGS MANAGER] Не удалось сохранить настройки в localStorage", e)
+			}
+
 			alert('Настройки сохранены!');
 			document.getElementById('my-settings-modal').remove();
 		});
