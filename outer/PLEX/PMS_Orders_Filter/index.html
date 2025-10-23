@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Test Orders Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='filters_main.css'> -->
+
+    <!-- origin styles -->
+    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon/officechase_48x48.ico">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/sortable.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" type="text/css" media="all" title="no title">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/bootstrap.min.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/tether.min.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/dlt.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/styles/pms-v2.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/styles/elasticsearch.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/styles/mfp.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/styles/modalbox.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://pms.officechase.com/pms/styles/restartMsgGrowl.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" type="text/css" media="screen">
+
+    <style type="text/css">
+        .bigfontselect {
+            font-size: 14px;
+
+        }
+
+        .select2width150 {
+            width: 170px;
+
+        }
+
+        .select2OptWidth350 {
+            width: 350px !important;
+        }
+
+        .select2OptWidth200 {
+            width: 180px !important;
+        }
+
+        [class^='select2'] {
+            border-radius: 0px !important;
+        }
+
+        .select2-results__option--highlighted {
+            color: black !important;
+            background-color: #dcebf5 !important;
+        }
+
+        .select2-selection__rendered {
+            line-height: 20px !important;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 20px !important;
+        }
+
+        .select2-selection__arrow {
+            height: 20px !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <style type="text/css">
+        #elasticsearch-container .elasticsearch-panel table thead th {
+            font-size: 11px;
+        }
+    </style>
+    <div id="popupissue" style="display: none;background-color: #000;height: 100%;left: 0;opacity: 0.50;position: fixed;top: 0;width: 100%;z-index: 1000;"></div>
+    <br><br>
+     <style>
+        .order-block-bottom{
+            border-bottom:1px solid black; border-left:1px solid black;border-right:1px solid black;
+        }
+        .order-block-top{
+            border-top: 1px solid black; border-left:1px solid black;border-right:1px solid black;
+        }
+        .order-block-mid{
+            border-left:1px solid black;border-right:1px solid black;
+        }
+        .order-bk-gray{
+            background-color: #d3d3d33d;
+        }
+    
+        table.table-hover thead tr, th {
+            position: sticky!important;
+            top: 0px;
+            background: inherit;
+        }
+    
+        table {
+            width: 95%;
+            margin-left: 2.5%;
+        }
+    </style>
+    <div class="nav-sign">FBA Sales Management</div>
+    <div class="titlebar-blue">
+        <form method="post" action="/pms/listfbaorderscomm.xhtml">  <label><input name="marketPlaceIds[0]" checked="checked" type="checkbox" value="5"> Amazon</label>
+             <label><input name="marketPlaceIds[1]" type="checkbox" value="12"> AmaznUK</label>
+             <label><input name="marketPlaceIds[2]" type="checkbox" value="13"> AmaznES</label>
+             <label><input name="marketPlaceIds[3]" type="checkbox" value="14"> AmaznIT</label>
+             <label><input name="marketPlaceIds[4]" type="checkbox" value="15"> AmaznCA</label>
+             <label><input name="marketPlaceIds[5]" type="checkbox" value="16"> AmaznDE</label>
+             <label><input name="marketPlaceIds[6]" type="checkbox" value="17"> AmaznFR</label>
+            
+            &nbsp;&nbsp;
+            Ship-To Country:
+            <select name="shipToCountryFilter" class="bigfontselect select2width150 select2 select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true"> <option value="" selected="selected" data-select2-id="3">Not selected - All</option>  <option value="US">US</option>  <option value="MX">MX</option>  <option value="CA">CA</option>  </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="2" style="width: 170px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-shipToCountryFilter-e3-container"><span class="select2-selection__rendered" id="select2-shipToCountryFilter-e3-container" role="textbox" aria-readonly="true" title="Not selected - All">Not selected - All</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> <div class="find-product">
+    
+                <input name="searchValue">
+                <select name="searchBy"> <option value="referenceId">by Order #</option> <option value="sku">by SKU</option> <option value="asin" selected="selected">by ASIN</option> </select> <input name="showPage" type="submit" value="Search"> </div>
+            <br><br>
+    
+    
+    
+            <label>Choose date:</label>
+            <input type="text" id="daterange" value="02/05/2025 - 02/05/2025">
+            <input type="hidden" name="startDate" id="startDate" value="02/05/2025">
+            <input type="hidden" name="endDate" id="endDate" value="02/05/2025">
+            <input type="hidden" name="maxDateRange" id="maxDateRange" value="60">
+            <input type="hidden" name="jsSummary" id="jsSummary" value="false">
+            <input type="hidden" id="userRole" name="userRole" value="manager">
+    
+    
+             <select name="userId" class="bigfontselect select2width150 select2 select2-hidden-accessible" data-select2-id="4" tabindex="-1" aria-hidden="true">  <option value="">Not selected - All</option>   <option value="32">archived@officechase.com</option>  <option value="54" selected="selected" data-select2-id="6">igorp@officechase.com</option>  <option value="93">dempingoc@officechase.com</option>  <option value="21">karolina@officechase.com</option>  <option value="1">artem@officechase.com</option>  <option value="20">andres@officechase.com</option>  <option value="45">angelpm@officechase.com</option>  </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="5" style="width: 170px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-userId-7p-container"><span class="select2-selection__rendered" id="select2-userId-7p-container" role="textbox" aria-readonly="true" title="igorp@officechase.com">igorp@officechase.com</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> <label><input name="onlyNegativeProfit" type="checkbox" value="true"> Only Negative</label>
+             <input onclick="tintScreen();" name="showPage" type="submit" value="Show Detailed"> <input onclick="tintScreen();" name="showSummaryPage" type="submit" value="Show Summary"> <input name="showProductsPage" type="submit" value="Manage Products">  <label>
+                <div style="float:right;color: black; font-size: 16px; font-weight: bold; bottom: 10px;">
+                    current period: 01/25/2025 - 02/07/2025 </div>
+            </label>
+    
+        <div style="display: none;"><input type="hidden" name="_sourcePage" value="ztbFgYkmdVePCgGMvvsrAKEYDmRhJiIMRWHqkV9InNCz9AbS6l_bW0j8G3m_Itg0jTCobKiPe2fQ3rnxqFk40A=="><input type="hidden" name="__fp" value="iD1Q44FagAtfP8azYFcrB84R3sVzdUui0kngNpDhXAl2Uuoa_92JwE8ZiwjLrxi60itPWCo-Reye0F-1SlGDO0kBjwr5yIKIMXpsGamSJRQkc8zqFDvxA04jZWygdjU7Xz_Gs2BXKwePGWRKsWm8fWLbV5F7T8_Z0kngNpDhXAlTUMe9mJ0xqE8ZiwjLrxi60itPWCo-RezGB-H5f4HQrwm-ILcFfAsJHDfS3dNXZ_FAaYES78whU5rGI6VP_P9RTCjmZKNPdME="></div></form> </div>
+    <center>
+        <div>
+              <br>
+             </div>
+    </center>
+    <div style="color:red; font-size: 14px; font-weight: bold;margin-top: 20px; margin-bottom: 20px; text-decoration:blink">
+        <center>
+            <blink> <b>A Bonus is a gift to reward performance!&nbsp;&nbsp;&nbsp;&nbsp;Poor Performance equals <u>Poor or No Bonus!</u></b></blink><br>
+        </center>
+    </div>
+    
+    <!-- SUMMARY BLOCK START -->
+     <!-- SUMMARY BLOCK END -->
+    
+    <!-- REGULAR ONE BY ONE BLOCK START -->
+     <table class="table-hover">
+              <thead>
+                        <tr style=" background: #f0f0f0;">
+                            <th>#</th>
+                            <th class="col1">SKU</th>
+                            <th class="col2">Title</th>
+                                 <th class="col3">Cost (per 1)</th>
+                            <th class="col4">Price</th>
+                            <th class="col5">Shipping</th>
+                            <th class="col6">Total</th>
+                            <th class="col7">Qty</th>
+                            <th class="col9">Fee (per 1)</th>
+                            <th class="col9">Margin</th>
+                            <th class="col9">Profit</th>
+                            <th class="col9">Bonus</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                          <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>1</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=114-6383947-2941023" target="_blank">114-6383947-2941023</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 12:21 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , CORUNNA,48817-2206 ,MI,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=B105-00245-1EA-F1" title="Open product in Manage FBA Inventory page" target="_blank">B105-00245-1EA-F1</a> </td>
+                                         <td class="col2"><b>TREATMENT WATER/BAC 64OZ</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $5.00
+                                                &nbsp;(5.0)
+                                              </td>
+                                         <td class="col4">$18.97</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$18.97</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$9.01</b>
+                                        &nbsp;(9.01)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                26% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$4.96</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.99</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$18.97&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$5.00&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$9.01&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$4.96
+                                        Order Margin:&nbsp;
+                                          26%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>2</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=113-5074275-9249039" target="_blank">113-5074275-9249039</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 12:41 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , ARIVACA,85601-0315 ,AZ,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="background: #ffeb0026;">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=G015-92773-1EA-F" title="Open product in Manage FBA Inventory page" target="_blank">G015-92773-1EA-F</a> </td>
+                                         <td class="col2"><b>Gilmour 25' Black Flat Weeper Soaker Hose for Garden Beds, Drip Irrigation Outdoor Hose, Flexible Garden Hose for Vegetable Gardens, Flower Beds, Lawns, and Orchards</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $6.79
+                                                &nbsp;(6.79)
+                                              </td>
+                                         <td class="col4">$12.51</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$12.51</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$5.62</b>
+                                        &nbsp;(5.62)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class="red"> 
+                                                1% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$0.10</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.02</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="background: #ffeb0026;">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=G015-92773-1EA-F" title="Open product in Manage FBA Inventory page" target="_blank">G015-92773-1EA-F</a> </td>
+                                         <td class="col2"><b>Gilmour 25' Black Flat Weeper Soaker Hose for Garden Beds, Drip Irrigation Outdoor Hose, Flexible Garden Hose for Vegetable Gardens, Flower Beds, Lawns, and Orchards</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $6.79
+                                                &nbsp;(6.79)
+                                              </td>
+                                         <td class="col4">$12.51</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$12.51</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$5.62</b>
+                                        &nbsp;(5.62)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class="red"> 
+                                                1% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$0.10</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.02</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="background: #ffeb0026;">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=G015-92773-1EA-F" title="Open product in Manage FBA Inventory page" target="_blank">G015-92773-1EA-F</a> </td>
+                                         <td class="col2"><b>Gilmour 25' Black Flat Weeper Soaker Hose for Garden Beds, Drip Irrigation Outdoor Hose, Flexible Garden Hose for Vegetable Gardens, Flower Beds, Lawns, and Orchards</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $6.79
+                                                &nbsp;(6.79)
+                                              </td>
+                                         <td class="col4">$12.51</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$12.51</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$5.62</b>
+                                        &nbsp;(5.62)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class="red"> 
+                                                1% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$0.10</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.02</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="background: #ffeb0026;">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=G015-92773-1EA-F" title="Open product in Manage FBA Inventory page" target="_blank">G015-92773-1EA-F</a> </td>
+                                         <td class="col2"><b>Gilmour 25' Black Flat Weeper Soaker Hose for Garden Beds, Drip Irrigation Outdoor Hose, Flexible Garden Hose for Vegetable Gardens, Flower Beds, Lawns, and Orchards</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $6.79
+                                                &nbsp;(6.79)
+                                              </td>
+                                         <td class="col4">$12.51</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$12.51</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$5.62</b>
+                                        &nbsp;(5.62)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class="red"> 
+                                                1% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$0.10</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.02</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="background: #ffeb0026;">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=G015-92773-1EA-F" title="Open product in Manage FBA Inventory page" target="_blank">G015-92773-1EA-F</a> </td>
+                                         <td class="col2"><b>Gilmour 25' Black Flat Weeper Soaker Hose for Garden Beds, Drip Irrigation Outdoor Hose, Flexible Garden Hose for Vegetable Gardens, Flower Beds, Lawns, and Orchards</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $6.79
+                                                &nbsp;(6.79)
+                                              </td>
+                                         <td class="col4">$12.51</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$12.51</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$5.62</b>
+                                        &nbsp;(5.62)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class="red"> 
+                                                1% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$0.10</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.02</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$62.55&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$33.95&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$28.10&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$0.50
+                                        Order Margin:&nbsp;
+                                          1%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>3</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=111-5442956-0513869" target="_blank">111-5442956-0513869</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 01:23 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , SURPRISE,85388-5497 ,AZ,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=I041-25310-1PK-F" title="Open product in Manage FBA Inventory page" target="_blank">I041-25310-1PK-F</a> </td>
+                                         <td class="col2"><b>ITW Brands 25310 50 pack 75lb Drywall Anchor</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $5.51
+                                                &nbsp;(5.51)
+                                              </td>
+                                         <td class="col4">$14.55</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$14.55</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$6.34</b>
+                                        &nbsp;(6.34)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                19% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.70</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.54</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$14.55&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$5.51&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$6.34&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$2.70
+                                        Order Margin:&nbsp;
+                                          19%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>4</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=114-6769239-8343432" target="_blank">114-6769239-8343432</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 01:37 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , AUBURN,98002-2831 ,WA,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=A088-93546-1BX-F" title="Open product in Manage FBA Inventory page" target="_blank">A088-93546-1BX-F</a> </td>
+                                         <td class="col2"><b>GLOVEWORKS Black Disposable Nitrile Industrial Gloves, 5 Mil, Latex &amp; Powder-Free, Food-Safe, Textured, Large, Box of 100</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $6.15
+                                                &nbsp;(6.15)
+                                              </td>
+                                         <td class="col4">$16.85</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$16.85</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$7.90</b>
+                                        &nbsp;(7.9)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                17% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.80</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.56</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$16.85&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$6.15&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$7.90&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$2.80
+                                        Order Margin:&nbsp;
+                                          17%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>5</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=702-5519148-9469056" target="_blank">702-5519148-9469056</a>
+                                     <b>CA<b>
+                                     </b></b></td>
+                                             <td class="table-order">
+                                    02/05/2025 02:12 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , Vancouver,V6E 2C4 ,British Columbia,CA </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=BOS10099%2F2PACK_F" title="Open product in Manage FBA Inventory page" target="_blank">BOS10099/2PACK_F</a> </td>
+                                         <td class="col2"><b>Stanley Utility Knife, 2-Pack - 6 in Classic 99 Retractable with Alloy Steel Blades &amp; Handle, Interlocking Nose, 3-Position Blade, Includes 3 Blades</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $5.04
+                                                &nbsp;(5.04)
+                                              </td>
+                                         <td class="col4">$13.38</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$13.38</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$6.15</b>
+                                        &nbsp;(6.15)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                16% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.19</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.44</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$13.38&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$5.04&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$6.15&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$2.19
+                                        Order Margin:&nbsp;
+                                          16%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>6</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=112-2958970-9814651" target="_blank">112-2958970-9814651</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 03:00 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , MINNETONKA,55345-4959 ,MN,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=B105-00245-1EA-F1" title="Open product in Manage FBA Inventory page" target="_blank">B105-00245-1EA-F1</a> </td>
+                                         <td class="col2"><b>TREATMENT WATER/BAC 64OZ</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $5.00
+                                                &nbsp;(5.0)
+                                              </td>
+                                         <td class="col4">$17.00</td>
+                                         <td class="col5">$1.49</td>
+                                         <td class="col6"><b>$18.49</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$9.01</b>
+                                        &nbsp;(9.01)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                18% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.99</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.60</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$17.00&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$5.00&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$9.01&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$2.99
+                                        Order Margin:&nbsp;
+                                          18%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>7</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=114-0128735-5852253" target="_blank">114-0128735-5852253</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 03:11 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , EXTON,19341-2858 ,PA,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=A169-84523-2BG-F" title="Open product in Manage FBA Inventory page" target="_blank">A169-84523-2BG-F</a> </td>
+                                         <td class="col2"><b>Aududon Park 12231 Cardinal Blend Wild Bird Food, 4-Pounds (2)</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $11.17
+                                                &nbsp;(11.17)
+                                              </td>
+                                         <td class="col4">$29.85</td>
+                                         <td class="col5">$5.50</td>
+                                         <td class="col6"><b>$35.35</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$13.16</b>
+                                        &nbsp;(13.16)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                18% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$5.52</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$1.10</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$29.85&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$11.17&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$13.16&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$5.52
+                                        Order Margin:&nbsp;
+                                          18%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>8</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=114-2785718-9694661" target="_blank">114-2785718-9694661</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 03:41 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , OGDEN,84403-5388 ,UT,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=ORG8667669_F1" title="Open product in Manage FBA Inventory page" target="_blank">ORG8667669_F1</a> </td>
+                                         <td class="col2"><b>Builder's Best 010155 Venting. Offset Elbow, Dryer, 4-1/2 In, 1 Cubic Centimeters</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $8.42
+                                                &nbsp;(8.42)
+                                              </td>
+                                         <td class="col4">$21.95</td>
+                                         <td class="col5">$0.99</td>
+                                         <td class="col6"><b>$22.94</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$8.81</b>
+                                        &nbsp;(8.81)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                22% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$4.72</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.94</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$21.95&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$8.42&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$8.81&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$4.72
+                                        Order Margin:&nbsp;
+                                          22%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>9</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=112-7569445-8362645" target="_blank">112-7569445-8362645</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 04:08 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , Castine,04421-3422 ,ME,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=S015-21115-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">S015-21115-1CD-F</a> </td>
+                                         <td class="col2"><b>Stanley Hand Tools 21-115 7-1/4 in. Surform Shaver</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.44
+                                                &nbsp;(2.44)
+                                              </td>
+                                         <td class="col4">$8.73</td>
+                                         <td class="col5">$0.08</td>
+                                         <td class="col6"><b>$8.81</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$4.41</b>
+                                        &nbsp;(4.41)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                22% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$1.88</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.38</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$8.73&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$2.44&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$4.41&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$1.88
+                                        Order Margin:&nbsp;
+                                          22%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>10</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=112-0431483-5208226" target="_blank">112-0431483-5208226</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 07:41 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , JACKSONVILLE,32225 ,FL,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=EME1188192%2F12PK_F" title="Open product in Manage FBA Inventory page" target="_blank">EME1188192/12PK_F</a> </td>
+                                         <td class="col2"><b>Wooster Brush Q3211 2 inch Shortcut Angle Sash Paintbrush, Pack of 12</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $19.97
+                                                &nbsp;(19.97)
+                                              </td>
+                                         <td class="col4">$38.98</td>
+                                         <td class="col5">$1.00</td>
+                                         <td class="col6"><b>$39.98</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$11.51</b>
+                                        &nbsp;(11.51)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                19% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$7.50</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$1.50</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=EME1188192%2F12PK_F" title="Open product in Manage FBA Inventory page" target="_blank">EME1188192/12PK_F</a> </td>
+                                         <td class="col2"><b>Wooster Brush Q3211 2 inch Shortcut Angle Sash Paintbrush, Pack of 12</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $19.97
+                                                &nbsp;(19.97)
+                                              </td>
+                                         <td class="col4">$38.98</td>
+                                         <td class="col5">$0.99</td>
+                                         <td class="col6"><b>$39.97</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$11.51</b>
+                                        &nbsp;(11.51)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                19% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$7.50</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$1.50</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$77.96&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$39.94&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$23.02&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$15.00
+                                        Order Margin:&nbsp;
+                                          19%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>11</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=701-3144740-6437062" target="_blank">701-3144740-6437062</a>
+                                     <b>MX<b>
+                                     </b></b></td>
+                                             <td class="table-order">
+                                    02/05/2025 07:53 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , HEROICA PUEBLA DE ZARAGOZA,72560 ,PUEBLA,MX </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=D075-44155-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">D075-44155-1CD-F</a> </td>
+                                         <td class="col2"><b>DEWALT DW5468 1-1/8-Inch x 8-Inch x 10-Inch Rock Carbide SDS+ Hammer Bit</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $17.46
+                                                &nbsp;(17.46)
+                                              </td>
+                                         <td class="col4">$30.65</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$30.65</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$9.82</b>
+                                        &nbsp;(9.82)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                11% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$3.37</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.67</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$30.65&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$17.46&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$9.82&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$3.37
+                                        Order Margin:&nbsp;
+                                          11%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>12</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=112-0200519-5777860" target="_blank">112-0200519-5777860</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 08:11 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , BRADENTON,34202-3209 ,FL,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=E134-00221-3EA-F" title="Open product in Manage FBA Inventory page" target="_blank">E134-00221-3EA-F</a> </td>
+                                         <td class="col2"><b>E-Cloth 2pc Window Cleaning Pack (Package of 3)</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $16.93
+                                                &nbsp;(16.93)
+                                              </td>
+                                         <td class="col4">$32.95</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$32.95</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$10.46</b>
+                                        &nbsp;(10.46)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                17% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$5.56</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$1.11</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$32.95&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$16.93&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$10.46&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$5.56
+                                        Order Margin:&nbsp;
+                                          17%     </b></td>
+                            </tr>
+                         <tr class="order-block-top" style=" background: #dcebf5;">
+                                     <td>13</td>
+                                             <td class="table-order">
+                                    <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=113-3650519-6288204" target="_blank">113-3650519-6288204</a>
+                                     </td>
+                                             <td class="table-order">
+                                    02/05/2025 08:15 <br><div class="green">igorp@officechase.com</div>
+                                </td>
+                                             <td colspan="5" class="table-order">
+                                     <br> , STOW,01775-1138 ,MA,US </td>
+                                <td colspan="4">
+                                     </td>
+                            </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=F141-90250-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">F141-90250-1CD-F</a> </td>
+                                         <td class="col2"><b>Flexzilla Pro Air Hose Reusable Fitting, 1/4 in. - RP900250</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.71
+                                                &nbsp;(2.71)
+                                              </td>
+                                         <td class="col4">$8.25</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$8.25</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$3.09</b>
+                                        &nbsp;(3.09)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                30% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.45</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.49</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=F141-90250-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">F141-90250-1CD-F</a> </td>
+                                         <td class="col2"><b>Flexzilla Pro Air Hose Reusable Fitting, 1/4 in. - RP900250</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.71
+                                                &nbsp;(2.71)
+                                              </td>
+                                         <td class="col4">$8.25</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$8.25</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$3.09</b>
+                                        &nbsp;(3.09)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                30% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.45</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.49</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=F141-90250-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">F141-90250-1CD-F</a> </td>
+                                         <td class="col2"><b>Flexzilla Pro Air Hose Reusable Fitting, 1/4 in. - RP900250</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.71
+                                                &nbsp;(2.71)
+                                              </td>
+                                         <td class="col4">$8.25</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$8.25</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$3.09</b>
+                                        &nbsp;(3.09)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                30% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.45</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.49</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=F141-90250-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">F141-90250-1CD-F</a> </td>
+                                         <td class="col2"><b>Flexzilla Pro Air Hose Reusable Fitting, 1/4 in. - RP900250</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.71
+                                                &nbsp;(2.71)
+                                              </td>
+                                         <td class="col4">$8.25</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$8.25</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$3.09</b>
+                                        &nbsp;(3.09)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                30% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.45</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.49</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=F141-90250-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">F141-90250-1CD-F</a> </td>
+                                         <td class="col2"><b>Flexzilla Pro Air Hose Reusable Fitting, 1/4 in. - RP900250</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.71
+                                                &nbsp;(2.71)
+                                              </td>
+                                         <td class="col4">$8.25</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$8.25</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$3.09</b>
+                                        &nbsp;(3.09)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                30% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.45</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.49</b>
+                                         </td>
+                                </tr>
+                             <tr class=" order-block-mid " style="">
+                                    <td></td>
+                                         <td class="col1">
+                                        <a href="/pms/listfba.xhtml?searchBySku=F141-90250-1CD-F" title="Open product in Manage FBA Inventory page" target="_blank">F141-90250-1CD-F</a> </td>
+                                         <td class="col2"><b>Flexzilla Pro Air Hose Reusable Fitting, 1/4 in. - RP900250</b></td>
+                                              <td class="order-bk-gray col3 ">
+                                           $2.71
+                                                &nbsp;(2.71)
+                                              </td>
+                                         <td class="col4">$8.25</td>
+                                         <td class="col5">$0.00</td>
+                                         <td class="col6"><b>$8.25</b></td>
+                                         <td class="col7"><b>1</b></td>
+                                         <td class="col9 fee ">
+                                        <b>−$3.09</b>
+                                        &nbsp;(3.09)
+                                    </td>
+                                         <td class="col9 order-bk-gray green">
+                                         <span class=""> 
+                                                30% </span>
+                                          </td>
+                                         <td style="" class="col9 order-bk-gray green">
+                                        <b>$2.45</b>
+                                    </td>
+                                         <td class="col9">
+                                        <b>$0.49</b>
+                                         </td>
+                                </tr>
+                                <tr class=" order-block-bottom">
+                                <td colspan="12" align="right">
+                                    <b> Order Price:&nbsp;$49.50&nbsp;&nbsp;
+                                        Order Cost:&nbsp;$16.26&nbsp;&nbsp;
+                                        Order Fee:&nbsp;-$18.54&nbsp;&nbsp;
+                                        Order Profit:&nbsp;$14.70
+                                        Order Margin:&nbsp;
+                                          30%     </b></td>
+                            </tr>
+                            <tr class="order-block-top" style=" background: #dcebf5;">
+                                <td>14</td>
+                                        <td class="table-order">
+                               <a href="https://sellercentral.amazon.com/gp/orders-v2/details?ie=UTF8&amp;orderID=114-0566426-6586659" target="_blank">114-0566426-6586659</a>
+                                </td>
+                                        <td class="table-order">
+                               01/25/2025 03:04 <br><div class="green">igorp@officechase.com</div>
+                           </td>
+                                        <td colspan="5" class="table-order">
+                                <br> , STUDIO CITY,91604-3961 ,CALIFORNIA,US </td>
+                           <td colspan="4">
+                                </td>
+                       </tr>
+                       <tr class=" order-block-mid " style="background: #ffd6d6;">
+                        <td></td>
+                             <td class="col1">
+                            <a href="/pms/listfba.xhtml?searchBySku=ORG8667669_F1" title="Open product in Manage FBA Inventory page" target="_blank">ORG8667669_F1</a> </td>
+                             <td class="col2"><b>Builder's Best 010155 Venting. Offset Elbow, Dryer, 4-1/2 In, 1 Cubic Centimeters</b></td>
+                                  <td class="order-bk-gray col3 ">
+                               $8.42
+                                    &nbsp;(8.42)
+                                  </td>
+                             <td class="col4">$21.95</td>
+                             <td class="col5">$1.50</td>
+                             <td class="col6"><b>$23.45</b></td>
+                             <td class="col7"><b>1</b></td>
+                             <td class="col9 fee ">
+                            <b>−$8.81</b>
+                            &nbsp;(8.81)
+                        </td>
+                             <td class="col9 order-bk-gray green">
+                             <span class=""> 
+                                    22% </span>
+                              </td>
+                             <td style="" class="col9 order-bk-gray green">
+                            <b>$4.72</b>
+                        </td>
+                             <td class="col9">
+                            <b>$0.94</b>
+                             </td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM ItemPriceTax </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>-$2.09</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM ItemPriceShipping </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>-$1.50</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM ItemPricePrincipal </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>-$21.95</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM ItemWithheldTaxMarketplaceFacilitatorTax-Principal </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>$2.09</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM ItemFeesCommission </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>$3.29</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM ItemFeesRefundCommission </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>-$0.66</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-mid">
+                        <td></td>
+                        <td class="col1">
+                             ORG8667669_F1  </td>
+                        <td class="col2" colspan="2"> Jan 28, 2025, 1:19:36 AM PromotionShipping </td>
+                        <td class="col3"></td>
+                        <td class="col5 fee">
+                            Refund
+                        </td>
+                        <td class="col6 fee">
+                            <b>$1.50</b>
+                        </td>
+                         <td class="col9"></td>
+                    </tr>
+                    <tr class=" order-block-bottom">
+                        <td colspan="12" align="right">
+                            <b> Order Price:&nbsp;$0.00&nbsp;&nbsp;
+                                Order Cost:&nbsp;$0.00&nbsp;&nbsp;
+                                Order Fee:&nbsp;-$6.18&nbsp;&nbsp;
+                                Order Profit:&nbsp;-$6.18
+                                Order Margin:&nbsp;
+                                  
+                                    -100%
+                                   </b></td>
+                    </tr>
+                    <tr class="order-block-top" style=" background: #dcebf5;">
+                        <td>69</td>
+                                <td class="table-order">
+                       <a href="https://sellercentral.amazon.com/orders-v3/order/113-0323760-0029826" target="_blank">113-0323760-0029826</a>
+                        </td>
+                                <td class="table-order">
+                       02/06/2025 12:54 <br><div class="green">igorp@plexsupply.com</div>
+                   </td>
+                                <td colspan="5" class="table-order">
+                        <br> , ALEXANDRIA,22306-1244 ,VA,US </td>
+                   <td colspan="4">
+                        </td>
+               </tr>
+               <tr class=" order-block-mid " style="background: #ffd6d6;">
+                <td></td>
+                     <td class="col1">
+                    <a href="/pms/listfba.xhtml?searchBySku=amzn.gr.ORG8667669-FBA2-kpNYSWki6431s-AC" title="Open product in Manage FBA Inventory page" target="_blank">amzn.gr.ORG8667669-FBA2-kpNYSWki6431s-AC</a> </td>
+                     <td class="col2"><b>Builder's Best 010155 Venting. Offset Elbow, Dryer, 4-1/2 In, 1 Cubic Centimeters</b></td>
+                          <td class="order-bk-gray col3 red">
+                     
+                            Not Set
+                           </td>
+                     <td class="col4">$16.46</td>
+                     <td class="col5">$0.00</td>
+                     <td class="col6"><b>$16.46</b></td>
+                     <td class="col7"><b>1</b></td>
+                     <td class="col9 fee ">
+                    <b>−$8.24</b>
+                    &nbsp;(8.24)
+                </td>
+                     <td class="col9 order-bk-gray green">
+                     <span class=""> 
+                            50% </span>
+                      </td>
+                     <td style="" class="col9 order-bk-gray green">
+                    <b>$8.22</b>
+                </td>
+                     <td class="col9">
+                    <b>$0.41</b>
+                     </td>
+            </tr>
+            <tr class=" order-block-bottom">
+                <td colspan="12" align="right">
+                    <b> Order Price:&nbsp;$16.46&nbsp;&nbsp;
+                        Order Cost:&nbsp;$0.00&nbsp;&nbsp;
+                        Order Fee:&nbsp;-$8.24&nbsp;&nbsp;
+                        Order Profit:&nbsp;$0.00
+                        Order Margin:&nbsp;
+                          0%     </b></td>
+            </tr>
+       <tr class="order-block-top" style=" background: #dcebf5;">
+        <td>210</td>
+                <td class="table-order">
+       <a href="https://sellercentral.amazon.com/orders-v3/order/113-6510566-5931469" target="_blank">113-6510566-5931469</a>
+        </td>
+                <td class="table-order">
+       02/03/2025 08:31 <br><div class="green">ilutsenko@plexsupply.com</div>
+   </td>
+                <td colspan="5" class="table-order">
+        <br> , MARCO ISLAND,34145-7802 ,FL,US </td>
+   <td colspan="4">
+        </td>
+</tr>
+<tr class=" order-block-mid " style="background: #ffd6d6;">
+    <td></td>
+         <td class="col1">
+        <a href="/pms/listfba.xhtml?searchBySku=ORG6577027%2F2PK-FBA" title="Open product in Manage FBA Inventory page" target="_blank">ORG6577027/2PK-FBA</a> </td>
+         <td class="col2"><b>SuperSlide White Closet Rod Support Pack of 2</b></td>
+              <td class="order-bk-gray col3 ">
+           $3.53
+                &nbsp;(3.53)
+              </td>
+         <td class="col4">$0.00</td>
+         <td class="col5">$0.00</td>
+         <td class="col6"><b>$0.00</b></td>
+         <td class="col7"><b>1</b></td>
+         <td class="col9 fee ">
+        <b>−$3.56</b>
+        &nbsp;(3.56)
+    </td>
+         <td class="col9 order-bk-gray green">
+          <span class="red"> 
+                -100%
+            </span>
+         </td>
+         <td style="" class="col9 order-bk-gray red">
+        <b>-$7.09</b>
+    </td>
+         <td class="col9">
+        <b>-$0.57</b>
+         </td>
+</tr>
+<tr class=" order-block-bottom">
+    <td colspan="12" align="right">
+        <b> Order Price:&nbsp;$0.00&nbsp;&nbsp;
+            Order Cost:&nbsp;$3.53&nbsp;&nbsp;
+            Order Fee:&nbsp;$0.00&nbsp;&nbsp;
+            Order Profit:&nbsp;-$3.53
+            Order Margin:&nbsp;
+              
+                -100%
+               </b></td>
+</tr>
+                    </tbody>
+            </table>
+
+<!-- 
+        <div class="custom-orders-table-wrapper">
+
+        <div class="custom-orders-table-header">
+                <span>FBA Orders Custom Summary Table</span>
+                <span class="custom-close-btn">&times;</span>
+            </div>
+            <table class="custom-orders-table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Cost</th>
+                        <th>Fee</th>
+                        <th>Margin</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SKU-1</td>
+                        <td>10</td>
+                        <td>$50.00</td>
+                        <td>$500.00</td>
+                        <td>$5.00</td>
+                        <td>20%</td>
+                        <td>$95.00</td>
+                    </tr>
+                </table>
+
+            </div> -->
+
+</body>
+
+     <script type="text/javascript">
+        
+        var PROFIT_COLOUR = "#FF6600";
+        var BONUS_COLOUR = "#2A0CD0";
+        var MARGIN_COLOUR = "#00CC00";
+         
+    
+        var GRAPH_COLORS = ['#ff0000', '#ffff00', '#00ff00', '#ff00ff', '#0000ff',
+            '#898989', '#005e20', '#00ffff', '#f58220', '#ed145b',
+            '#7b0046', '#1b1464', '#aba000', '#ffcccc', '#363636',
+            '#00a651', '#ffdc52', '#a67c52', '#0099cc', '#cc0000',
+            '#006666', '#ff0099', '#ccff99', '#ccccff', '#ffff99',
+            '#cc9999', '#0066cc', '#000000', '#ff0000', '#ffff33'];
+        function constructGraph(chart, divId) {
+    //        chart.dateFormat = "YYYYMMDD";
+            chart.dataDateFormat = "YYYYMMDD";
+            // AXES
+            // category
+            var categoryAxis = chart.categoryAxis;
+            //categoryAxis.labelRotation = 90;
+            categoryAxis.gridPosition = "start";
+            categoryAxis.minPeriod = "DD";
+            categoryAxis.parseDates = true;
+            categoryAxis.dateFormats = [{
+                    period: 'fff',
+                    format: 'JJ:NN:SS'
+                }, {
+                    period: 'ss',
+                    format: 'JJ:NN:SS'
+                }, {
+                    period: 'mm',
+                    format: 'JJ:NN'
+                }, {
+                    period: 'hh',
+                    format: 'JJ:NN'
+                }, {
+                    period: 'DD',
+                    format: 'DD'
+                }, {
+                    period: 'WW',
+                    format: 'DD'
+                }, {
+                    period: 'MM',
+                    format: 'MMM'
+                }, {
+                    period: 'YYYY',
+                    format: 'YYYY'
+                }];
+            // value
+            var valueAxis = new AmCharts.ValueAxis();
+            valueAxis.axisAlpha = 0;
+            valueAxis.dashLength = 3;
+            chart.addValueAxis(valueAxis);
+            for (var i = 0; i < USERS.length; i++) {
+                var graph = new AmCharts.AmGraph();
+                //graph.type = "smoothedLine"; // this line makes the graph smoothed line.
+                graph.lineColor = GRAPH_COLORS[i];
+                //"#d1655d";
+                //graph.negativeLineColor = "#637bb6"; // this line makes the graph to change color when it drops below 0
+                graph.bullet = "round";
+                graph.bulletSize = 8;
+                graph.bulletBorderColor = "#FFFFFF";
+                graph.bulletBorderAlpha = 1;
+                graph.bulletBorderThickness = 2;
+                graph.lineThickness = 2;
+                graph.dataDateFormat = "YYYYMMDD";
+                graph.valueField = USERS[i];
+                graph.title = USERS[i];
+                graph.balloonText = USERS[i] + ": <b><span style='font-size:14px;'>[[" + USERS[i] + "]]</span></b>";
+                //graph.balloonText = "[[category]]: <b><span style='font-size:14px;'>[[" + USERS[i] + "]]</span></b>";
+                chart.addGraph(graph);
+            }
+    
+            var graph = new AmCharts.AmGraph();
+            //graph.type = "smoothedLine"; // this line makes the graph smoothed line.
+            //graph.lineColor = "#d1655d";
+            //graph.negativeLineColor = "#637bb6"; // this line makes the graph to change color when it drops below 0
+            graph.lineColor = '#050505';
+            graph.bullet = "round";
+            graph.bulletSize = 8;
+            graph.bulletBorderColor = "#FFFFFF";
+            graph.bulletBorderAlpha = 1;
+            graph.bulletBorderThickness = 3;
+            graph.lineThickness = 3;
+            graph.valueField = 'totalForUsers';
+            graph.title = 'TOTAL';
+            graph.balloonText = "TOTAL : <b><span style='font-size:14px;'>[[totalForUsers]]</span></b>";
+            //graph.balloonText = "[[category]]: <b><span style='font-size:14px;'>[[" + USERS[i] + "]]</span></b>";
+            chart.addGraph(graph);
+            // CURSOR
+            var chartCursor = new AmCharts.ChartCursor();
+            chartCursor.cursorAlpha = 0;
+            chartCursor.cursorPosition = "mouse";
+            //chartCursor.categoryBalloonDateFormat = "YYYY";
+            chart.addChartCursor(chartCursor);
+            // SCROLLBAR
+            var chartScrollbar = new AmCharts.ChartScrollbar();
+            chart.addChartScrollbar(chartScrollbar);
+            chart.creditsPosition = "top-right";
+            //LEGEND
+            var legend = new AmCharts.AmLegend();
+            legend.marginLeft = 110;
+            legend.useGraphSettings = false;
+            chart.addLegend(legend);
+            // WRITE
+            chart.write(divId);
+        }
+    
+    
+    
+    
+    </script>
+
+
+    <script src='filters_main.js'></script>
+
+</html>
