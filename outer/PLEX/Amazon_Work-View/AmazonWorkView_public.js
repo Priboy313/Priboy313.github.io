@@ -5,8 +5,6 @@
         throw new Error("Missing GM functions");
     }
 
-	console.log("========== AMZNWV PUBLIC (проверка зависимостей пройдена)");
-
 	const SCRIPT_ID = 'amazonWorkView';
 	const DEFAULTS  = {
 		forcePageToLeft: false,
