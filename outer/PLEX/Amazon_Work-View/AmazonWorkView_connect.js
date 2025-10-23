@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name         Amazon Work View (Connect)
 // @version      1.0
+// @author       Priboy313
 // @description  Amazon Work View - eval connect script
 // @match        https://www.amazon.com/*
 // @match        https://www.amazon.ca/*
