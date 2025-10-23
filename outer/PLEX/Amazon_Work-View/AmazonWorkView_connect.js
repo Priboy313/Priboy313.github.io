@@ -10,73 +10,74 @@
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @connect      cdn.jsdelivr.net
+// @connect      api.github.com
 // ==/UserScript==
 
 (function() {
-    'use-strict';
+    'use strict';
 
-    const latestUrl = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@latest/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js";
+    const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
+    
+    const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js';
 
-    console.log("========== AMZNWV CONNECT (Manual Redirect)", latestUrl);
-
-    const urlWithCacheBuster = `${latestUrl}?cb=${new Date().getTime()}`;
+	console.log("========== AMZNWV CONNECT (API-driven) ==========");
 
     GM_xmlhttpRequest({
         method: 'GET',
-        url: urlWithCacheBuster,
-        
+        url: GITHUB_API_URL,
+        headers: {
+            "Accept": "application/vnd.github.v3+json"
+        },
         onload: function(response) {
-            console.log("[LOADER] Получен первичный ответ. Статус:", response.status);
-            console.log("[LOADER] Заголовки ответа:", response.responseHeaders);
+            if (response.status !== 200) {
+                console.error(`[AMZWV] Ошибка при запросе к GitHub API. Статус: ${response.status}`);
+                return;
+            }
 
-            const headers = response.responseHeaders.split('\r\n').reduce((acc, current) => {
-                const [key, value] = current.split(': ');
-                if (key) acc[key.toLowerCase()] = value;
-                return acc;
-            }, {});
+            try {
+                const commitInfo = JSON.parse(response.responseText);
+                const latestCommitHash = commitInfo.sha;
 
-            const realUrl = headers['location'] || headers['x-real-url'];
-
-            if (realUrl) {
-                console.log(`[LOADER] Найден реальный URL в заголовках: ${realUrl}. Загружаю...`);
-                downloadAndExecute(realUrl);
-            } else {
-                console.warn("[LOADER] Не удалось найти заголовок редиректа. Попытка выполнить код из текущего ответа.");
-                if (response.status >= 200 && response.status < 400 && response.responseText) {
-                    executeScript(response.responseText);
-                } else {
-                    console.error("[LOADER] Ошибка: тело ответа пустое или статус ответа некорректный.");
+                if (!latestCommitHash) {
+                    console.error("Не удалось найти хэш коммита в ответе от GitHub API.");
+                    return;
                 }
+
+                console.log(`[LOADER] Получен хэш последнего коммита: ${latestCommitHash}`);
+
+                const finalScriptUrl = SCRIPT_URL_TEMPLATE.replace('{commit_hash}', latestCommitHash);
+                downloadAndExecute(finalScriptUrl);
+
+            } catch (e) {
+                console.error("Ошибка парсинга ответа от GitHub API:", e);
             }
         },
         onerror: function(error) {
-            console.error("Сетевая ошибка при первичном запросе:", error);
+            console.error("Сетевая ошибка при запросе к GitHub API:", error);
         }
     });
 
     function downloadAndExecute(url) {
+        console.log(`[LOADER] Загрузка скрипта с URL: ${url}`);
         GM_xmlhttpRequest({
             method: 'GET',
             url: url,
             onload: function(res) {
-                if (res.status >= 200 && res.status < 300 && res.responseText) {
-                    executeScript(res.responseText);
+                if (res.status === 200 && res.responseText) {
+                    console.log("========== RESPONSE SUCCSESS. EXECUTING SCRIPT...");
+                    try {
+                        eval(res.responseText);
+                    } catch (e) {
+                        console.error("========== EVAL FAILED:", e);
+                    }
                 } else {
-                    console.error(`Ошибка загрузки скрипта с реального URL. Статус: ${res.status}`);
+                    console.error(`Ошибка загрузки скрипта. Статус: ${res.status}`);
                 }
             },
             onerror: function(error) {
-                console.error("Сетевая ошибка при загрузке с реального URL:", error);
+                console.error("Сетевая ошибка при загрузке скрипта:", error);
             }
         });
     }
 
-    function executeScript(code) {
-        console.log("========== RESPONSE SUCCSESS. EXECUTING SCRIPT...");
-        try {
-            eval(code);
-        } catch (e) {
-            console.error("========== EVAL FAILED:", e);
-        }
-    }
 })();
