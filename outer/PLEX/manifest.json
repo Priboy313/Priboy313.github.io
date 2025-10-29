@@ -24,7 +24,7 @@
 			"suitableUsers": { "label": "Наши юзеры", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping"] },
 			"hideAmznGr": { "label": "Прятать строки грейдов", "type": "boolean", "default": true },
 			"clearYellowRow": { "label": "Убрать жёлтую заливку", "type": "boolean", "default": true },
-			"exludesYellowClearing": { "label": "Защитить оригинальный фон для колонок", "type": "text", "default": null},
+			"exludesYellowClearing": { "label": "Защитить оригинальный фон для колонок", "type": "string", "default": null},
 			"skuColIndex": {"label": "Номер колонки СКУ", "type": "int", "default": 2},
 			"margColIndex": {"label": "Номер колонки Маржи", "type": "int", "default": 20},
 			"kColIndex": {"label": "Номер колонки К", "type": "int", "default": 21}
