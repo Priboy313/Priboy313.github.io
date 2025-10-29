@@ -1,6 +1,7 @@
 {
 	"amazonWorkView": {
 		"name": "Amazon Work View",
+		"ver": "1.0r",
 		"description": "Улучшения для страниц товаров Amazon.",
 		"settings": {
 			"forcePageToLeft": { "label": "Сдвинуть страницу влево", "type": "boolean", "default": false },

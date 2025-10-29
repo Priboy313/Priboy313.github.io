@@ -18,7 +18,7 @@
 		clearRevseller: true,
 	};
 
-	const SETTINGS_KEY = 'my_scripts_settings';
+	const SETTINGS_KEY = 'plx-cst-scr';
 
     function loadConfig() {
 		let allSettings = {};

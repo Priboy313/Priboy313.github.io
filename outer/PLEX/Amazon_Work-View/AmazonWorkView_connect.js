@@ -22,8 +22,6 @@
 	
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js';
 
-	console.log("========== AMZNWV CONNECT (API-driven) ==========");
-
 	console.log(`========== ${SCRIPT_NAME} CONNECT (API-driven) ==========`);
 
 	GM_xmlhttpRequest({
