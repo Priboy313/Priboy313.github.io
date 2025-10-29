@@ -2,21 +2,16 @@
 (function() {
 	'use strict';
 
-	if (window.PLX_SETTINGS_SHOW_UI) {
-		return;
-	}
+	if (window.PLX_SETTINGS_SHOW_UI) return;
 
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
 	const MANIFEST_URL_TEMPLATE = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/manifest.json";
-	const SETTINGS_KEY = "plx-cst-scr-settings";
-	const MANIFEST_CACHE_KEY = "plx-manifest-cache";
+	const SETTINGS_KEY = 'plx-cst-scr-settings';
+	const MANIFEST_CACHE_KEY = 'plx-manifest-cache';
 	const CACHE_DURATION_MS = 0.4 * 60 * 60 * 1000;
 
-	function injectStyles() 
-	{
-		if (document.getElementById("plx-modal-styles")){
-			return;
-		} 
+	function injectStyles() {
+		if (document.getElementById('plx-modal-styles')) return;
 
 		const css = `
 			#plx-settings-modal, #plx-settings-modal * {
@@ -73,19 +68,22 @@
 			#plx-settings-modal .plx-form-row {
 				display: flex;
 				align-items: center;
-				margin-bottom: 8px;
+				justify-content: space-between;
+				margin-bottom: 12px;
 			}
-			#plx-settings-modal label {
+			#plx-settings-modal .plx-form-row label {
 				display: flex;
 				align-items: center;
-				width: 100%;
 				cursor: pointer;
 			}
-			#plx-settings-modal input[type="checkbox"] {
+			#plx-settings-modal .plx-form-row input[type="checkbox"] {
 				margin-right: 10px;
+				width: 16px;
+				height: 16px;
 			}
-			#plx-settings-modal input[type="text"] {
-				width: 100%;
+			#plx-settings-modal .plx-form-row input[type="text"] {
+				flex-grow: 1;
+				max-width: 60%;
 				padding: 6px 10px;
 				border: 1px solid #ced4da;
 				border-radius: 4px;
@@ -103,18 +101,13 @@
 				transition: background-color 0.2s, border-color 0.2s;
 			}
 			#plx-settings-modal #plx-save-btn {
-				background-color: #007bff;
-				color: white;
-				border-color: #007bff;
+				background-color: #007bff; color: white; border-color: #007bff;
 			}
 			#plx-settings-modal #plx-save-btn:hover {
-				background-color: #0056b3;
-				border-color: #0056b3;
+				background-color: #0056b3; border-color: #0056b3;
 			}
 			#plx-settings-modal #plx-close-btn {
-				background-color: #6c757d;
-				color: white;
-				border-color: #6c757d;
+				background-color: #6c757d; color: white; border-color: #6c757d;
 			}
 			#plx-settings-modal #plx-close-btn:hover {
 				background-color: #5a6268;
@@ -151,7 +144,6 @@
 
 	window.PLX_SETTINGS_SHOW_UI = async function() {
 		if (document.getElementById('plx-settings-modal')) return;
-
 		injectStyles();
 		
 		const registry = await getManifest();
@@ -165,12 +157,33 @@
 		for (const sId in registry) {
 			formHTML += `<fieldset><legend>${registry[sId].name}</legend>`;
 			for (const k in registry[sId].settings) {
-				const sInf = registry[sId].settings[k];
-				const val = settings[sId]?.[k] ?? sInf.default;
-				let input = sInf.type === 'boolean'
-					? `<input type="checkbox" id="${sId}_${k}" ${val ? 'checked' : ''}>`
-					: `<input type="text" id="${sId}_${k}" value="${val || ''}">`;
-				formHTML += `<div class="plx-form-row"><label for="${sId}_${k}">${sInf.label} ${input}</label></div>`;
+				const settingInfo = registry[sId].settings[k];
+				const savedValue = settings[sId]?.[k] ?? settingInfo.default;
+				const inputId = `${sId}_${k}`;
+				let rowContent = '';
+
+				switch (settingInfo.type) {
+					case 'boolean': {
+						const isChecked = savedValue ? 'checked' : '';
+						rowContent = `
+							<label for="${inputId}">
+								<input type="checkbox" id="${inputId}" ${isChecked}>
+								${settingInfo.label}
+							</label>
+						`;
+						break;
+					}
+
+					case 'string':
+					default: {
+						rowContent = `
+							<label for="${inputId}">${settingInfo.label}</label>
+							<input type="text" id="${inputId}" value="${savedValue || ''}">
+						`;
+						break;
+					}
+				}
+				formHTML += `<div class="plx-form-row">${rowContent}</div>`;
 			}
 			formHTML += `</fieldset>`;
 		}
@@ -178,7 +191,7 @@
 		const modalHTML = `
 		<div id="plx-settings-modal">
 			<div class="plx-modal-content">
-				<h2>Настройки скриптов</h2>
+				<h2>Настройки Plex скриптов</h2>
 				<form id="plx-settings-form">${formHTML || 'Нет доступных настроек.'}</form>
 				<div class="plx-modal-footer">
 					<button id="plx-close-btn">Закрыть</button>
