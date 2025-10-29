@@ -67,7 +67,7 @@
 		});
 	}
 
-	function downloadAndExecuteWorker(url, settings) {
+	function downloadAndExecuteWorker(url, settingsData) {
 		return new Promise((resolve, reject) => {
 			GM_xmlhttpRequest({
 				method: 'GET', url: url,
@@ -77,7 +77,7 @@
 						try {
 							const workerCode = res.responseText;
 							const workerFunction = new Function('settingsData', 'GM_addStyle', workerCode);
-							workerFunction(settings, GM_addStyle);
+							workerFunction(settingsData, GM_addStyle);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения кода воркера: ${err}`)); }
 					} else { 
