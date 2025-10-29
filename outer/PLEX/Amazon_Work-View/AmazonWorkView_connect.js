@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Amazon Work View (Connect)
-// @version      1.7
+// @version      1.8
 // @author       Priboy313
-// @description  Amazon Work View - reads settings and injects them into the worker
+// @description  Amazon Work View - injects settings as a JSON string for reliability
 // @match        https://www.amazon.com/*
 // @match        https://www.amazon.ca/*
 // @match        https://www.amazon.com.mx/*
@@ -29,12 +29,13 @@
 
 	async function main() {
 		try {
-			const settingsData = GM_getValue(SETTINGS_KEY, {});
-			console.log(`[${SCRIPT_NAME}] Настройки для передачи в воркер:`, settingsData);
+			const settingsObject = GM_getValue(SETTINGS_KEY, {});
+			const settingsJSON = JSON.stringify(settingsObject);
+			
+			console.log(`[${SCRIPT_NAME}] Строка настроек для передачи в воркер:`, settingsJSON);
 
 			const url = await getWorkerURL();
-
-			await downloadAndExecuteWorker(url, settingsData);
+			await downloadAndExecuteWorker(url, settingsJSON);
 
 		} catch (error) {
 			console.error(`[${SCRIPT_NAME}] Критическая ошибка:`, error);
@@ -67,17 +68,16 @@
 		});
 	}
 
-	function downloadAndExecuteWorker(url, settingsData) {
+	function downloadAndExecuteWorker(url, settingsJSON) {
 		return new Promise((resolve, reject) => {
 			GM_xmlhttpRequest({
 				method: 'GET', url: url,
 				onload: res => {
 					if (res.status === 200 && res.responseText) {
-						console.log(`[${SCRIPT_NAME}] Воркер загружен. Запуск с передачей данных...`);
 						try {
 							const workerCode = res.responseText;
-							const workerFunction = new Function('settingsData', 'GM_addStyle', workerCode);
-							workerFunction(settingsData, GM_addStyle);
+							const workerFunction = new Function('settingsJSON', 'GM_addStyle', workerCode);
+							workerFunction(settingsJSON, GM_addStyle);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения кода воркера: ${err}`)); }
 					} else { 
@@ -88,6 +88,6 @@
 			});
 		});
 	}
-
+	
 	main();
 })();

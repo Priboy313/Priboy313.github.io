@@ -1,5 +1,5 @@
 // AmzonWorkViev_public.js
-(function(settingsData, GM_addStyle) {
+(function(settingsJSON, GM_addStyle) {
 	'use strict';
 
 	const SCRIPT_ID = 'amazonWorkView';
@@ -8,8 +8,6 @@
 		console.error(`== [${SCRIPT_ID}] Критическая ошибка: Функция GM_addStyle не была передана в воркер.`);
 		return;
 	}
-
-	const SETTINGS_KEY = 'plx-cst-scr-settings';
 
 	const DEFAULTS  = {
 		forcePageToLeft: false,
@@ -25,12 +23,18 @@
 
 
 	function loadConfig() {
-		console.log(`== [${SCRIPT_ID}] Обработка полученной конфигурации...`);
+		console.log(`== [${SCRIPT_ID}] Обработка полученной конфигурации...`, settingsJSON);
 		
-		if (!settingsData || typeof settingsData !== 'object') {
-			console.warn(`== [${SCRIPT_ID}] От коннектора не получены данные настроек. Используются настройки по умолчанию.`);
-			return DEFAULTS;
-		}
+        let settingsData = {};
+        try {
+            if (settingsJSON && typeof settingsJSON === 'string') {
+                settingsData = JSON.parse(settingsJSON);
+            }
+        } catch (e) {
+            console.error(`== [${SCRIPT_ID}] Ошибка парсинга JSON-строки настроек:`, e);
+            console.warn(`== [${SCRIPT_ID}] Используются настройки по умолчанию.`);
+            return DEFAULTS;
+        }
 
 		const mySavedSettings = settingsData[SCRIPT_ID] || {};
 		console.log(`== [${SCRIPT_ID}] Получены настройки для этого скрипта:`, mySavedSettings);
@@ -393,4 +397,4 @@
 	}
 
 	main();
-})(settingsData, GM_addStyle);
+})(settingsJSON, GM_addStyle);
