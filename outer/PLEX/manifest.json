@@ -13,7 +13,7 @@
 			"clearRevseller": { "label": "Удалить лишние элементы RevSeller", "type": "boolean", "default": true }
 		}
 	},
-	
+
 	"invValueObserver": {
 		"name": "PMV FBA Inventory Value Observer",
 		"ver": "1.0r",
@@ -25,9 +25,9 @@
 			"hideAmznGr": { "label": "Прятать строки грейдов", "type": "boolean", "default": true },
 			"clearYellowRow": { "label": "Убрать жёлтую заливку", "type": "boolean", "default": true },
 			"exludesYellowClearing": { "label": "Защищает оригинальный фон для колонок", "type": "text", "default": null},
-			"skuColIndex": {"label": "Номер колонки СКУ", "type": "int", "default": true},
-			"margColIndex": {"label": "Номер колонки Маржи", "type": "int", "default": true},
-			"kColIndex": {"label": "Номер колонки К", "type": "int", "default": true}
+			"skuColIndex": {"label": "Номер колонки СКУ", "type": "int", "default": 2},
+			"margColIndex": {"label": "Номер колонки Маржи", "type": "int", "default": 20},
+			"kColIndex": {"label": "Номер колонки К", "type": "int", "default": 21}
 		}
 	}
 }
