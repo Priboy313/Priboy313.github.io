@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Amazon Work View (Connect)
-// @version      1.8
+// @version      1.9
 // @author       Priboy313
 // @description  Amazon Work View - injects settings as a JSON string for reliability
 // @match        https://www.amazon.com/*
@@ -24,16 +24,38 @@
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js';
 	
 	const CACHE_KEY = 'amznwv-connector-cache';
+	const GLOBAL_SETTINGS_KEY = '__PLEX_SCRIPT_SETTINGS__';
 	const SETTINGS_KEY = 'plx-cst-scr-settings';
 	const CACHE_DURATION_MS = 15 * 60 * 1000;
 
+	function getSettingsFromProvider(timeout = 5000) {
+		return new Promise((resolve, reject) => {
+			let elapsedTime = 0;
+			const interval = 100;
+
+			const checkInterval = setInterval(() => {
+				if (window[GLOBAL_SETTINGS_KEY] && typeof window[GLOBAL_SETTINGS_KEY] === 'object') {
+					clearInterval(checkInterval);
+					resolve(window[GLOBAL_SETTINGS_KEY]);
+				}
+				
+				elapsedTime += interval;
+				if (elapsedTime >= timeout) {
+					clearInterval(checkInterval);
+					console.warn(`[${SCRIPT_NAME}] Не дождался настроек от поставщика за ${timeout} мс. Возможно, скрипт "Plex Scripts Settings Manager" отключен или неисправен.`);
+					resolve({});
+				}
+			}, interval);
+		});
+	}
+
 	async function main() {
 		try {
-			const settingsObject = GM_getValue(SETTINGS_KEY, {});
+			const settingsObject = await getSettingsFromProvider();
 			const settingsJSON = JSON.stringify(settingsObject);
 			
-			console.log(`[${SCRIPT_NAME}] Строка настроек для передачи в воркер:`, settingsJSON);
-
+			console.log(`[${SCRIPT_NAME}] Получены настройки от поставщика и передаются в воркер:`, settingsJSON);
+			
 			const url = await getWorkerURL();
 			await downloadAndExecuteWorker(url, settingsJSON);
 
