@@ -22,9 +22,9 @@
     const GLOBAL_KEY = '__PLEX_SCRIPT_SETTINGS__';
 
 	const settingsData = GM_getValue(SETTINGS_KEY, {});
-	window[GLOBAL_KEY] = settingsData;
+	unsafeWindow[GLOBAL_KEY] = settingsData;
 
-	console.log('[Settings Manager] Настройки размещены в window:', window[GLOBAL_KEY]);
+	console.log('[Settings Manager] Настройки размещены в window:', unsafeWindow[GLOBAL_KEY]);
 
 	const SCRIPT_NAME = "ScrMng_Connector";
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';

@@ -25,7 +25,6 @@
 	
 	const CACHE_KEY = 'amznwv-connector-cache';
 	const GLOBAL_SETTINGS_KEY = '__PLEX_SCRIPT_SETTINGS__';
-	const SETTINGS_KEY = 'plx-cst-scr-settings';
 	const CACHE_DURATION_MS = 15 * 60 * 1000;
 
 	function getSettingsFromProvider(timeout = 5000) {
@@ -34,9 +33,9 @@
 			const interval = 100;
 
 			const checkInterval = setInterval(() => {
-				if (window[GLOBAL_SETTINGS_KEY] && typeof window[GLOBAL_SETTINGS_KEY] === 'object') {
+				if (unsafeWindow[GLOBAL_SETTINGS_KEY] && typeof unsafeWindow[GLOBAL_SETTINGS_KEY] === 'object') {
 					clearInterval(checkInterval);
-					resolve(window[GLOBAL_SETTINGS_KEY]);
+					resolve(unsafeWindow[GLOBAL_SETTINGS_KEY]);
 				}
 				
 				elapsedTime += interval;
