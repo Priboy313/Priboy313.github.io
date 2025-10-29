@@ -1,85 +1,86 @@
 // ==UserScript==
 // @name         Amazon Work View (Connect)
-// @version      1.0
+// @version      1.5
 // @author       Priboy313
-// @description  Amazon Work View - eval connect script
+// @description  Amazon Work View - loads worker script with caching and error handling
 // @match        https://www.amazon.com/*
 // @match        https://www.amazon.ca/*
 // @match        https://www.amazon.com.mx/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_addStyle
 // @connect      cdn.jsdelivr.net
 // @connect      api.github.com
 // ==/UserScript==
 
 (function() {
 	'use strict';
+	if (window.isAmznWvConnectorRunning) return;
+	window.isAmznWvConnectorRunning = true;
 
-	const SCRIPT_NAME = "AmznWV";
-
+	const SCRIPT_NAME = "AmznWV_Connector";
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
-	
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js';
+	
+	const CACHE_KEY = 'amznwv-connector-cache';
+	const CACHE_DURATION_MS = 15 * 60 * 1000;
 
-	console.log(`========== ${SCRIPT_NAME} CONNECT (API-driven) ==========`);
+	async function main() {
+		try {
+			const url = await getWorkerURL();
+			await downloadAndExecuteWorker(url);
+		} catch (error) {
+			console.error(`[${SCRIPT_NAME}] Критическая ошибка:`, error);
+			GM_setValue(CACHE_KEY, null);
+			console.log(`[${SCRIPT_NAME}] Кэш URL воркера был очищен из-за ошибки.`);
+		}
+	}
 
-	GM_xmlhttpRequest({
-		method: 'GET',
-		url: GITHUB_API_URL,
-		headers: {
-			"Accept": "application/vnd.github.v3+json"
-		},
-		onload: function(response) {
-			if (response.status !== 200) {
-				console.error(`[${SCRIPT_NAME}] Ошибка при запросе к GitHub API. Статус: ${response.status}`);
+	function getWorkerURL() {
+		return new Promise((resolve, reject) => {
+			const cachedData = GM_getValue(CACHE_KEY, null);
+			if (cachedData && (Date.now() - cachedData.timestamp < CACHE_DURATION_MS)) {
+				resolve(cachedData.url);
 				return;
 			}
 
-			try {
-				const commitInfo = JSON.parse(response.responseText);
-				const latestCommitHash = commitInfo.sha;
-
-				if (!latestCommitHash) {
-					console.error(`[${SCRIPT_NAME}]Не удалось найти хэш коммита в ответе от GitHub API.`);
-					return;
-				}
-
-				console.log(`[${SCRIPT_NAME}] Получен хэш последнего коммита: ${latestCommitHash}`);
-
-				const finalScriptUrl = SCRIPT_URL_TEMPLATE.replace('{commit_hash}', latestCommitHash);
-				downloadAndExecute(finalScriptUrl);
-
-			} catch (e) {
-				console.error(`[${SCRIPT_NAME}] Ошибка парсинга ответа от GitHub API:`, e);
-			}
-		},
-		onerror: function(error) {
-			console.error(`[${SCRIPT_NAME}] Сетевая ошибка при запросе к GitHub API:`, error);
-		}
-	});
-
-	function downloadAndExecute(url) {
-		console.log(`[${SCRIPT_NAME}] Загрузка скрипта с URL: ${url}`);
-		GM_xmlhttpRequest({
-			method: 'GET',
-			url: url,
-			onload: function(res) {
-				if (res.status === 200 && res.responseText) {
-					console.log(`========== RESPONSE SUCCSESS. EXECUTING [${SCRIPT_NAME}] SCRIPT...`);
+			GM_xmlhttpRequest({
+				method: 'GET', url: GITHUB_API_URL,
+				headers: { "Accept": "application/vnd.github.v3+json" },
+				onload: res => {
+					if (res.status !== 200) return reject(new Error(`Ошибка API GitHub: ${res.status}`));
 					try {
-						eval(res.responseText);
-					} catch (e) {
-						console.error("========== EVAL FAILED:", e);
-					}
-				} else {
-					console.error(`[${SCRIPT_NAME}] Ошибка загрузки скрипта. Статус: ${res.status}`);
-				}
-			},
-			onerror: function(error) {
-				console.error(`[${SCRIPT_NAME}] Сетевая ошибка при загрузке скрипта:`, error);
-			}
+						const hash = JSON.parse(res.responseText).sha;
+						const url = SCRIPT_URL_TEMPLATE.replace('{commit_hash}', hash);
+						GM_setValue(CACHE_KEY, { url: url, timestamp: Date.now() });
+						resolve(url);
+					} catch (err) { reject(err); }
+				},
+				onerror: () => reject(new Error('Сетевая ошибка при запросе к API GitHub.'))
+			});
 		});
 	}
 
+	function downloadAndExecuteWorker(url) {
+		return new Promise((resolve, reject) => {
+			GM_xmlhttpRequest({
+				method: 'GET', url: url,
+				onload: res => {
+					if (res.status === 200 && res.responseText) {
+						console.log(`[${SCRIPT_NAME}] Воркер загружен. Запуск...`);
+						try {
+							eval(res.responseText);
+							resolve();
+						} catch (err) { reject(new Error(`Ошибка выполнения (eval) кода воркера: ${err}`)); }
+					} else { 
+						reject(new Error(`Ошибка загрузки воркера: статус ${res.status}`)); 
+					}
+				},
+				onerror: () => reject(new Error('Сетевая ошибка при загрузке воркера.'))
+			});
+		});
+	}
+
+	main();
 })();
