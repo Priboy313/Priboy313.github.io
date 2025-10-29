@@ -8,6 +8,8 @@
 // @match        https://pms.marksonsupply.com/pms/listfbaorderscomm.xhtml
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // @grant        GM_xmlhttpRequest
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @connect      cdn.jsdelivr.net
 // @connect      api.github.com
 // @connect      pms.plexsupply.com
