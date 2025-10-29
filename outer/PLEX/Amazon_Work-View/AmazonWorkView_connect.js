@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Amazon Work View (Connect)
-// @version      1.5
+// @version      1.7
 // @author       Priboy313
-// @description  Amazon Work View - loads worker script with caching and error handling
+// @description  Amazon Work View - reads settings and injects them into the worker
 // @match        https://www.amazon.com/*
 // @match        https://www.amazon.ca/*
 // @match        https://www.amazon.com.mx/*
@@ -24,12 +24,18 @@
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/Amazon_Work-View/AmazonWorkView_public.js';
 	
 	const CACHE_KEY = 'amznwv-connector-cache';
+	const SETTINGS_KEY = 'plx-cst-scr-settings';
 	const CACHE_DURATION_MS = 15 * 60 * 1000;
 
 	async function main() {
 		try {
+			const settingsData = GM_getValue(SETTINGS_KEY, {});
+			console.log(`[${SCRIPT_NAME}] Настройки для передачи в воркер:`, settingsData);
+
 			const url = await getWorkerURL();
-			await downloadAndExecuteWorker(url);
+
+			await downloadAndExecuteWorker(url, settingsData);
+
 		} catch (error) {
 			console.error(`[${SCRIPT_NAME}] Критическая ошибка:`, error);
 			GM_setValue(CACHE_KEY, null);
@@ -44,7 +50,6 @@
 				resolve(cachedData.url);
 				return;
 			}
-
 			GM_xmlhttpRequest({
 				method: 'GET', url: GITHUB_API_URL,
 				headers: { "Accept": "application/vnd.github.v3+json" },
@@ -62,19 +67,19 @@
 		});
 	}
 
-	function downloadAndExecuteWorker(url) {
+	function downloadAndExecuteWorker(url, settings) {
 		return new Promise((resolve, reject) => {
 			GM_xmlhttpRequest({
 				method: 'GET', url: url,
 				onload: res => {
 					if (res.status === 200 && res.responseText) {
-						console.log(`[${SCRIPT_NAME}] Воркер загружен. Запуск...`);
+						console.log(`[${SCRIPT_NAME}] Воркер загружен. Запуск с передачей данных...`);
 						try {
 							const workerCode = res.responseText;
-                            const workerFunction = new Function('GM_getValue', 'GM_addStyle', workerCode);
-                            workerFunction(GM_getValue, GM_addStyle);
+							const workerFunction = new Function('settingsData', 'GM_addStyle', workerCode);
+							workerFunction(settings, GM_addStyle);
 							resolve();
-						} catch (err) { reject(new Error(`Ошибка выполнения (eval) кода воркера: ${err}`)); }
+						} catch (err) { reject(new Error(`Ошибка выполнения кода воркера: ${err}`)); }
 					} else { 
 						reject(new Error(`Ошибка загрузки воркера: статус ${res.status}`)); 
 					}

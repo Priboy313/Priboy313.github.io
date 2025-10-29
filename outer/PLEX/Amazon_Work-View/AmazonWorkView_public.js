@@ -1,11 +1,11 @@
 // AmzonWorkViev_public.js
-(function(GM_getValue, GM_addStyle) {
+(function(settings, GM_addStyle) {
 	'use strict';
 
 	const SCRIPT_ID = 'amazonWorkView';
 
-	if (typeof GM_getValue !== 'function' || typeof GM_addStyle !== 'function') {
-		console.error(`== [${SCRIPT_ID}] Критическая ошибка: Функции-зависимости (GM_getValue, GM_addStyle) не были переданы в воркер.`);
+	if (typeof GM_addStyle !== 'function') {
+		console.error(`== [${SCRIPT_ID}] Критическая ошибка: Функция GM_addStyle не была передана в воркер.`);
 		return;
 	}
 
@@ -25,18 +25,20 @@
 
 
 	function loadConfig() {
-		console.log(`== [${SCRIPT_ID}] Загрузка конфигурации...`);
-        
-        const allSettings = GM_getValue(SETTINGS_KEY, {});
-        console.log(`== [${SCRIPT_ID}] Все сохраненные настройки:`, allSettings);
+		console.log(`== [${SCRIPT_ID}] Обработка полученной конфигурации...`);
+		
+		if (!settingsData || typeof settingsData !== 'object') {
+			console.warn(`== [${SCRIPT_ID}] От коннектора не получены данные настроек. Используются настройки по умолчанию.`);
+			return DEFAULTS;
+		}
 
-        const mySavedSettings = allSettings[SCRIPT_ID] || {};
-        console.log(`== [${SCRIPT_ID}] Найденные настройки для этого скрипта:`, mySavedSettings);
-        
-        const finalConfig = { ...DEFAULTS, ...mySavedSettings };
-        console.log(`== [${SCRIPT_ID}] Финальный конфиг после слияния:`, finalConfig);
-        
-        return finalConfig;
+		const mySavedSettings = settingsData[SCRIPT_ID] || {};
+		console.log(`== [${SCRIPT_ID}] Получены настройки для этого скрипта:`, mySavedSettings);
+		
+		const finalConfig = { ...DEFAULTS, ...mySavedSettings };
+		console.log(`== [${SCRIPT_ID}] Финальный конфиг после слияния:`, finalConfig);
+		
+		return finalConfig;
 	}
 
 	async function main() {
@@ -391,4 +393,4 @@
 	}
 
 	main();
-})(GM_getValue, GM_addStyle);
+})(settings, GM_addStyle);
