@@ -1,5 +1,5 @@
 // AmzonWorkViev_public.js
-(function(settings, GM_addStyle) {
+(function(settingsData, GM_addStyle) {
 	'use strict';
 
 	const SCRIPT_ID = 'amazonWorkView';
@@ -393,4 +393,4 @@
 	}
 
 	main();
-})(settings, GM_addStyle);
+})(settingsData, GM_addStyle);
