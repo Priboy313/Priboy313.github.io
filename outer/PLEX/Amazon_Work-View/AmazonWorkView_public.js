@@ -1,9 +1,11 @@
 // AmzonWorkViev_public.js
-(function() {	
+(function(GM_getValue, GM_addStyle) {
+	'use strict';
+
 	const SCRIPT_ID = 'amazonWorkView';
 
-	if (typeof GM_getValue === 'undefined' || typeof GM_addStyle === 'undefined') {
-		console.error(`== [${SCRIPT_ID}] Критическая ошибка: Функции GM_* не были предоставлены загрузчиком. Проверьте @grant в коннекторе.`);
+	if (typeof GM_getValue !== 'function' || typeof GM_addStyle !== 'function') {
+		console.error(`== [${SCRIPT_ID}] Критическая ошибка: Функции-зависимости (GM_getValue, GM_addStyle) не были переданы в воркер.`);
 		return;
 	}
 
@@ -389,4 +391,4 @@
 	}
 
 	main();
-})();
+})(GM_getValue, GM_addStyle);

@@ -70,7 +70,9 @@
 					if (res.status === 200 && res.responseText) {
 						console.log(`[${SCRIPT_NAME}] Воркер загружен. Запуск...`);
 						try {
-							eval(res.responseText);
+							const workerCode = res.responseText;
+                            const workerFunction = new Function('GM_getValue', 'GM_addStyle', workerCode);
+                            workerFunction(GM_getValue, GM_addStyle);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения (eval) кода воркера: ${err}`)); }
 					} else { 
