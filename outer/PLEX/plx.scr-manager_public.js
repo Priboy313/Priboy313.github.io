@@ -140,12 +140,13 @@
 				}
 				settingsContentHTML += `<div class="${rowClass}">${rowContent}</div>`;
 			}
+			
+			if (settingsShownCount > 0){
+				scriptsShown++;
+				formHTML += `<fieldset><legend>${registry[sId].name}</legend>${settingsContentHTML}</fieldset>`;
+			}
 		}
 
-		if (settingsShownCount > 0){
-			scriptsShown++;
-			formHTML += `<fieldset><legend>${registry[sId].name}</legend>${settingsContentHTML}</fieldset>`;
-		}
 
 		if (scriptsShown === 0) {
 			formHTML = '<p>Нет доступных настроек.</p>';
