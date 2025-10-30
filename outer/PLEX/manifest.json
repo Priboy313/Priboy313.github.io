@@ -21,7 +21,6 @@
 		"role": ["aboba", "dodev"],
 		"description": "Улучшения для инвентаря PMS.",
 		"settings": {
-			"rowFixes": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true },
 			"userObserver": { "label": "Отмечать чужие ску", "type": "boolean-expand", "default": true, "values": {
 				"suitableUsers": { "label": "Наши юзеры", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping"] }
 			} },
@@ -32,7 +31,8 @@
 					"margColIndex": { "label": "Номер колонки Маржи", "type": "int", "default": 20 },
 					"kColIndex": { "label": "Номер колонки К", "type": "int", "default": 21 }
 				}}
-			}}
+			}},
+			"rowFixes": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true }
 		}
 	},
 
