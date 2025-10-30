@@ -114,7 +114,7 @@
 						break;
                     }
 					case 'int': {
-						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="number" id="${currentId}" value="${savedValue ?? 0}"></label>`;
+						rowContent = `<label for="${currentId}"><div class="int-input-label">${settingInfo.label}</div><input type="number" id="${currentId}" value="${savedValue ?? 0}"></label>`;
 						break;
                     }
 					case 'list': {
@@ -310,6 +310,9 @@
 				background: #fff;
 				outline: none;
 				transition: border-color 0.2s, box-shadow 0.2s;
+			}
+			#plx-settings-modal .int-input-label {
+				min-width: 150px;
 			}
 			#plx-settings-modal input:focus,
 			#plx-settings-modal textarea:focus {
