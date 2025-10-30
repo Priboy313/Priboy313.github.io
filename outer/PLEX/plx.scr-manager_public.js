@@ -109,7 +109,6 @@
                         }
                         break;
                     }
-					case 'string':
 					case 'text': {
 						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="text" id="${currentId}" value="${savedValue || ''}"></label>`;
 						break;
@@ -123,6 +122,9 @@
 						rowContent = `<label for="${currentId}">${settingInfo.label}</label><textarea id="${currentId}">${listAsString}</textarea>`;
 						break;
                     }
+					case 'label':
+						rowContent = `<div class="plx-form-label">${settingInfo.label}</div>`;
+						break;
 				}
 				groupHTML += `<div class="${rowClass}">${rowContent}</div>`;
 			}
@@ -195,7 +197,6 @@
 							case 'list':
 								newSettings[key] = element.value.split('\n').map(item => item.trim()).filter(Boolean);
 								break;
-							case 'string':
 							case 'text':
 							default:
 								newSettings[key] = element.value;
@@ -360,6 +361,16 @@
 			.settings-group.disabled {
 				opacity: 0.5;
 				pointer-events: none;
+			}
+			#plx-settings-modal .plx-form-label {
+				font-weight: 500;
+				background: #f1f3f5;
+				border: 1px solid #dee2e6;
+				border-radius: 4px;
+				padding: 8px 10px;
+				margin-bottom: 8px;
+				color: #212529;
+				display: inline-block;
 			}
 		`;
 		GM_addStyle(css);

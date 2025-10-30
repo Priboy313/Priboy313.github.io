@@ -15,6 +15,16 @@
 		}
 	},
 
+	"fbaOCF": {
+		"name": "PMS FBA Orders Custom Filters",
+		"ver": "1.0r",
+		"role": ["user", "aboba", "dodev"],
+		"description": "Улучшения для ордеров PMS.",
+		"settings": {
+			"rowFixes": { "label": "Он просто есть и он хорош 😎", "type": "label"}
+		}
+	},
+
 	"invValueObserver": {
 		"name": "PMS FBA Inventory Value Observer",
 		"ver": "1.0r",
