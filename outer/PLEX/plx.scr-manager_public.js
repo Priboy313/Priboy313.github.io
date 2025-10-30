@@ -10,6 +10,186 @@
 	const MANIFEST_CACHE_KEY = 'plx-manifest-cache';
 	const CACHE_DURATION_MS = 0.4 * 60 * 60 * 1000;
 
+	function request(options) {
+		return new Promise((resolve, reject) => {
+			options.onload = resolve;
+			options.onerror = reject;
+			GM_xmlhttpRequest(options);
+		});
+	}
+
+	async function getManifest() {
+		const cached = GM_getValue(MANIFEST_CACHE_KEY, null);
+		if (cached && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
+			return cached.data;
+		}
+
+		try {
+			const commitResponse = await request({
+				method: 'GET',
+				url: GITHUB_API_URL,
+				headers: { "Accept": "application/vnd.github.v3+json" }
+			});
+			const commitHash = JSON.parse(commitResponse.responseText).sha;
+
+			const manifestUrl = MANIFEST_URL_TEMPLATE.replace('{commit_hash}', commitHash);
+			const manifestResponse = await request({
+				method: 'GET',
+				url: manifestUrl
+			});
+			const manifestData = JSON.parse(manifestResponse.responseText);
+
+			GM_setValue(MANIFEST_CACHE_KEY, { data: manifestData, timestamp: Date.now() });
+			return manifestData;
+		} catch (e) {
+			console.error("Manifest Error:", e);
+			return cached ? cached.data : null;
+		}
+	}
+
+	window.PLX_SETTINGS_SHOW_UI = async function(role = 'user') {
+		if (document.getElementById('plx-settings-modal')) return;
+		injectStyles();
+
+		console.log(`[Settings Worker] UI открыт с ролью: ${role}`);
+
+		const modalShellHTML = `
+		<div id="plx-settings-modal">
+			<div class="plx-modal-content">
+				<h2>Настройки Plex скриптов</h2>
+				<form id="plx-settings-form"><p>Загрузка настроек...</p></form>
+				<div class="plx-modal-footer">
+					<button id="plx-close-btn">Закрыть</button>
+					<button id="plx-save-btn">Сохранить</button>
+				</div>
+			</div>
+		</div>`;
+		document.body.insertAdjacentHTML('beforeend', modalShellHTML);
+
+		const formElement = document.getElementById('plx-settings-form');
+		const saveButton = document.getElementById('plx-save-btn');
+		const closeButton = document.getElementById('plx-close-btn');
+
+		saveButton.disabled = true;
+		closeButton.onclick = () => document.getElementById('plx-settings-modal').remove();
+
+		const registry = await getManifest();
+
+		if (!registry) {
+			formElement.innerHTML = '<p>Ошибка загрузки манифеста настроек.</p>';
+			return;
+		}
+
+		const settings = GM_getValue(SETTINGS_KEY, {});
+		let formHTML = '';
+		let scriptsShown = 0;
+
+		for (const sId in registry) {
+			const scriptInfo = registry[sId];
+
+			const isScriptAllowed = !scriptInfo.role || (Array.isArray(scriptInfo.role) && scriptInfo.role.includes(role));
+			
+			if (!isScriptAllowed) {
+				continue;
+			}
+
+			let settingsContentHTML = '';
+			let settingsShownCount = 0;
+
+			for (const k in registry[sId].settings) {
+				const settingInfo = registry[sId].settings[k];
+
+				const isSettingAllowed = !settingInfo.role || (Array.isArray(settingInfo.role) && settingInfo.role.includes(role));
+				if (!isSettingAllowed) {
+					continue;
+				}
+
+				settingsShownCount++;
+				const savedValue = settings[sId]?.[k] ?? settingInfo.default;
+				const inputId = `${sId}_${k}`;
+				let rowContent = '';
+				const rowClass = `plx-form-row plx-form-row--${settingInfo.type}`;
+
+				switch (settingInfo.type) {
+					case 'boolean': {
+						const isChecked = savedValue ? 'checked' : '';
+						rowContent = `<label for="${inputId}"><input type="checkbox" id="${inputId}" ${isChecked}>${settingInfo.label}</label>`;
+						break;
+					}
+					case 'string':
+					case 'text': {
+						rowContent = `<label for="${inputId}">${settingInfo.label}<input type="text" id="${inputId}" value="${savedValue || ''}"></label>`;
+						break;
+					}
+					case 'int': {
+						rowContent = `<label for="${inputId}">${settingInfo.label}<input type="number" id="${inputId}" value="${savedValue || 0}"></label>`;
+						break;
+					}
+					case 'list': {
+						const listAsString = Array.isArray(savedValue) ? savedValue.join('\n') : (savedValue || '');
+						rowContent = `
+							<label for="${inputId}">${settingInfo.label}</label>
+							<textarea id="${inputId}">${listAsString}</textarea>
+						`;
+						break;
+					}
+					default: {
+						rowContent = `<label for="${inputId}">${settingInfo.label}</label><input type="text" id="${inputId}" value="${savedValue || ''}">`;
+						break;
+					}
+				}
+				settingsContentHTML += `<div class="${rowClass}">${rowContent}</div>`;
+			}
+		}
+
+		if (settingsShownCount > 0){
+			scriptsShown++;
+			formHTML += `<fieldset><legend>${registry[sId].name}</legend>${settingsContentHTML}</fieldset>`;
+		}
+
+		if (scriptsShown === 0) {
+			formHTML = '<p>Нет доступных настроек.</p>';
+		}
+
+		formElement.innerHTML = formHTML;
+		saveButton.disabled = false;
+
+		saveButton.onclick = (e) => {
+			e.preventDefault();
+			const newSet = GM_getValue(SETTINGS_KEY, {});
+
+			for (const sId in registry) {
+				if (!newSet[sId]) newSet[sId] = {};
+
+				for (const k in registry[sId].settings) {
+					const settingInfo = registry[sId].settings[k];
+					const el = document.getElementById(`${sId}_${k}`);
+
+					if (el) {
+						switch (settingInfo.type) {
+							case 'boolean':
+								newSet[sId][k] = el.checked;
+								break;
+							case 'int':
+								newSet[sId][k] = parseInt(el.value, 10);
+								break;
+							case 'list':
+								newSet[sId][k] = el.value.split('\n').map(item => item.trim()).filter(Boolean);
+								break;
+							case 'string':
+							case 'text':
+							default:
+								newSet[sId][k] = el.value;
+								break;
+						}
+					}
+				}
+			}
+			GM_setValue(SETTINGS_KEY, newSet);
+			document.getElementById('plx-settings-modal').remove();
+		};
+	};
+
 	function injectStyles() {
 		if (document.getElementById('plx-modal-styles')) return;
 
@@ -125,152 +305,6 @@
 		styleTag.id = 'plx-modal-styles';
 		styleTag.textContent = css;
 		document.head.appendChild(styleTag);
-	}
-
-	function request(options) {
-		return new Promise((resolve, reject) => {
-			options.onload = resolve;
-			options.onerror = reject;
-			GM_xmlhttpRequest(options);
-		});
-	}
-
-	async function getManifest() {
-		const cached = GM_getValue(MANIFEST_CACHE_KEY, null);
-		if (cached && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
-			return cached.data;
-		}
-
-		try {
-			const commitResponse = await request({
-				method: 'GET',
-				url: GITHUB_API_URL,
-				headers: { "Accept": "application/vnd.github.v3+json" }
-			});
-			const commitHash = JSON.parse(commitResponse.responseText).sha;
-
-			const manifestUrl = MANIFEST_URL_TEMPLATE.replace('{commit_hash}', commitHash);
-			const manifestResponse = await request({
-				method: 'GET',
-				url: manifestUrl
-			});
-			const manifestData = JSON.parse(manifestResponse.responseText);
-
-			GM_setValue(MANIFEST_CACHE_KEY, { data: manifestData, timestamp: Date.now() });
-			return manifestData;
-		} catch (e) {
-			console.error("Manifest Error:", e);
-			return cached ? cached.data : null;
-		}
-	}
-
-	window.PLX_SETTINGS_SHOW_UI = async function() {
-		if (document.getElementById('plx-settings-modal')) return;
-		injectStyles();
-
-		const modalShellHTML = `
-		<div id="plx-settings-modal">
-			<div class="plx-modal-content">
-				<h2>Настройки Plex скриптов</h2>
-				<form id="plx-settings-form"><p>Загрузка настроек...</p></form>
-				<div class="plx-modal-footer">
-					<button id="plx-close-btn">Закрыть</button>
-					<button id="plx-save-btn">Сохранить</button>
-				</div>
-			</div>
-		</div>`;
-		document.body.insertAdjacentHTML('beforeend', modalShellHTML);
-
-		const formElement = document.getElementById('plx-settings-form');
-		const saveButton = document.getElementById('plx-save-btn');
-		const closeButton = document.getElementById('plx-close-btn');
-
-		saveButton.disabled = true;
-		closeButton.onclick = () => document.getElementById('plx-settings-modal').remove();
-
-		const registry = await getManifest();
-
-		if (!registry) {
-			formElement.innerHTML = '<p>Ошибка загрузки манифеста настроек.</p>';
-			return;
-		}
-
-		const settings = GM_getValue(SETTINGS_KEY, {});
-		let formHTML = '';
-		for (const sId in registry) {
-			formHTML += `<fieldset><legend>${registry[sId].name}</legend>`;
-			for (const k in registry[sId].settings) {
-				const settingInfo = registry[sId].settings[k];
-				const savedValue = settings[sId]?.[k] ?? settingInfo.default;
-				const inputId = `${sId}_${k}`;
-				let rowContent = '';
-				const rowClass = `plx-form-row plx-form-row--${settingInfo.type}`;
-
-				switch (settingInfo.type) {
-					case 'boolean': {
-						const isChecked = savedValue ? 'checked' : '';
-						rowContent = `<label for="${inputId}"><input type="checkbox" id="${inputId}" ${isChecked}>${settingInfo.label}</label>`;
-						break;
-					}
-					case 'string':
-					case 'text': {
-						rowContent = `<label for="${inputId}">${settingInfo.label}<input type="text" id="${inputId}" value="${savedValue || ''}"></label>`;
-						break;
-					}
-					case 'int': {
-						rowContent = `<label for="${inputId}">${settingInfo.label}<input type="number" id="${inputId}" value="${savedValue || 0}"></label>`;
-						break;
-					}
-					case 'list': {
-						const listAsString = Array.isArray(savedValue) ? savedValue.join('\n') : (savedValue || '');
-						rowContent = `
-							<label for="${inputId}">${settingInfo.label}</label>
-							<textarea id="${inputId}">${listAsString}</textarea>
-						`;
-						break;
-					}
-					default: {
-						rowContent = `<label for="${inputId}">${settingInfo.label}</label><input type="text" id="${inputId}" value="${savedValue || ''}">`;
-						break;
-					}
-				}
-				formHTML += `<div class="${rowClass}">${rowContent}</div>`;
-			}
-			formHTML += `</fieldset>`;
-		}
-
-		formElement.innerHTML = formHTML || '<p>Нет доступных настроек.</p>';
-		saveButton.disabled = false;
-
-		saveButton.onclick = (e) => {
-			e.preventDefault();
-			const newSet = GM_getValue(SETTINGS_KEY, {});
-			for (const sId in registry) {
-				if (!newSet[sId]) newSet[sId] = {};
-				for (const k in registry[sId].settings) {
-					const el = document.getElementById(`${sId}_${k}`);
-					if (el) {
-						switch (settingType) {
-							case 'boolean':
-								newSet[sId][k] = el.checked;
-								break;
-							case 'int':
-								newSet[sId][k] = parseInt(el.value, 10);
-								break;
-							case 'list':
-								newSet[sId][k] = el.value.split('\n').map(item => item.trim()).filter(Boolean);
-								break;
-							case 'string':
-							case 'text':
-							default:
-								newSet[sId][k] = el.value;
-								break;
-						}
-					}
-				}
-			}
-			GM_setValue(SETTINGS_KEY, newSet);
-			document.getElementById('plx-settings-modal').remove();
-		};
 	};
+
 })();

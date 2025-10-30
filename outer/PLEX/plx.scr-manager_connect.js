@@ -32,11 +32,14 @@
 	
 	const CACHE_KEY = 'plx-connector-cache';
 	const CACHE_DURATION_MS = 15 * 60 * 1000;
+	const ROLE = 'user';
 
 	async function handleMenuClick() {
+		const userRole = ROLE;
+
 		if (typeof window.PLX_SETTINGS_SHOW_UI === 'function') {
 			console.log(`[${SCRIPT_NAME}] Воркер уже в памяти. Запуск UI.`);
-			window.PLX_SETTINGS_SHOW_UI();
+			window.PLX_SETTINGS_SHOW_UI(userRole);
 			return;
 		}
 
@@ -47,7 +50,7 @@
 			await downloadAndExecuteWorker(url);
 			
 			if (typeof window.PLX_SETTINGS_SHOW_UI === 'function') {
-				window.PLX_SETTINGS_SHOW_UI();
+				window.PLX_SETTINGS_SHOW_UI(userRole);
 			} else {
 				throw new Error("Воркер выполнен, но функция 'PLX_SETTINGS_SHOW_UI' не найдена. Проверьте код воркера.");
 			}
@@ -96,7 +99,9 @@
 				onload: res => {
 					if (res.status === 200 && res.responseText) {
 						try {
-							eval(res.responseText);
+							const workerCode = res.responseText;
+							const workerFunction = new Function(workerCode);
+							workerFunction();
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения (eval) кода воркера: ${err}`)); }
 					} else { 

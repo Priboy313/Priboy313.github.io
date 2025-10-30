@@ -2,6 +2,7 @@
 	"amazonWorkView": {
 		"name": "Amazon Work View",
 		"ver": "1.0r",
+		"role": ["user", "aboba", "dodev"],
 		"description": "Улучшения для страниц товаров Amazon.",
 		"settings": {
 			"forcePageToLeft": { "label": "Сдвинуть страницу влево", "type": "boolean", "default": false },
@@ -15,8 +16,9 @@
 	},
 
 	"invValueObserver": {
-		"name": "PMV FBA Inventory Value Observer",
+		"name": "PMS FBA Inventory Value Observer",
 		"ver": "1.0r",
+		"role": ["aboba", "dodev"],
 		"description": "Улучшения для инвентаря PMS.",
 		"settings": {
 			"rowFixes": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true },
