@@ -8,7 +8,7 @@
 	const MANIFEST_URL_TEMPLATE = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/manifest.json";
 	const SETTINGS_KEY = 'plx-cst-scr-settings';
 	const MANIFEST_CACHE_KEY = 'plx-manifest-cache';
-	const CACHE_DURATION_MS = 0.4 * 60 * 60 * 1000;
+	const CACHE_DURATION_MS = 5 * 60 * 1000;
 
 	function request(options) {
 		return new Promise((resolve, reject) => {

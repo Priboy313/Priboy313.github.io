@@ -25,7 +25,7 @@
 	
 	const CACHE_KEY = 'amznwv-connector-cache';
 	const GLOBAL_SETTINGS_KEY = '__PLEX_SCRIPT_SETTINGS__';
-	const CACHE_DURATION_MS = 15 * 60 * 1000;
+	const CACHE_DURATION_MS = 5 * 60 * 1000;
 
 	function getSettingsFromProvider(timeout = 5000) {
 		return new Promise((resolve, reject) => {

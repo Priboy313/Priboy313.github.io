@@ -31,7 +31,7 @@
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/plx.scr-manager_public.js';
 	
 	const CACHE_KEY = 'plx-connector-cache';
-	const CACHE_DURATION_MS = 15 * 60 * 1000;
+	const CACHE_DURATION_MS = 5 * 60 * 1000;
 	const ROLE = 'user';
 
 	async function handleMenuClick() {
