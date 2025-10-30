@@ -263,7 +263,7 @@
 			}
 			#plx-settings-modal h2 {
 				font-size: 20px;
-				margin-bottom: 15px;
+				margin: 5px 0 5px 0;
 				color: #212529;
 				font-weight: 600;
 			}
