@@ -1,8 +1,8 @@
 // ВАЖНО: Это содержимое файла plx.scr-manager_public.js на GitHub
-(function() {
+(function(GM_getValue, GM_setValue, GM_xmlhttpRequest, GM_addStyle, unsafeWindow) {
 	'use strict';
 
-	if (window.PLX_SETTINGS_SHOW_UI) return;
+	if (unsafeWindow.PLX_SETTINGS_SHOW_UI) return;
 
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
 	const MANIFEST_URL_TEMPLATE = "https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/manifest.json";
@@ -47,7 +47,7 @@
 		}
 	}
 
-	window.PLX_SETTINGS_SHOW_UI = async function(role = 'user') {
+	unsafeWindow.PLX_SETTINGS_SHOW_UI = async function(role = 'user') {
 		if (document.getElementById('plx-settings-modal')) return;
 		injectStyles();
 
@@ -307,4 +307,4 @@
 		document.head.appendChild(styleTag);
 	};
 
-})();
+})(GM_getValue, GM_setValue, GM_xmlhttpRequest, GM_addStyle, unsafeWindow);

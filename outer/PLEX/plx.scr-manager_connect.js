@@ -15,8 +15,8 @@
 
 (function() {
 	'use strict';
-	if (window.isPlexConnectorRunning) return;
-	window.isPlexConnectorRunning = true;
+	if (unsafeWindow.isPlexConnectorRunning) return;
+	unsafeWindow.isPlexConnectorRunning = true;
 
 	const SETTINGS_KEY = 'plx-cst-scr-settings';
     const GLOBAL_KEY = '__PLEX_SCRIPT_SETTINGS__';
@@ -37,9 +37,9 @@
 	async function handleMenuClick() {
 		const userRole = ROLE;
 
-		if (typeof window.PLX_SETTINGS_SHOW_UI === 'function') {
+		if (typeof unsafeWindow.PLX_SETTINGS_SHOW_UI === 'function') {
 			console.log(`[${SCRIPT_NAME}] Воркер уже в памяти. Запуск UI.`);
-			window.PLX_SETTINGS_SHOW_UI(userRole);
+			unsafeWindow.PLX_SETTINGS_SHOW_UI(userRole);
 			return;
 		}
 
@@ -49,8 +49,8 @@
 			const url = await getWorkerURL();
 			await downloadAndExecuteWorker(url);
 			
-			if (typeof window.PLX_SETTINGS_SHOW_UI === 'function') {
-				window.PLX_SETTINGS_SHOW_UI(userRole);
+			if (typeof unsafeWindow.PLX_SETTINGS_SHOW_UI === 'function') {
+				unsafeWindow.PLX_SETTINGS_SHOW_UI(userRole);
 			} else {
 				throw new Error("Воркер выполнен, но функция 'PLX_SETTINGS_SHOW_UI' не найдена. Проверьте код воркера.");
 			}
@@ -100,8 +100,8 @@
 					if (res.status === 200 && res.responseText) {
 						try {
 							const workerCode = res.responseText;
-							const workerFunction = new Function(workerCode);
-							workerFunction();
+							const workerFunction = new Function('GM_getValue', 'GM_setValue', 'GM_xmlhttpRequest', 'GM_addStyle', 'unsafeWindow', workerCode);
+							workerFunction(GM_getValue, GM_setValue, GM_xmlhttpRequest, GM_addStyle, unsafeWindow);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения (eval) кода воркера: ${err}`)); }
 					} else { 
