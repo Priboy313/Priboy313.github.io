@@ -56,7 +56,7 @@
 		const modalShellHTML = `
 		<div id="plx-settings-modal">
 			<div class="plx-modal-content">
-				<h2>Настройки Plex скриптов</h2>
+				<h2>Настройки скриптов</h2>
 				<form id="plx-settings-form"><p>Загрузка настроек...</p></form>
 				<div class="plx-modal-footer">
 					<button id="plx-close-btn">Закрыть</button>
