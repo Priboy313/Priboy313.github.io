@@ -252,7 +252,7 @@
 			}
 			#plx-settings-modal .plx-modal-content {
 				background: #fff;
-				padding: 10px;
+				padding: 0 10px 10px 10px;
 				width: 90%;
 				max-width: 600px;
 				max-height: 80vh;
