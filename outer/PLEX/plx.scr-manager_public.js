@@ -311,6 +311,9 @@
 				outline: none;
 				transition: border-color 0.2s, box-shadow 0.2s;
 			}
+			#plx-settings-modal input[type="number"]{
+				max-width: 100px;
+			}
 			#plx-settings-modal .int-input-label {
 				min-width: 150px;
 			}
