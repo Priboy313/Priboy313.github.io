@@ -251,7 +251,7 @@
 			}
 			#plx-settings-modal .plx-modal-content {
 				background: #fff;
-				padding: 20px;
+				padding: 10px;
 				width: 90%;
 				max-width: 600px;
 				max-height: 80vh;
@@ -272,8 +272,7 @@
 				flex-grow: 1;
 				border-top: 1px solid #dee2e6;
 				border-bottom: 1px solid #dee2e6;
-				padding: 10px;
-				margin-bottom: 15px;
+				padding: 10px 10px 10px 5px;
 			}
 			#plx-settings-modal fieldset {
 				border: 1px solid #ced4da;
@@ -283,7 +282,7 @@
 			}
 			#plx-settings-modal legend {
 				font-weight: bold;
-				padding: 0 5px;
+				padding: 0 5px 0 0;
 			}
 			#plx-settings-modal .plx-form-row {
 				margin-bottom: 12px;
