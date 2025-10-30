@@ -224,112 +224,133 @@
 	function injectStyles() {
 		if (document.getElementById('plx-modal-styles')) return;
 
-		const css = `
-			#plx-settings-modal, #plx-settings-modal * { 
-				all: initial; 
-				box-sizing: border-box; 
-				font-family: Arial, sans-serif; 
-				font-size: 14px; 
-				color: #333; 
+		const  css = `
+			#plx-settings-modal {
+				all: unset;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0,0,0,0.6);
+				z-index: 2147483647;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-family: Arial, sans-serif;
+				color: #333;
+				font-size: 14px;
+				box-sizing: border-box;
 			}
-			#plx-settings-modal { 
-				position: fixed; top: 0; left: 0; 
-				width: 100%; height: 100%; 
-				background: rgba(0,0,0,0.6); 
-				z-index: 2147483647; 
-				display: flex; 
-				align-items: center; 
-				justify-content: center; 
+			#plx-settings-modal * {
+				box-sizing: border-box;
+				font-family: inherit;
+				color: inherit;
+				font-size: inherit;
+				line-height: 1.4;
 			}
-			#plx-settings-modal .plx-modal-content { 
-				background: #f8f9fa; 
-				padding: 20px; 
-				width: 90%; 
-				max-width: 600px; 
-				max-height: 80vh; 
-				display: flex; 
-				flex-direction: column; 
-				border-radius: 8px; 
-				box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+			#plx-settings-modal .plx-modal-content {
+				background: #fff;
+				padding: 20px;
+				width: 90%;
+				max-width: 600px;
+				max-height: 80vh;
+				display: flex;
+				flex-direction: column;
+				border-radius: 8px;
+				box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+				overflow: hidden;
 			}
-			#plx-settings-modal h2 { 
-				font-size: 20px; 
-				margin: 0 0 15px 0; 
-				color: #212529; 
-				font-weight: 600; 
+			#plx-settings-modal h2 {
+				font-size: 20px;
+				margin-bottom: 15px;
+				color: #212529;
+				font-weight: 600;
 			}
-			#plx-settings-modal #plx-settings-form { 
-				overflow-y: auto; 
-				flex-grow: 1; 
-				border-top: 1px solid #dee2e6; 
-				border-bottom: 1px solid #dee2e6; 
-				padding: 10px 4px; 
-				margin-bottom: 15px; 
+			#plx-settings-modal #plx-settings-form {
+				overflow-y: auto;
+				flex-grow: 1;
+				border-top: 1px solid #dee2e6;
+				border-bottom: 1px solid #dee2e6;
+				padding: 10px;
+				margin-bottom: 15px;
 			}
-			#plx-settings-modal fieldset { 
-				border: 1px solid #ced4da; 
-				border-radius: 4px; 
-				padding: 10px 15px; 
-				margin-bottom: 10px; 
+			#plx-settings-modal fieldset {
+				border: 1px solid #ced4da;
+				border-radius: 6px;
+				padding: 10px 15px;
+				margin-bottom: 10px;
 			}
-			#plx-settings-modal legend { 
-				font-weight: bold; 
-				padding: 0 5px; 
+			#plx-settings-modal legend {
+				font-weight: bold;
+				padding: 0 5px;
 			}
 			#plx-settings-modal .plx-form-row {
 				margin-bottom: 12px;
 			}
-			#plx-settings-modal .plx-form-row--boolean label {
-				display: flex;
-				align-items: center;
-				cursor: pointer;
-			}
-			#plx-settings-modal .plx-form-row--boolean input[type="checkbox"] {
-				appearance: checkbox;
-				width: 16px;
-				height: 16px;
-				margin-right: 10px;
-			}
-			#plx-settings-modal .plx-form-row--string {
+			#plx-settings-modal .plx-form-row label {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+				gap: 8px;
 			}
-			#plx-settings-modal .plx-form-row--string input[type="text"] {
+			#plx-settings-modal input[type="checkbox"],
+			#plx-settings-modal input[type="radio"] {
+				accent-color: #007bff;
+				transform: scale(1.1);
+				cursor: pointer;
+			}
+			#plx-settings-modal input[type="text"],
+			#plx-settings-modal input[type="number"],
+			#plx-settings-modal textarea {
 				flex-grow: 1;
-				max-width: 60%;
 				padding: 6px 10px;
 				border: 1px solid #ced4da;
 				border-radius: 4px;
+				background: #fff;
+				outline: none;
+				transition: border-color 0.2s, box-shadow 0.2s;
 			}
-			#plx-settings-modal .plx-modal-footer { 
-				text-align: right; 
+			#plx-settings-modal input:focus,
+			#plx-settings-modal textarea:focus {
+				border-color: #80bdff;
+				box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 			}
-			#plx-settings-modal button { 
-				padding: 8px 16px; 
-				margin-left: 10px; 
-				cursor: pointer; 
-				border-radius: 4px; 
-				border: 1px solid transparent; 
-				font-weight: 500; 
-				transition: background-color 0.2s, border-color 0.2s; 
+			#plx-settings-modal textarea {
+				width: 100%;
+				min-height: 80px;
+				resize: vertical;
 			}
-			#plx-settings-modal #plx-save-btn { 
-				background-color: #007bff; 
-				color: white; 
-				border-color: #007bff; 
+			#plx-settings-modal .plx-modal-footer {
+				display: flex;
+				justify-content: flex-end;
+				gap: 10px;
+				margin-top: 10px;
 			}
-			#plx-settings-modal #plx-save-btn:hover { 
-				background-color: #0056b3; 
-				border-color: #0056b3; 
+			#plx-settings-modal button {
+				padding: 8px 16px;
+				cursor: pointer;
+				border-radius: 4px;
+				border: 1px solid transparent;
+				font-weight: 500;
+				transition: background-color 0.2s, border-color 0.2s;
 			}
-			#plx-settings-modal #plx-close-btn { 
-				background-color: #6c757d; 
-				color: white; 
-				border-color: #6c757d; 
+			#plx-settings-modal #plx-save-btn {
+				background-color: #007bff;
+				color: #fff;
+				border-color: #007bff;
 			}
-			#plx-settings-modal #plx-close-btn:hover { 
-				background-color: #5a6268; 
+			#plx-settings-modal #plx-save-btn:hover {
+				background-color: #0056b3;
+				border-color: #0056b3;
+			}
+			#plx-settings-modal #plx-close-btn {
+				background-color: #6c757d;
+				color: #fff;
+				border-color: #6c757d;
+			}
+			#plx-settings-modal #plx-close-btn:hover {
+				background-color: #5a6268;
 			}
 			.settings-group {
 				padding-left: 20px;
@@ -341,37 +362,7 @@
 				opacity: 0.5;
 				pointer-events: none;
 			}
-			#plx-settings-modal .plx-form-row--string label,
-			#plx-settings-modal .plx-form-row--text label,
-			#plx-settings-modal .plx-form-row--int label {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				width: 100%;
-			}
-			#plx-settings-modal .plx-form-row--string input,
-			#plx-settings-modal .plx-form-row--text input,
-			#plx-settings-modal .plx-form-row--int input {
-				flex-grow: 1;
-				max-width: 60%;
-			}
-			#plx-settings-modal .plx-form-row--list {
-				display: flex;
-				flex-direction: column;
-			}
-			#plx-settings-modal .plx-form-row--list label {
-				margin-bottom: 8px;
-			}
-			#plx-settings-modal .plx-form-row--list textarea {
-				width: 100%;
-				min-height: 80px;
-				resize: vertical;
-			}
 		`;
-		// const styleTag = document.createElement('style');
-		// styleTag.id = 'plx-modal-styles';
-		// styleTag.textContent = css;
-		// document.head.appendChild(styleTag);
 		GM_addStyle(css);
 	};
 
