@@ -81,6 +81,54 @@
 		}
 
 		const settings = GM_getValue(SETTINGS_KEY, {});
+
+
+		function generateSettingsHTML(settingsGroup, parentId, savedValues) {
+			let groupHTML = '';
+			for (const key in settingsGroup) {
+				const settingInfo = settingsGroup[key];
+				const isSettingAllowed = !settingInfo.role || (Array.isArray(settingInfo.role) && settingInfo.role.includes(role));
+				if (!isSettingAllowed) continue;
+
+				const currentId = `${parentId}_${key}`;
+				const savedValue = savedValues?.[key] ?? settingInfo.default;
+				let rowContent = '';
+				const rowClass = `plx-form-row plx-form-row--${settingInfo.type}`;
+
+				switch (settingInfo.type) {
+					case 'boolean': {
+						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="checkbox" id="${currentId}" ${savedValue ? 'checked' : ''}></label>`;
+						break;
+                    }
+                    case 'boolean-expand': {
+                        const isChecked = (typeof savedValue === 'boolean') ? savedValue : settingInfo.default;
+                        rowContent = `<label for="${currentId}">${settingInfo.label}<input type="checkbox" id="${currentId}" data-expands="group-for-${currentId}" ${isChecked ? 'checked' : ''}></label>`;
+                        if (settingInfo.values) {
+                            const childHTML = generateSettingsHTML(settingInfo.values, currentId, savedValues);
+                            rowContent += `<div class="settings-group" id="group-for-${currentId}">${childHTML}</div>`;
+                        }
+                        break;
+                    }
+					case 'string':
+					case 'text': {
+						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="text" id="${currentId}" value="${savedValue || ''}"></label>`;
+						break;
+                    }
+					case 'int': {
+						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="number" id="${currentId}" value="${savedValue ?? 0}"></label>`;
+						break;
+                    }
+					case 'list': {
+						const listAsString = Array.isArray(savedValue) ? savedValue.join('\n') : (savedValue || '');
+						rowContent = `<label for="${currentId}">${settingInfo.label}</label><textarea id="${currentId}">${listAsString}</textarea>`;
+						break;
+                    }
+				}
+				groupHTML += `<div class="${rowClass}">${rowContent}</div>`;
+			}
+			return groupHTML;
+		}
+
 		let formHTML = '';
 		let scriptsShown = 0;
 
@@ -93,99 +141,81 @@
 				continue;
 			}
 
-			let settingsContentHTML = '';
-			let settingsShownCount = 0;
-
-			for (const k in registry[sId].settings) {
-				const settingInfo = registry[sId].settings[k];
-
-				const isSettingAllowed = !settingInfo.role || (Array.isArray(settingInfo.role) && settingInfo.role.includes(role));
-				if (!isSettingAllowed) {
-					continue;
-				}
-
-				settingsShownCount++;
-				const savedValue = settings[sId]?.[k] ?? settingInfo.default;
-				const inputId = `${sId}_${k}`;
-				let rowContent = '';
-				const rowClass = `plx-form-row plx-form-row--${settingInfo.type}`;
-
-				switch (settingInfo.type) {
-					case 'boolean': {
-						const isChecked = savedValue ? 'checked' : '';
-						rowContent = `<label for="${inputId}"><input type="checkbox" id="${inputId}" ${isChecked}>${settingInfo.label}</label>`;
-						break;
-					}
-					case 'string':
-					case 'text': {
-						rowContent = `<label for="${inputId}">${settingInfo.label}<input type="text" id="${inputId}" value="${savedValue || ''}"></label>`;
-						break;
-					}
-					case 'int': {
-						rowContent = `<label for="${inputId}">${settingInfo.label}<input type="number" id="${inputId}" value="${savedValue || 0}"></label>`;
-						break;
-					}
-					case 'list': {
-						const listAsString = Array.isArray(savedValue) ? savedValue.join('\n') : (savedValue || '');
-						rowContent = `
-							<label for="${inputId}">${settingInfo.label}</label>
-							<textarea id="${inputId}">${listAsString}</textarea>
-						`;
-						break;
-					}
-					default: {
-						rowContent = `<label for="${inputId}">${settingInfo.label}</label><input type="text" id="${inputId}" value="${savedValue || ''}">`;
-						break;
-					}
-				}
-				settingsContentHTML += `<div class="${rowClass}">${rowContent}</div>`;
-			}
+			let scriptSettingsHTML = generateSettingsHTML(scriptInfo.settings, sId, settings[sId] || {});
 			
-			if (settingsShownCount > 0){
+			if (scriptSettingsHTML){
 				scriptsShown++;
-				formHTML += `<fieldset><legend>${registry[sId].name}</legend>${settingsContentHTML}</fieldset>`;
+				formHTML += `<fieldset><legend>${scriptInfo.name}</legend>${scriptSettingsHTML}</fieldset>`;
 			}
 		}
-
 
 		if (scriptsShown === 0) {
 			formHTML = '<p>Нет доступных настроек.</p>';
 		}
 
 		formElement.innerHTML = formHTML;
+
+		document.querySelectorAll('input[data-expands]').forEach(checkbox => {
+			const groupElement = document.getElementById(checkbox.dataset.expands);
+			if (!groupElement) return;
+			const updateGroupState = () => { groupElement.classList.toggle('disabled', !checkbox.checked); };
+			updateGroupState();
+			checkbox.addEventListener('change', updateGroupState);
+		});
+
 		saveButton.disabled = false;
 
 		saveButton.onclick = (e) => {
 			e.preventDefault();
-			const newSet = GM_getValue(SETTINGS_KEY, {});
 
-			for (const sId in registry) {
-				if (!newSet[sId]) newSet[sId] = {};
+			function saveSettingsRecursively(settingsGroup, parentId) {
+				const newSettings = {};
+				for (const key in settingsGroup) {
+					const settingInfo = settingsGroup[key];
+                    const isSettingAllowed = !settingInfo.role || (Array.isArray(settingInfo.role) && settingInfo.role.includes(role));
+                    if (!isSettingAllowed) continue;
 
-				for (const k in registry[sId].settings) {
-					const settingInfo = registry[sId].settings[k];
-					const el = document.getElementById(`${sId}_${k}`);
-
-					if (el) {
+					const currentId = `${parentId}_${key}`;
+					const element = document.getElementById(currentId);
+					
+					if (element) {
 						switch (settingInfo.type) {
 							case 'boolean':
-								newSet[sId][k] = el.checked;
+								newSettings[key] = element.checked;
 								break;
+                            case 'boolean-expand':
+                                newSettings[key] = element.checked;
+                                if (settingInfo.values) {
+                                    Object.assign(newSettings, saveSettingsRecursively(settingInfo.values, currentId));
+                                }
+                                break;
 							case 'int':
-								newSet[sId][k] = parseInt(el.value, 10);
+								newSettings[key] = parseInt(element.value, 10) || 0;
 								break;
 							case 'list':
-								newSet[sId][k] = el.value.split('\n').map(item => item.trim()).filter(Boolean);
+								newSettings[key] = element.value.split('\n').map(item => item.trim()).filter(Boolean);
 								break;
 							case 'string':
 							case 'text':
 							default:
-								newSet[sId][k] = el.value;
+								newSettings[key] = element.value;
 								break;
 						}
 					}
 				}
+				return newSettings;
 			}
+
+			const newSet = {};
+
+			for (const sId in registry) {
+				const scriptInfo = registry[sId];
+				const isScriptAllowed = !scriptInfo.role || (Array.isArray(scriptInfo.role) && scriptInfo.role.includes(role));
+				if (!isScriptAllowed) continue;
+				
+				newSet[sId] = saveSettingsRecursively(scriptInfo.settings, sId);
+			}
+
 			GM_setValue(SETTINGS_KEY, newSet);
 			document.getElementById('plx-settings-modal').remove();
 		};
@@ -301,11 +331,48 @@
 			#plx-settings-modal #plx-close-btn:hover { 
 				background-color: #5a6268; 
 			}
+			.settings-group {
+				padding-left: 20px;
+				margin-top: 10px;
+				border-left: 2px solid #e0e0e0;
+				transition: opacity 0.3s;
+			}
+			.settings-group.disabled {
+				opacity: 0.5;
+				pointer-events: none;
+			}
+			#plx-settings-modal .plx-form-row--string label,
+			#plx-settings-modal .plx-form-row--text label,
+			#plx-settings-modal .plx-form-row--int label {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				width: 100%;
+			}
+			#plx-settings-modal .plx-form-row--string input,
+			#plx-settings-modal .plx-form-row--text input,
+			#plx-settings-modal .plx-form-row--int input {
+				flex-grow: 1;
+				max-width: 60%;
+			}
+			#plx-settings-modal .plx-form-row--list {
+				display: flex;
+				flex-direction: column;
+			}
+			#plx-settings-modal .plx-form-row--list label {
+				margin-bottom: 8px;
+			}
+			#plx-settings-modal .plx-form-row--list textarea {
+				width: 100%;
+				min-height: 80px;
+				resize: vertical;
+			}
 		`;
-		const styleTag = document.createElement('style');
-		styleTag.id = 'plx-modal-styles';
-		styleTag.textContent = css;
-		document.head.appendChild(styleTag);
+		// const styleTag = document.createElement('style');
+		// styleTag.id = 'plx-modal-styles';
+		// styleTag.textContent = css;
+		// document.head.appendChild(styleTag);
+		GM_addStyle(css);
 	};
 
 })(GM_getValue, GM_setValue, GM_xmlhttpRequest, GM_addStyle, unsafeWindow);

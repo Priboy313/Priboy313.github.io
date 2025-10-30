@@ -22,14 +22,17 @@
 		"description": "Улучшения для инвентаря PMS.",
 		"settings": {
 			"rowFixes": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true },
-			"userObserver": { "label": "Отмечать чужие ску", "type": "boolean", "default": true },
-			"suitableUsers": { "label": "Наши юзеры", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping"] },
+			"userObserver": { "label": "Отмечать чужие ску", "type": "boolean-expand", "default": true, "values": {
+				"suitableUsers": { "label": "Наши юзеры", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping"] }
+			} },
 			"hideAmznGr": { "label": "Прятать строки грейдов", "type": "boolean", "default": true },
-			"clearYellowRow": { "label": "Убрать жёлтую заливку", "type": "boolean", "default": true },
-			"exludesYellowClearing": { "label": "Защитить оригинальный фон для колонок", "type": "string", "default": null},
-			"skuColIndex": {"label": "Номер колонки СКУ", "type": "int", "default": 2},
-			"margColIndex": {"label": "Номер колонки Маржи", "type": "int", "default": 20},
-			"kColIndex": {"label": "Номер колонки К", "type": "int", "default": 21}
+			"clearYellowRow": { "label": "Убрать жёлтую заливку", "type": "boolean-expand", "default": true , "values": {
+				"exludesYellowClearing": { "label": "Защитить оригинальный фон для: ", "type": "boolean-expand", "default": true, "values": {
+					"skuColIndex": { "label": "Номер колонки СКУ", "type": "int", "default": 2 },
+					"margColIndex": { "label": "Номер колонки Маржи", "type": "int", "default": 20 },
+					"kColIndex": { "label": "Номер колонки К", "type": "int", "default": 21 }
+				}}
+			}}
 		}
 	}
 }
