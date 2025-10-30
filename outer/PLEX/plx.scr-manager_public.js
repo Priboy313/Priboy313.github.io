@@ -364,11 +364,7 @@
 			}
 			#plx-settings-modal .plx-form-label {
 				font-weight: 500;
-				background: #f1f3f5;
-				border: 1px solid #dee2e6;
-				border-radius: 4px;
-				padding: 8px 10px;
-				margin-bottom: 8px;
+				padding: 0px 10px;
 				color: #212529;
 				display: inline-block;
 			}
