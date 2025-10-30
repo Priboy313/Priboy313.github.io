@@ -22,7 +22,7 @@
 		"description": "Улучшения для инвентаря PMS.",
 		"settings": {
 			"userObserver": { "label": "Отмечать чужие ску", "type": "boolean-expand", "default": true, "values": {
-				"suitableUsers": { "label": "Наши юзеры", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping"] }
+				"suitableUsers": { "label": "Наши юзеры (записывать с новой строки без пробелов и запятых в конце)", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping"] }
 			} },
 			"hideAmznGr": { "label": "Прятать строки грейдов", "type": "boolean", "default": true },
 			"clearYellowRow": { "label": "Убрать жёлтую заливку", "type": "boolean-expand", "default": true , "values": {
