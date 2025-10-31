@@ -43,6 +43,20 @@
 		}
 	},
 
+	"orgFix": {
+		"name": "Orgill Fixes",
+		"ver": "1.0r",
+		"role": ["aboba", "dodev"],
+		"description": "Улучшения для Orgill.",
+		"settings": {
+			"styleFix": { "label": "Убрать гигантизм из дизайна", "type": "boolean-expand", "default": true, "values":{
+				"hideSayt": {"label": "Скрыть всплывающую карточку из строки поиска", "type": "boolean", "default": true},
+				"fixHeader": {"label": "Уменьшить верхнее меню", "type": "boolean", "default": true}
+			} },
+			"onclickFix": {"label": "Отключить кликабельность карточек товаров", "type": "boolean", "default": false}
+		}
+	},
+
 	"fbaOCF": {
 		"name": "PMS FBA Orders Custom Filters",
 		"ver": "1.0r",
