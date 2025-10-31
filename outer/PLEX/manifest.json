@@ -9,9 +9,16 @@
 			"addMirrorLinks": { "label": "Добавить ссылки-зеркала", "type": "boolean", "default": true },
 			"checkDiscount": { "label": "Проверять скидку Amazon", "type": "boolean", "default": true },
 			"showFee": { "label": "Показывать Fee в RevSeller", "type": "boolean", "default": true },
-			"clearAmazon": { "label": "Удалить лишние элементы Амазона", "type": "boolean", "default": true },
-			"clearGrabley": { "label": "Удалить лишние элементы Grabley", "type": "boolean", "default": true },
-			"clearRevseller": { "label": "Удалить лишние элементы RevSeller", "type": "boolean", "default": true }
+			"clearAmazon": { "label": "Очистить элементы Амазона", "type": "boolean-expand", "default": true, "values": {
+				"hideNavbar": { "label": "Скрыть навигацию", "type": "boolean", "default": true },
+				"hideSubNavbar": { "label": "Скрыть сабнавигацию", "type": "boolean", "default": true },
+				"hideAdBanner": { "label": "Скрыть баннер", "type": "boolean", "default": true },
+				"hidePrime": { "label": "Скрыть баннер Prime", "type": "boolean", "default": true },
+				"hideReturns": { "label": "Скрыть Returns", "type": "boolean", "default": true },
+				"hideProtectionPlan": { "label": "Скрыть Protection Plan", "type": "boolean", "default": true }
+			} },
+			"clearGrabley": { "label": "Очистить элементы Grabley", "type": "boolean", "default": true },
+			"clearRevseller": { "label": "Очистить элементы RevSeller", "type": "boolean", "default": true }
 		}
 	},
 

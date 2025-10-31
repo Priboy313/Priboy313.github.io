@@ -296,28 +296,56 @@
 			customAmazonStyle.id = "custom-amzWV-css";
 			customAmazonStyle.innerHTML = "/* Custom AmznWV CSS */"
 
-		if (config.clearAmazon){
-			customAmazonStyle.innerHTML += `
-				/*Clear Amazon*/
-				#nav-progressive-subnav,
-				#nav-main,
-				#nav-flyout-rufus,
-				#primeDPUpsellContainer,
-				#returnsInfoFeature_feature_div,
-				#secureTransactionReorderT1_feature_div,
-				#mbb_feature_div,
-				#detailPageGifting_feature_div,
-				#offerDisplayGroupTabSet,
-				#primeDPUpsellStaticContainerNPA,
-				#desktop-dp-ilm_feature_div_01
-				{
-					display: none !important;
-				}
+		if (config.clearAmazon) {
+			if (config.clearAmazon.hideNavbar) {
+				customAmazonStyle.innerHTML += `
+					#nav-main,
+					#nav-flyout-rufus {
+						display: none !important;
+					}
+				`;
+			}
 
-				.offer-display-features-expander{
-					height: 120px!important;
-				}
-			`;
+			if (config.clearAmazon.hideSubNavbar) {
+				customAmazonStyle.innerHTML += `
+					#nav-progressive-subnav{
+						display: none !important;
+					}
+				`;
+			}
+
+			if (config.clearAmazon.hidePrime){
+				customAmazonStyle.innerHTML += `
+					#primeDPUpsellContainer,
+					#primeDPUpsellStaticContainerNPA{
+						display: none !important;
+					}
+				`;
+			}
+
+			if (config.clearAmazon.hideReturns){
+				customAmazonStyle.innerHTML += `
+					#returnsInfoFeature_feature_div{
+						display: none !important;
+					}
+				`;
+			}
+
+			if (config.clearAmazon.hideProtectionPlan){
+				customAmazonStyle.innerHTML += `
+					#mbb_feature_div{
+						display: none !important;
+					}
+				`;
+			}
+
+			if (config.clearAmazon.hideProtectionPlan){
+				customAmazonStyle.innerHTML += `
+					#desktop-dp-ilm_feature_div_01{
+						display: none !important;
+					}
+				`;
+			}
 		}
 
 		if (config.clearRevseller){
