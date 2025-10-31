@@ -59,6 +59,9 @@
 				<h2>Настройки скриптов</h2>
 				<form id="plx-settings-form"><p>Загрузка настроек...</p></form>
 				<div class="plx-modal-footer">
+					<button id="plx-export-btn">Экспорт</button>
+					<button id="plx-import-btn">Импорт</button>
+					<button id="plx-set-default-btn">Сбросить</button>
 					<button id="plx-close-btn">Закрыть</button>
 					<button id="plx-save-btn">Сохранить</button>
 				</div>
@@ -69,9 +72,79 @@
 		const formElement = document.getElementById('plx-settings-form');
 		const saveButton = document.getElementById('plx-save-btn');
 		const closeButton = document.getElementById('plx-close-btn');
+		const exportButton = document.getElementById('plx-export-btn');
+		const importButton = document.getElementById('plx-import-btn');
+		const resetButton  = document.getElementById('plx-set-default-btn');
 
 		saveButton.disabled = true;
+
+		function cleanSettingsData(raw) {
+			const cleanCopy = JSON.parse(JSON.stringify(raw));
+
+			delete cleanCopy[MANIFEST_CACHE_KEY];
+			delete cleanCopy.__timestamp;
+			delete cleanCopy.__meta;
+			delete cleanCopy.cache;
+			delete cleanCopy.temp;
+			delete cleanCopy.debug;
+
+			for (const key in cleanCopy) {
+				if (key.startsWith('_') || key.startsWith('plx-temp-')) {
+					delete cleanCopy[key];
+				}
+			}
+
+			return cleanCopy;
+		}
+
 		closeButton.onclick = () => document.getElementById('plx-settings-modal').remove();
+		exportButton.onclick = () => {
+			const stored = GM_getValue(SETTINGS_KEY, {});
+			const clean = cleanSettingsData(stored);
+
+			const blob = new Blob([JSON.stringify(clean, null, 2)], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'plx_settings_export.json';
+			a.click();
+
+			URL.revokeObjectURL(url);
+			console.log('[PLX] Настройки экспортированы/');
+		};
+
+		importButton.onclick = () => {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.accept = '.json,application/json';
+			input.onchange = e => {
+				const file = e.target.files[0];
+				if (!file) return;
+
+				const reader = new FileReader();
+				reader.onload = event => {
+					try {
+						const imported = JSON.parse(event.target.result);
+						GM_setValue(SETTINGS_KEY, imported);
+						alert('Настройки успешно импортированы. Перезагрузите страницу.');
+						document.getElementById('plx-settings-modal').remove();
+					} catch (err) {
+						alert('Ошибка импорта: неверный формат файла.');
+						console.error(err);
+					}
+				};
+				reader.readAsText(file);
+			};
+			input.click();
+		};
+
+		resetButton.onclick = () => {
+			if (!confirm('Сбросить все настройки к значениям по умолчанию?')) return;
+			GM_setValue(SETTINGS_KEY, {});
+			alert('Настройки сброшены. Перезагрузите страницу.');
+			document.getElementById('plx-settings-modal').remove();
+		};
 
 		const registry = await getManifest();
 
@@ -373,6 +446,26 @@
 				padding: 0px 10px;
 				color: #212529;
 				display: inline-block;
+			}
+
+			#plx-settings-modal .plx-modal-footer {
+				display: flex;
+				justify-content: flex-end;
+				flex-wrap: wrap;
+				gap: 10px;
+				margin-top: 10px;
+			}
+			#plx-settings-modal #plx-export-btn,
+			#plx-settings-modal #plx-import-btn,
+			#plx-settings-modal #plx-set-default-btn {
+				background-color: #f8f9fa;
+				color: #212529;
+				border: 1px solid #ced4da;
+			}
+			#plx-settings-modal #plx-export-btn:hover,
+			#plx-settings-modal #plx-import-btn:hover,
+			#plx-settings-modal #plx-set-default-btn:hover {
+				background-color: #e2e6ea;
 			}
 		`;
 		GM_addStyle(css);
