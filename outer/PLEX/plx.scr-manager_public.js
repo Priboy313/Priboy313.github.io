@@ -59,9 +59,12 @@
 				<h2>Настройки скриптов</h2>
 				<form id="plx-settings-form"><p>Загрузка настроек...</p></form>
 				<div class="plx-modal-footer">
+					<button id="plx-set-default-btn">Сбросить</button>
 					<button id="plx-export-btn">Экспорт</button>
 					<button id="plx-import-btn">Импорт</button>
-					<button id="plx-set-default-btn">Сбросить</button>
+					
+					<div class="plx-footer-spacer"></div>
+
 					<button id="plx-close-btn">Закрыть</button>
 					<button id="plx-save-btn">Сохранить</button>
 				</div>
@@ -111,7 +114,7 @@
 			a.click();
 
 			URL.revokeObjectURL(url);
-			console.log('[PLX] Настройки экспортированы/');
+			console.log('[PLX] Настройки экспортированы.');
 		};
 
 		importButton.onclick = () => {
@@ -127,7 +130,7 @@
 					try {
 						const imported = JSON.parse(event.target.result);
 						GM_setValue(SETTINGS_KEY, imported);
-						alert('Настройки успешно импортированы. Перезагрузите страницу.');
+						alert('Настройки успешно импортированы.');
 						document.getElementById('plx-settings-modal').remove();
 					} catch (err) {
 						alert('Ошибка импорта: неверный формат файла.');
@@ -142,7 +145,7 @@
 		resetButton.onclick = () => {
 			if (!confirm('Сбросить все настройки к значениям по умолчанию?')) return;
 			GM_setValue(SETTINGS_KEY, {});
-			alert('Настройки сброшены. Перезагрузите страницу.');
+			alert('Настройки сброшены.');
 			document.getElementById('plx-settings-modal').remove();
 		};
 
@@ -298,7 +301,7 @@
 	function injectStyles() {
 		if (document.getElementById('plx-modal-styles')) return;
 
-		const  css = `
+		const css = `
 			#plx-settings-modal {
 				all: unset;
 				position: fixed;
@@ -384,7 +387,7 @@
 				outline: none;
 				transition: border-color 0.2s, box-shadow 0.2s;
 			}
-			#plx-settings-modal input[type="number"]{
+			#plx-settings-modal input[type="number"] {
 				max-width: 100px;
 			}
 			#plx-settings-modal .int-input-label {
@@ -402,9 +405,12 @@
 			}
 			#plx-settings-modal .plx-modal-footer {
 				display: flex;
-				justify-content: flex-end;
+				align-items: center;
 				gap: 10px;
 				margin-top: 10px;
+			}
+			#plx-settings-modal .plx-footer-spacer {
+				flex-grow: 1;
 			}
 			#plx-settings-modal button {
 				padding: 8px 16px;
@@ -431,6 +437,18 @@
 			#plx-settings-modal #plx-close-btn:hover {
 				background-color: #5a6268;
 			}
+			#plx-settings-modal #plx-set-default-btn,
+			#plx-settings-modal #plx-export-btn,
+			#plx-settings-modal #plx-import-btn {
+				background-color: #f8f9fa;
+				color: #212529;
+				border: 1px solid #ced4da;
+			}
+			#plx-settings-modal #plx-set-default-btn:hover,
+			#plx-settings-modal #plx-export-btn:hover,
+			#plx-settings-modal #plx-import-btn:hover {
+				background-color: #e2e6ea;
+			}
 			.settings-group {
 				padding-left: 20px;
 				margin-top: 10px;
@@ -446,26 +464,6 @@
 				padding: 0px 10px;
 				color: #212529;
 				display: inline-block;
-			}
-
-			#plx-settings-modal .plx-modal-footer {
-				display: flex;
-				justify-content: flex-end;
-				flex-wrap: wrap;
-				gap: 10px;
-				margin-top: 10px;
-			}
-			#plx-settings-modal #plx-export-btn,
-			#plx-settings-modal #plx-import-btn,
-			#plx-settings-modal #plx-set-default-btn {
-				background-color: #f8f9fa;
-				color: #212529;
-				border: 1px solid #ced4da;
-			}
-			#plx-settings-modal #plx-export-btn:hover,
-			#plx-settings-modal #plx-import-btn:hover,
-			#plx-settings-modal #plx-set-default-btn:hover {
-				background-color: #e2e6ea;
 			}
 		`;
 		GM_addStyle(css);
