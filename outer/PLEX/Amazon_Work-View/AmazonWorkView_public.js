@@ -364,8 +364,7 @@
 				.pvv-ext-wrap-sellers,
 				.pvv-ext-wrap-TotalQuantity,
 				.pvv-ext-wrap-ProductDetailsLink,
-				.pvv-ext-wrap-footer,
-				.aic-ext-title
+				.pvv-ext-wrap-footer
 				{
 					display: none !important;
 				}
