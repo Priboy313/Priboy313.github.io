@@ -81,93 +81,6 @@
 
 		saveButton.disabled = true;
 
-		function cleanSettingsData(raw) {
-			const cleanCopy = JSON.parse(JSON.stringify(raw));
-
-			delete cleanCopy[MANIFEST_CACHE_KEY];
-			delete cleanCopy.__timestamp;
-			delete cleanCopy.__meta;
-			delete cleanCopy.cache;
-			delete cleanCopy.temp;
-			delete cleanCopy.debug;
-
-			for (const key in cleanCopy) {
-				if (key.startsWith('_') || key.startsWith('plx-temp-')) {
-					delete cleanCopy[key];
-				}
-			}
-
-			return cleanCopy;
-		}
-
-		closeButton.onclick = () => document.getElementById('plx-settings-modal').remove();
-		exportButton.onclick = () => {
-			const stored = GM_getValue(SETTINGS_KEY, {});
-			const clean = cleanSettingsData(stored);
-
-			const blob = new Blob([JSON.stringify(clean, null, 2)], { type: 'application/json' });
-			const url = URL.createObjectURL(blob);
-
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = 'plx_settings_export.json';
-			a.click();
-
-			URL.revokeObjectURL(url);
-			console.log('[PLX] Настройки экспортированы.');
-		};
-
-		importButton.onclick = () => {
-			const input = document.createElement('input');
-			input.type = 'file';
-			input.accept = '.json,application/json';
-			input.onchange = e => {
-				const file = e.target.files[0];
-				if (!file) return;
-
-				const reader = new FileReader();
-				reader.onload = event => {
-					try {
-						const imported = JSON.parse(event.target.result);
-						GM_setValue(SETTINGS_KEY, imported);
-						alert('Настройки успешно импортированы.');
-						document.getElementById('plx-settings-modal').remove();
-					} catch (err) {
-						alert('Ошибка импорта: неверный формат файла.');
-						console.error(err);
-					}
-				};
-				reader.readAsText(file);
-			};
-			input.click();
-		};
-
-		resetButton.onclick = async () => {
-			if (!confirm('Сбросить все настройки к значениям по умолчанию?')) return;
-
-			const registry = await getManifest();
-			if (!registry) {
-				alert('Ошибка: не удалось загрузить манифест для сброса настроек.');
-				return;
-			}
-
-			const defaults = {};
-			for (const sId in registry) {
-				const scriptInfo = registry[sId];
-				const scriptDefaults = {};
-
-				for (const key in scriptInfo.settings) {
-					const setting = scriptInfo.settings[key];
-					scriptDefaults[key] = setting.default ?? null;
-				}
-				defaults[sId] = scriptDefaults;
-			}
-
-			GM_setValue(SETTINGS_KEY, defaults);
-			alert('Настройки сброшены к значениям по умолчанию.');
-			document.getElementById('plx-settings-modal').remove();
-		};
-
 		const registry = await getManifest();
 
 		if (!registry) {
@@ -262,7 +175,9 @@
 
 		saveButton.disabled = false;
 
-		saveButton.onclick = (e) => {
+		saveButton.onclick = (e) => saveSettings(e);
+			
+		function saveSettings(e) {
 			e.preventDefault();
 
 			function saveSettingsRecursively(settingsGroup, parentId) {
@@ -313,8 +228,107 @@
 			}
 
 			GM_setValue(SETTINGS_KEY, newSet);
-			document.getElementById('plx-settings-modal').remove();
+			closeUiWindow();
 		};
+
+		function cleanSettingsData(raw) {
+			const cleanCopy = JSON.parse(JSON.stringify(raw));
+			delete cleanCopy[MANIFEST_CACHE_KEY];
+			delete cleanCopy.__timestamp;
+			delete cleanCopy.__meta;
+			delete cleanCopy.cache;
+			delete cleanCopy.temp;
+			delete cleanCopy.debug;
+
+			for (const key in cleanCopy) {
+				if (key.startsWith('_') || key.startsWith('plx-temp-')) {
+					delete cleanCopy[key];
+				}
+			}
+
+			return cleanCopy;
+		}
+
+		closeButton.onclick = closeUiWindow;
+
+		exportButton.onclick = () => {
+			const stored = GM_getValue(SETTINGS_KEY, {});
+			const clean = cleanSettingsData(stored);
+
+			const blob = new Blob([JSON.stringify(clean, null, 2)], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'plx_settings_export.json';
+			a.click();
+
+			URL.revokeObjectURL(url);
+			console.log('[PLX] Настройки экспортированы.');
+		};
+
+		importButton.onclick = () => {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.accept = '.json,application/json';
+			input.onchange = e => {
+				const file = e.target.files[0];
+				if (!file) return;
+
+				const reader = new FileReader();
+				reader.onload = event => {
+					try {
+						const imported = JSON.parse(event.target.result);
+						GM_setValue(SETTINGS_KEY, imported);
+						alert('Настройки успешно импортированы.');
+						closeUiWindow();
+					} catch (err) {
+						alert('Ошибка импорта: неверный формат файла.');
+						console.error(err);
+					}
+				};
+				reader.readAsText(file);
+			};
+			input.click();
+		};
+
+		resetButton.onclick = async () => {
+			if (!confirm('Сбросить все настройки к значениям по умолчанию?')) return;
+
+			const registry = await getManifest();
+			if (!registry) {
+				alert('Ошибка: не удалось загрузить манифест для сброса настроек.');
+				return;
+			}
+
+			const defaults = {};
+
+			for (const sId in registry) {
+				defaults[sId] = buildDefaults(registry[sId].settings);
+			}
+
+			GM_setValue(SETTINGS_KEY, defaults);
+			alert('Настройки сброшены к значениям по умолчанию.');
+			closeUiWindow();
+		};
+
+		function buildDefaults(settingsGroup) {
+			const result = {};
+			for (const key in settingsGroup) {
+				const setting = settingsGroup[key];
+				if (setting.type === 'boolean-expand' && setting.values) {
+					result[key] = setting.default ?? false;
+					Object.assign(result, buildDefaults(setting.values));
+				} else {
+					result[key] = setting.default ?? null;
+				}
+			}
+			return result;
+		}
+
+		function closeUiWindow(){
+			document.getElementById('plx-settings-modal').remove();
+		}
 	};
 
 	function injectStyles() {
