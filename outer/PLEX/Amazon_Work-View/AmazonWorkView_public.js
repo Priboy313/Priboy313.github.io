@@ -297,7 +297,7 @@
 			customAmazonStyle.innerHTML = "/* Custom AmznWV CSS */"
 
 		if (config.clearAmazon) {
-			if (config.clearAmazon.hideNavbar) {
+			if (config.hideNavbar) {
 				customAmazonStyle.innerHTML += `
 					#nav-main,
 					#nav-flyout-rufus {
@@ -306,7 +306,7 @@
 				`;
 			}
 
-			if (config.clearAmazon.hideSubNavbar) {
+			if (config.hideSubNavbar) {
 				customAmazonStyle.innerHTML += `
 					#nav-progressive-subnav{
 						display: none !important;
@@ -314,7 +314,7 @@
 				`;
 			}
 
-			if (config.clearAmazon.hidePrime){
+			if (config.hidePrime){
 				customAmazonStyle.innerHTML += `
 					#primeDPUpsellContainer,
 					#primeDPUpsellStaticContainerNPA{
@@ -323,7 +323,7 @@
 				`;
 			}
 
-			if (config.clearAmazon.hideReturns){
+			if (config.hideReturns){
 				customAmazonStyle.innerHTML += `
 					#returnsInfoFeature_feature_div{
 						display: none !important;
@@ -331,7 +331,7 @@
 				`;
 			}
 
-			if (config.clearAmazon.hideProtectionPlan){
+			if (config.hideProtectionPlan){
 				customAmazonStyle.innerHTML += `
 					#mbb_feature_div{
 						display: none !important;
@@ -339,7 +339,7 @@
 				`;
 			}
 
-			if (config.clearAmazon.hideProtectionPlan){
+			if (config.hideProtectionPlan){
 				customAmazonStyle.innerHTML += `
 					#desktop-dp-ilm_feature_div_01{
 						display: none !important;
