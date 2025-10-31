@@ -12,6 +12,7 @@
 // @grant        GM_addStyle
 // @connect      cdn.jsdelivr.net
 // @connect      api.github.com
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=amazon.com
 // ==/UserScript==
 
 (function() {
