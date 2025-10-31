@@ -11,7 +11,7 @@
 // @grant        GM_addStyle
 // @connect      cdn.jsdelivr.net
 // @connect      api.github.com
-// @icon https://twemoji.maxcdn.com/v/latest/72x72/2699.png
+// @ico          https://twemoji.maxcdn.com/v/latest/72x72/2699.png
 // ==/UserScript==
 
 (function() {
