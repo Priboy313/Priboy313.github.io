@@ -142,10 +142,29 @@
 			input.click();
 		};
 
-		resetButton.onclick = () => {
+		resetButton.onclick = async () => {
 			if (!confirm('Сбросить все настройки к значениям по умолчанию?')) return;
-			GM_setValue(SETTINGS_KEY, {});
-			alert('Настройки сброшены.');
+
+			const registry = await getManifest();
+			if (!registry) {
+				alert('Ошибка: не удалось загрузить манифест для сброса настроек.');
+				return;
+			}
+
+			const defaults = {};
+			for (const sId in registry) {
+				const scriptInfo = registry[sId];
+				const scriptDefaults = {};
+
+				for (const key in scriptInfo.settings) {
+					const setting = scriptInfo.settings[key];
+					scriptDefaults[key] = setting.default ?? null;
+				}
+				defaults[sId] = scriptDefaults;
+			}
+
+			GM_setValue(SETTINGS_KEY, defaults);
+			alert('Настройки сброшены к значениям по умолчанию.');
 			document.getElementById('plx-settings-modal').remove();
 		};
 
