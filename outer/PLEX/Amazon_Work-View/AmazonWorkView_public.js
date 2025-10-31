@@ -16,8 +16,15 @@
 		checkDiscount: true,
 		showFee: true,
 
-		clearAmazon: true ,
-		clearGrabley: true ,
+		clearAmazon: true,
+		hideNavbar: true,
+		hideSubNavbar: true,
+		hideAdBanner: true,
+		hidePrime: true,
+		hideReturns: true,
+		hideProtectionPlan: true,
+		
+		clearGrabley: true,
 		clearRevseller: true,
 	};
 
