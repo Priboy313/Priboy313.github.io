@@ -295,13 +295,13 @@
 	}
 
 	function addCustomCSS(config){
-		const customAmazonStyle = document.createElement('style');
-			customAmazonStyle.id = "custom-amzWV-css";
-			customAmazonStyle.innerHTML = "/* Custom AmznWV CSS */"
+		const customStyle = document.createElement('style');
+			customStyle.id = `custom-${SCRIPT_ID}-css`;
+			customStyle.innerHTML = `/* Custom ${SCRIPT_ID} CSS */`
 
 		if (config.clearAmazon) {
 			if (config.hideNavbar) {
-				customAmazonStyle.innerHTML += `
+				customStyle.innerHTML += `
 					#nav-main,
 					#nav-flyout-rufus {
 						display: none !important;
@@ -310,7 +310,7 @@
 			}
 
 			if (config.hideSubNavbar) {
-				customAmazonStyle.innerHTML += `
+				customStyle.innerHTML += `
 					#nav-progressive-subnav{
 						display: none !important;
 					}
@@ -318,7 +318,7 @@
 			}
 
 			if (config.hidePrime){
-				customAmazonStyle.innerHTML += `
+				customStyle.innerHTML += `
 					#primeDPUpsellContainer,
 					#primeDPUpsellStaticContainerNPA{
 						display: none !important;
@@ -327,7 +327,7 @@
 			}
 
 			if (config.hideReturns){
-				customAmazonStyle.innerHTML += `
+				customStyle.innerHTML += `
 					#returnsInfoFeature_feature_div{
 						display: none !important;
 					}
@@ -335,7 +335,7 @@
 			}
 
 			if (config.hideProtectionPlan){
-				customAmazonStyle.innerHTML += `
+				customStyle.innerHTML += `
 					#mbb_feature_div{
 						display: none !important;
 					}
@@ -343,7 +343,7 @@
 			}
 
 			if (config.hideProtectionPlan){
-				customAmazonStyle.innerHTML += `
+				customStyle.innerHTML += `
 					#desktop-dp-ilm_feature_div_01{
 						display: none !important;
 					}
@@ -352,7 +352,7 @@
 		}
 
 		if (config.clearRevseller){
-			customAmazonStyle.innerHTML += `
+			customStyle.innerHTML += `
 				#title .aic-ext-show-hint,
 				.aic-ext-title
 				{
@@ -362,7 +362,7 @@
 		}
 
 		if (config.clearGrabley){
-			customAmazonStyle.innerHTML += `
+			customStyle.innerHTML += `
 				.pvv-ext-wrap-buttons,
 				.pvv-ext-wrap-sellers,
 				.pvv-ext-wrap-TotalQuantity,
@@ -375,7 +375,7 @@
 		}
 
 		if (config.checkDiscount){
-			customAmazonStyle.innerHTML += `
+			customStyle.innerHTML += `
 				/* //*price no discound */
 				#corePrice_desktop,
 				#corePriceDisplay_desktop_feature_div {
@@ -401,7 +401,7 @@
 		}
 
 		if (config.addMirrorLinks){
-			customAmazonStyle.innerHTML += `
+			customStyle.innerHTML += `
 				/* // amazon mirror links */
 				.title_link_section {
 					padding-left: 2px;
@@ -416,14 +416,14 @@
 		}
 
 		if (config.forcePageToLeft){
-			customAmazonStyle.innerHTML += `
+			customStyle.innerHTML += `
 			#dp {
 				margin-left: 0 !important;
 			}
 			`;
 		}
 
-		document.head.appendChild(customAmazonStyle);
+		document.head.appendChild(customStyle);
 	}
 
 	main();

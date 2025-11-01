@@ -2,7 +2,7 @@
 // @name         Amazon Work View (Connect)
 // @version      1.9
 // @author       Priboy313
-// @description  Amazon Work View - injects settings as a JSON string for reliability
+// @description  Amazon Work View
 // @match        https://www.amazon.com/*
 // @match        https://www.amazon.ca/*
 // @match        https://www.amazon.com.mx/*
