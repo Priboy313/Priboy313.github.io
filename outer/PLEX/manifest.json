@@ -41,7 +41,7 @@
 					"protectK": { "label": "Колонка К", "type": "boolean", "default": true }
 				}}
 			}},
-			"rowFixes": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true }
+			"fixLabels": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true }
 		}
 	},
 

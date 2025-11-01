@@ -6,6 +6,12 @@
 // @match        https://pms.plexsupply.com/pms/listfbavalue.xhtml*
 // @match        https://pms.officechase.com/pms/listfbavalue.xhtml*
 // @match        https://pms.marksonsupply.com/pms/listfbavalue.xhtml*
+// @grant        GM_xmlhttpRequest
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_addStyle
+// @connect      cdn.jsdelivr.net
+// @connect      api.github.com
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=plexsupply.com
 // ==/UserScript==
 
