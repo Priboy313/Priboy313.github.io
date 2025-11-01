@@ -11,7 +11,7 @@
 			"showFee": { "label": "Показывать Fee в RevSeller", "type": "boolean", "default": true },
 			"clearAmazon": { "label": "Очистить элементы Амазона", "type": "boolean-expand", "default": true, "values": {
 				"hideNavbar": { "label": "Скрыть навигацию", "type": "boolean", "default": true },
-				"hideSubNavbar": { "label": "Скрыть сабнавигацию", "type": "boolean", "default": true },
+				"hideSubNavbar": { "label": "Скрыть поднавигацию", "type": "boolean", "default": true },
 				"hideAdBanner": { "label": "Скрыть баннер", "type": "boolean", "default": true },
 				"hidePrime": { "label": "Скрыть баннер Prime", "type": "boolean", "default": true },
 				"hideReturns": { "label": "Скрыть Returns", "type": "boolean", "default": true },
@@ -49,13 +49,20 @@
 		"name": "Orgill Fixes",
 		"ver": "1.0r",
 		"role": ["aboba", "dodev"],
-		"description": "Улучшения для Orgill.",
+		"description": "Улучшения для Orgill",
 		"settings": {
+			"showFactoryPack": { "label": "Добавить Factory Pack в описание товара", "type": "boolean", "default": true },
+			"hideSayt": { "label": "Скрыть всплывающую карточку из строки поиска", "type": "boolean", "default": true },
 			"styleFix": { "label": "Убрать гигантизм из дизайна", "type": "boolean-expand", "default": true, "values": {
-				"hideSayt": {"label": "Скрыть всплывающую карточку из строки поиска", "type": "boolean", "default": true},
-				"fixHeader": {"label": "Уменьшить верхнее меню", "type": "boolean", "default": true}
+				"relativeHeader": { "label": "Открепить верхнее меню", "type": "boolean", "default": true},
+				"fixHeader": { "label": "Уменьшить верхнее меню", "type": "boolean", "default": true},
+				"fixHeaderGreyBar": { "label": "Уменьшить серую полосу", "type": "boolean", "default": true},
+				"fixHeaderLogoBar": { "label": "Уменьшить лого", "type": "boolean", "default": true},
+				"fixNavBar": { "label": "Уменьшить навигацию", "type": "boolean", "default": true},
+				"fixBreadcrumb": { "label": "Уменьшить поднавигацию", "type": "boolean", "default": true},
+				"fixNoResult": { "label": "Уменьшить ненаход", "type": "boolean", "default": true}
 			} },
-			"onclickFix": {"label": "Отключить кликабельность карточек товаров", "type": "boolean", "default": false}
+			"disableClickableElements": { "label": "Отключить кликабельность карточек товаров", "type": "boolean", "default": false }
 		}
 	},
 
@@ -65,7 +72,7 @@
 		"role": ["user", "aboba", "dodev"],
 		"description": "Улучшения для ордеров PMS.",
 		"settings": {
-			"infoBlock": { "label": "Он просто есть и он хорош 😎", "type": "label"}
+			"infoBlock": { "label": "Он просто есть и он хорош 😎", "type": "label" }
 		}
 	}
 }

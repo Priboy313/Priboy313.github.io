@@ -107,29 +107,33 @@
 					case 'boolean': {
 						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="checkbox" id="${currentId}" ${savedValue ? 'checked' : ''}></label>`;
 						break;
-                    }
-                    case 'boolean-expand': {
-                        const isChecked = (typeof savedValue === 'boolean') ? savedValue : settingInfo.default;
-                        rowContent = `<label for="${currentId}">${settingInfo.label}<input type="checkbox" id="${currentId}" data-expands="group-for-${currentId}" ${isChecked ? 'checked' : ''}></label>`;
-                        if (settingInfo.values) {
-                            const childHTML = generateSettingsHTML(settingInfo.values, currentId, savedValues);
-                            rowContent += `<div class="settings-group" id="group-for-${currentId}">${childHTML}</div>`;
-                        }
-                        break;
-                    }
+					}
+					case 'boolean-expand': {
+						const isChecked = (typeof savedValue === 'boolean') ? savedValue : settingInfo.default;
+						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="checkbox" id="${currentId}" data-expands="group-for-${currentId}" ${isChecked ? 'checked' : ''}></label>`;
+						if (settingInfo.values) {
+							const childHTML = generateSettingsHTML(settingInfo.values, currentId, savedValues);
+							rowContent += `<div class="settings-group" id="group-for-${currentId}">${childHTML}</div>`;
+						}
+						break;
+					}
 					case 'text': {
 						rowContent = `<label for="${currentId}">${settingInfo.label}<input type="text" id="${currentId}" value="${savedValue || ''}"></label>`;
 						break;
-                    }
+					}
 					case 'int': {
 						rowContent = `<label for="${currentId}"><div class="int-input-label">${settingInfo.label}</div><input type="number" id="${currentId}" value="${savedValue ?? 0}"></label>`;
 						break;
-                    }
+					}
+					case 'float': {
+						rowContent = `<label for="${currentId}"><div class="float-input-label">${settingInfo.label}</div><input type="number" step="0.1" id="${currentId}" value="${savedValue ?? 0}"></label>`;
+						break;
+					}
 					case 'list': {
 						const listAsString = Array.isArray(savedValue) ? savedValue.join('\n') : (savedValue || '');
 						rowContent = `<label for="${currentId}">${settingInfo.label}</label><textarea id="${currentId}">${listAsString}</textarea>`;
 						break;
-                    }
+					}
 					case 'label':
 						rowContent = `<div class="plx-form-label">${settingInfo.label}</div>`;
 						break;
@@ -184,8 +188,8 @@
 				const newSettings = {};
 				for (const key in settingsGroup) {
 					const settingInfo = settingsGroup[key];
-                    const isSettingAllowed = !settingInfo.role || (Array.isArray(settingInfo.role) && settingInfo.role.includes(role));
-                    if (!isSettingAllowed) continue;
+					const isSettingAllowed = !settingInfo.role || (Array.isArray(settingInfo.role) && settingInfo.role.includes(role));
+					if (!isSettingAllowed) continue;
 
 					const currentId = `${parentId}_${key}`;
 					const element = document.getElementById(currentId);
@@ -195,14 +199,17 @@
 							case 'boolean':
 								newSettings[key] = element.checked;
 								break;
-                            case 'boolean-expand':
-                                newSettings[key] = element.checked;
-                                if (settingInfo.values) {
-                                    Object.assign(newSettings, saveSettingsRecursively(settingInfo.values, currentId));
-                                }
-                                break;
+							case 'boolean-expand':
+								newSettings[key] = element.checked;
+								if (settingInfo.values) {
+									Object.assign(newSettings, saveSettingsRecursively(settingInfo.values, currentId));
+								}
+								break;
 							case 'int':
 								newSettings[key] = parseInt(element.value, 10) || 0;
+								break;
+							case 'float':
+								newSettings[key] = parseFloat(element.value) || 0;
 								break;
 							case 'list':
 								newSettings[key] = element.value.split('\n').map(item => item.trim()).filter(Boolean);
@@ -424,6 +431,9 @@
 				max-width: 100px;
 			}
 			#plx-settings-modal .int-input-label {
+				min-width: 150px;
+			}
+			#plx-settings-modal .float-input-label {
 				min-width: 150px;
 			}
 			#plx-settings-modal input:focus,
