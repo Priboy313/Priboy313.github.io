@@ -52,7 +52,7 @@
 		"description": "Улучшения для Orgill",
 		"settings": {
 			"showFactoryPack": { "label": "Добавить Factory Pack в описание товара", "type": "boolean", "default": true },
-			"styleFix": { "label": "Убрать гигантизм из дизайна", "type": "boolean-expand", "default": true, "values": {
+			"styleFix": { "label": "Улучшить дизайн", "type": "boolean-expand", "default": true, "values": {
 				"hideSayt": { "label": "Скрыть всплывающую карточку из строки поиска", "type": "boolean", "default": true },
 				"relativeHeader": { "label": "Открепить верхнее меню", "type": "boolean", "default": true},
 				"fixHeader": { "label": "Уменьшить верхнее меню", "type": "boolean", "default": true},
