@@ -163,7 +163,8 @@
 
 		if (config.fixNavBar){
 			customStyle.innerHTML += `
-				.w-menu-lvl1-container-item{
+				.w-menu-lvl1-container-item,
+				.w-menu-lvl1-container-item-active{
 					padding: 10px 16px!important;
 				}
 			`;
