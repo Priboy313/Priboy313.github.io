@@ -1,6 +1,5 @@
 // AmzonWorkViev_public.js
 (function(settingsJSON, role = "user") {
-	'use strict';
 
 	const SCRIPT_ID = 'amazonWorkView';
 

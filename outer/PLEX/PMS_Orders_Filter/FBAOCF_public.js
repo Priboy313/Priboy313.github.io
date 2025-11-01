@@ -11,7 +11,6 @@
 
 
 (function(settingsJSON, role = 'user') {
-	'use strict';
 
 	if (document.querySelector('.custom-filters-button')) return;
 	
