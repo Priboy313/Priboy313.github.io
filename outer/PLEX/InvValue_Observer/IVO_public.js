@@ -132,13 +132,6 @@
 	function hideAmzngrRows(row, cells){
 		try {
 			let skuCellNum = config.skuColIndex - 1;
-
-			if (!cells[0].classList.contains("sorting_1")){
-				skuCellNum--;
-
-				if (skuCellNum < 0) skuCellNum = 0;
-			}
-
 			let sku = cells[skuCellNum]?.innerText || "";
 
 			if (sku.includes(amznGrForm)){
