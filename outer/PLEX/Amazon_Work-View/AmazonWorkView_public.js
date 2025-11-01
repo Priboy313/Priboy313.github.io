@@ -1,4 +1,4 @@
-// AmzonWorkViev_public.js
+// AmzonWorkView_public.js
 (function(settingsJSON, role = "user") {
 
 	const SCRIPT_ID = 'amazonWorkView';
