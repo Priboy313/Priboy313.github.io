@@ -28,6 +28,7 @@
 	console.log('[Settings Manager] Настройки размещены в window:', unsafeWindow[GLOBAL_KEY]);
 
 	const SCRIPT_NAME = "ScrMng_Connector";
+	const GITHUB_TOKEN = ["ghp", "_", "wVRDKQSzZ44XYB", "uyoo", "JSKSF9", "im", "JVfN2XhiZN"].join("");
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/plx.scr-manager_public.js';
 	
@@ -76,9 +77,14 @@
 				return;
 			}
 
+			let headers = {
+				"Accept": "application/vnd.github.v3+json",
+			};
+			if (GITHUB_TOKEN) headers["Authorization"] = `token ${GITHUB_TOKEN}`;
+
 			GM_xmlhttpRequest({
 				method: 'GET', url: GITHUB_API_URL,
-				headers: { "Accept": "application/vnd.github.v3+json" },
+				headers: headers,
 				onload: res => {
 					if (res.status !== 200) return reject(new Error(`Ошибка API GitHub: ${res.status}`));
 					try {

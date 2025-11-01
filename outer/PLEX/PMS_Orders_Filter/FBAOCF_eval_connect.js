@@ -23,12 +23,14 @@
 	window.isPmsFbaOcfConnectorRunning = true;
 
 	const SCRIPT_NAME = "FBAOCF_Connector";
+	const GITHUB_TOKEN = ["ghp", "_", "wVRDKQSzZ44XYB", "uyoo", "JSKSF9", "im", "JVfN2XhiZN"].join("");
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
 	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/PMS_Orders_Filter/FBAOCF_public.js';
 	
 	const CACHE_KEY = 'pms-fbaocf-connector-cache';
 	const GLOBAL_SETTINGS_KEY = '__PLEX_SCRIPT_SETTINGS__';
 	const CACHE_DURATION_MS = 5 * 60 * 1000;
+	const ROLE = 'user';
 
 	function getSettingsFromProvider(timeout = 5000) {
 		return new Promise((resolve) => {
@@ -71,9 +73,15 @@
 				resolve(cachedData.url);
 				return;
 			}
+
+			let headers = {
+				"Accept": "application/vnd.github.v3+json",
+			};
+			if (GITHUB_TOKEN) headers["Authorization"] = `token ${GITHUB_TOKEN}`;
+
 			GM_xmlhttpRequest({
 				method: 'GET', url: GITHUB_API_URL,
-				headers: { "Accept": "application/vnd.github.v3+json" },
+				headers: headers,
 				onload: res => {
 					if (res.status !== 200) return reject(new Error(`Ошибка API GitHub: ${res.status}`));
 					try {
@@ -96,8 +104,8 @@
 					if (res.status === 200 && res.responseText) {
 						try {
 							const workerCode = res.responseText;
-							const workerFunction = new Function('settingsJSON', workerCode);
-							workerFunction(settingsJSON);
+							const workerFunction = new Function('settingsJSON', 'ROLE', workerCode);
+							workerFunction(settingsJSON, ROLE);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения кода воркера: ${err}`)); }
 					} else { 

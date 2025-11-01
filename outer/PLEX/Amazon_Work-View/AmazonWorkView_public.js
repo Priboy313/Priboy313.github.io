@@ -1,13 +1,10 @@
 // AmzonWorkViev_public.js
-(function(settingsJSON, GM_addStyle) {
+(function(settingsJSON, role = "user") {
 	'use strict';
 
 	const SCRIPT_ID = 'amazonWorkView';
 
-	if (typeof GM_addStyle !== 'function') {
-		console.error(`== [${SCRIPT_ID}] Критическая ошибка: Функция GM_addStyle не была передана в воркер.`);
-		return;
-	}
+	const ROLE = role;
 
 	const DEFAULTS  = {
 		forcePageToLeft: false,
@@ -431,4 +428,4 @@
 	}
 
 	main();
-})(settingsJSON, GM_addStyle);
+})(settingsJSON, role);

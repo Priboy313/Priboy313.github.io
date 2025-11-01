@@ -10,12 +10,14 @@
 // ==/UserScript==
 
 
-(function(settingsJSON) {
+(function(settingsJSON, role = 'user') {
 	'use strict';
 
 	if (document.querySelector('.custom-filters-button')) return;
 	
 	let script_version = "2.1r";
+
+	const ROLE = role;
 
 	const SCRIPT_ID = 'pmsFbaOrdersCustomFilters';
 
