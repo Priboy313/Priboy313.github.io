@@ -1510,4 +1510,4 @@ customFiltersDevStyle.innerHTML = `
     initEventListeners();
 
     floatingWindow.addEventListener('click', (e) => e.stopPropagation());
-})(settingsJSON);
+})(settingsJSON, role);
