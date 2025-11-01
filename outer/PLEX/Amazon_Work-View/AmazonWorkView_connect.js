@@ -59,7 +59,7 @@
 			console.log(`[${SCRIPT_NAME}] Получены настройки от поставщика и передаются в воркер:`, settingsJSON);
 			
 			const url = await getWorkerURL();
-			await downloadAndExecuteWorker(url, settingsJSON);
+			await downloadAndExecuteWorker(url, settingsJSON, ROLE);
 
 		} catch (error) {
 			console.error(`[${SCRIPT_NAME}] Критическая ошибка:`, error);
@@ -98,7 +98,7 @@
 		});
 	}
 
-	function downloadAndExecuteWorker(url, settingsJSON) {
+	function downloadAndExecuteWorker(url, settingsJSON, role = 'user') {
 		return new Promise((resolve, reject) => {
 			GM_xmlhttpRequest({
 				method: 'GET', url: url,
@@ -106,8 +106,8 @@
 					if (res.status === 200 && res.responseText) {
 						try {
 							const workerCode = res.responseText;
-							const workerFunction = new Function('settingsJSON', 'ROLE', workerCode);
-							workerFunction(settingsJSON, ROLE);
+							const workerFunction = new Function('settingsJSON', 'role', workerCode);
+							workerFunction(settingsJSON, role);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения кода воркера: ${err}`)); }
 					} else { 
