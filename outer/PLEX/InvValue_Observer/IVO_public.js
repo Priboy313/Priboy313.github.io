@@ -22,7 +22,7 @@
 		fixLabels: true
 	};
 
-	const amznGrForm = "AMZGR"; 
+	const amznGrForm = "amzn.gr"; 
 	const amznGrClass = "hidden-amzn-gr";
 	const wrongUserClass = "wrong-user";
 
