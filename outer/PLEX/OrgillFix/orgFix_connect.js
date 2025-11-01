@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Orgill Fixes (Connect)
+// @name         Orgill Fixes
 // @version      1.0
 // @author       Priboy313
 // @description  Orgill Fixes

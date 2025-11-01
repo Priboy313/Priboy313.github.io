@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Amazon Work View (Connect)
+// @name         Amazon Work View
 // @version      1.9
 // @author       Priboy313
 // @description  Amazon Work View
