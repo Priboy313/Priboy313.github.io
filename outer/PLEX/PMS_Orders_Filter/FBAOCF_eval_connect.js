@@ -76,8 +76,8 @@
 
 			let headers = {
 				"Accept": "application/vnd.github.v3+json",
+				"Authorization": `token ${GITHUB_TOKEN}`
 			};
-			if (GITHUB_TOKEN) headers["Authorization"] = `token ${GITHUB_TOKEN}`;
 
 			GM_xmlhttpRequest({
 				method: 'GET', url: GITHUB_API_URL,

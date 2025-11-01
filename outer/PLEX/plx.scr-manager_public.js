@@ -254,7 +254,7 @@
 			}
 
 			return cleanCopy;
-		}
+		};
 
 		closeButton.onclick = closeUiWindow;
 
@@ -331,11 +331,11 @@
 				}
 			}
 			return result;
-		}
+		};
 
 		function closeUiWindow(){
 			document.getElementById('plx-settings-modal').remove();
-		}
+		};
 	};
 
 	function injectStyles() {
