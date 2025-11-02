@@ -25,7 +25,7 @@
 	"invValueObserver": {
 		"name": "PMS FBA Inventory Value Observer",
 		"ver": "1.0r",
-		"role": ["aboba", "dodev"],
+		"role": ["user", "aboba", "dodev"],
 		"description": "Улучшения для инвентаря PMS.",
 		"settings": {
 			"userObserver": { "label": "Отмечать не свои SKU", "type": "boolean-expand", "default": true, "values": {
@@ -48,7 +48,7 @@
 	"orgFix": {
 		"name": "Orgill Fixes",
 		"ver": "1.0r",
-		"role": ["aboba", "dodev"],
+		"role": ["user", "aboba", "dodev"],
 		"description": "Улучшения для Orgill",
 		"settings": {
 			"showFactoryPack": { "label": "Добавить Factory Pack в описание товара", "type": "boolean", "default": true },
