@@ -134,9 +134,14 @@
 						rowContent = `<label for="${currentId}">${settingInfo.label}</label><textarea id="${currentId}">${listAsString}</textarea>`;
 						break;
 					}
-					case 'label':
+					case 'label': {
 						rowContent = `<div class="plx-form-label">${settingInfo.label}</div>`;
 						break;
+					}
+					case 'color': {
+                        rowContent = `<label for="${currentId}">${settingInfo.label}<input type="color" id="${currentId}" value="${savedValue || '#ffffff'}"></label>`;
+                        break;
+                    }
 				}
 				groupHTML += `<div class="${rowClass}">${rowContent}</div>`;
 			}
@@ -214,6 +219,7 @@
 							case 'list':
 								newSettings[key] = element.value.split('\n').map(item => item.trim()).filter(Boolean);
 								break;
+							case 'color':
 							case 'text':
 							default:
 								newSettings[key] = element.value;
@@ -430,6 +436,25 @@
 			#plx-settings-modal input[type="number"] {
 				max-width: 100px;
 			}
+			#plx-settings-modal input[type="color"] {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                width: 50px;
+                height: 30px;
+                background-color: transparent;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            #plx-settings-modal input[type="color"]::-webkit-color-swatch {
+                border-radius: 3px;
+                border: none;
+            }
+            #plx-settings-modal input[type="color"]::-moz-color-swatch {
+                border-radius: 3px;
+                border: none;
+            }
 			#plx-settings-modal .int-input-label {
 				min-width: 150px;
 			}
