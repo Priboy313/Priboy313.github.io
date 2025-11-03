@@ -115,7 +115,7 @@
 				if (config.protectK) {
 					const hasFK = cell.querySelector('input.factorK');
 
-					if (hasFK){
+					if (!hasFK){
 						cell.style = null;
 					}
 				}
