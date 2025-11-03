@@ -440,7 +440,7 @@
                 -webkit-appearance: none;
                 -moz-appearance: none;
                 appearance: none;
-                width: 50px;
+                width: 100px;
                 height: 30px;
                 background-color: transparent;
                 border: 1px solid #ced4da;
