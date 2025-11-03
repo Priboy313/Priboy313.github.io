@@ -111,20 +111,23 @@
 		row.style = null;
 
 		cells.forEach(cell => {
-			if (config.exludesYellowClearing){
-				if (config.protectK) {
-					const hasFK = cell.querySelector('input.factorK');
+			let shouldClear = true;
 
-					if (!hasFK){
-						cell.style = null;
-					}
+			if (config.exludesYellowClearing) {
+				const hasFK = cell.querySelector('input.factorK');
+				const isMargin = cell.innerText.includes('%');
+
+				if (config.protectK && hasFK) {
+					shouldClear = false;
 				}
 
-				if(config.protectMrg){
-					if (!cell.innerText.includes('%')){
-						cell.style = null;
-					}
+				if (config.protectMrg && isMargin) {
+					shouldClear = false;
 				}
+			}
+
+			if (shouldClear) {
+				cell.style = null;
 			}
 		});
 	}
