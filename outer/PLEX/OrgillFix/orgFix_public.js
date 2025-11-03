@@ -19,7 +19,7 @@
 		fixBreadcrumb: true,
 		fixNoResult: true,
 
-		disableClickableElements: false,
+		disableClickableElements: true,
 	};
 
 	function loadConfig() {

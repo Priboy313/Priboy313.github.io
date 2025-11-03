@@ -62,7 +62,7 @@
 				"fixBreadcrumb": { "label": "Уменьшить поднавигацию", "type": "boolean", "default": true},
 				"fixNoResult": { "label": "Уменьшить ненаход", "type": "boolean", "default": true}
 			} },
-			"disableClickableElements": { "label": "Отключить кликабельность карточек товаров", "type": "boolean", "default": false }
+			"disableClickableElements": { "label": "Отключить кликабельность карточек товаров", "type": "boolean", "default": true }
 		}
 	},
 
