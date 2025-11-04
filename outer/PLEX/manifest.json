@@ -42,10 +42,10 @@
 				}}
 			}},
 			"customMrgColoring": { "label": "Кастомная подсветка маржи (dev)", "type": "boolean-expand", "default": false, "role": ["aboba", "dodev"], "values": {
-				"lowMrgCol": { "label": "Марж < 10", "type": "color", "default": "#fec8c8" },
-				"okMrgCol": { "label": "Марж < 13", "type": "color", "default": "#fff78c" },
-				"highMrgCol": { "label": "Марж < 30", "type": "color", "default": "#73b9f0" },
-				"overMrgCol": { "label": "Марж > 30", "type": "color", "default": "#dad2e9" }
+				"lowMrgCol": { "label": "Марж < 10", "type": "color", "default": "#FFE0E0" },
+				"okMrgCol": { "label": "Марж < 13", "type": "color", "default": "#FFF5C0" },
+				"highMrgCol": { "label": "Марж < 30", "type": "color", "default": "#D4EDDA" },
+				"overMrgCol": { "label": "Марж > 30", "type": "color", "default": "#E0EFFF" }
 			} },
 			"fixLabels": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true }
 		}
