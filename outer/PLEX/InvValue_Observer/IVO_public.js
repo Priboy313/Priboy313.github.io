@@ -104,7 +104,7 @@
 			if (config.userObserver) setUserMark(row, cells);
 			if (config.hideAmznGr) hideAmzngrRows(row, cells);
 			if (config.clearYellowRow) clearYellowRow(row, cells);
-			if (config.setCustomMrgColor) setCustomMrgColor(row);
+			if (config.customMrgColoring) setCustomMrgColor(cells);
 		});
 	}
 
@@ -154,8 +154,38 @@
 		}
 	}
 
-	function setCustomMrgColor(row){
-		console.log(`==== ${SCRIPT_ID} Custom Margin Color Setted`);
+	function setCustomMrgColor(cells){
+		for (let i = cells.length - 1; i >= 0; i--) {
+			const cell = cells[i];
+
+			if (cell.innerText.includes('%')){
+				const margin = parseFloat(cell?.innerText || 0);
+				let customColor = null;
+
+				if (isNaN(margin)) {
+					break;
+				}
+
+				if (margin < 10){
+					customColor = config.lowMrgCol;
+				} 
+				else if (margin < 13){
+					customColor = config.okMrgCol;
+				}
+				else if (margin < 30){
+					customColor = config.highMrgCol;
+				}
+				else {
+					customColor = config.overMrgCol;
+				}
+
+				if (customColor){
+					cell.style.backgroundColor = customColor;
+				}
+
+				break;
+			}
+		}
 	}
 
 	function addCustomCSS(){
