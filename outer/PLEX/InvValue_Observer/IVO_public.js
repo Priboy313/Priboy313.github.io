@@ -104,6 +104,7 @@
 			if (config.userObserver) setUserMark(row, cells);
 			if (config.hideAmznGr) hideAmzngrRows(row, cells);
 			if (config.clearYellowRow) clearYellowRow(row, cells);
+			if (config.setCustomMrgColor) setCustomMrgColor(row);
 		});
 	}
 
@@ -151,6 +152,10 @@
 		if (config.allowedUsers.includes(user) == false){
 			row.classList.add(wrongUserClass);
 		}
+	}
+
+	function setCustomMrgColor(row){
+		console.log(`==== ${SCRIPT_ID} Custom Margin Color Setted`);
 	}
 
 	function addCustomCSS(){
