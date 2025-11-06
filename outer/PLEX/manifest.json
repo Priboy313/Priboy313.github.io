@@ -41,7 +41,7 @@
 					"protectK": { "label": "Колонка К", "type": "boolean", "default": true }
 				}}
 			}},
-			"customMrgColoring": { "label": "Кастомная подсветка маржи (beta)", "type": "boolean-expand", "default": false, "values": {
+			"customMrgColoring": { "label": "Кастомная подсветка маржи", "type": "boolean-expand", "default": false, "values": {
 				"lowMrgCol": { "label": "Марж < 10", "type": "color", "default": "#FFE0E0" },
 				"okMrgCol": { "label": "Марж < 13", "type": "color", "default": "#FFF5C0" },
 				"highMrgCol": { "label": "Марж < 30", "type": "color", "default": "#D4EDDA" },
