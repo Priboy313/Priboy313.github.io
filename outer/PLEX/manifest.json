@@ -45,7 +45,7 @@
 				"lowMrgCol": { "label": "Марж < 10", "type": "color", "default": "#FFE0E0" },
 				"okMrgCol": { "label": "Марж < 13", "type": "color", "default": "#FFF5C0" },
 				"highMrgCol": { "label": "Марж < 30", "type": "color", "default": "#D4EDDA" },
-				"overMrgCol": { "label": "Марж > 30", "type": "color", "default": "#b8d5f4" }
+				"overMrgCol": { "label": "Марж > 30", "type": "color", "default": "#c99aee" }
 			} },
 			"fixLabels": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true }
 		}
