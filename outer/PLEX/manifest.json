@@ -34,7 +34,9 @@
 			"hideAmznGr": { "label": "Скрывать строки грейдов", "type": "boolean-expand", "default": false, "values": {
 				"skuColIndex": { "label": "Номер колонки СКУ", "type": "int", "default": 2 }
 			} },
-			"replaceHighlight": { "label": "Сменить цвет выбранной строки", "type": "boolean", "default": true },
+			"replaceHighlight": { "label": "Переопределить цвет выделения строки", "type": "boolean-expand", "default": false, "values": {
+				"customHighlightColor": { "label": "Кастомный цвет выделенной строки", "type": "color", "default": "#ffffff" }
+			} },
 			"clearYellowRow": { "label": "Убрать жёлтую заливку", "type": "boolean-expand", "default": true , "values": {
 				"exludesYellowClearing": { "label": "Защитить оригинальный фон для: ", "type": "boolean-expand", "default": true, "values": {
 					"protectMrg": { "label": "Колонка Маржи", "type": "boolean", "default": true },

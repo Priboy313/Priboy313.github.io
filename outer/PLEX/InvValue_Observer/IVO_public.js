@@ -13,11 +13,18 @@
 		skuColIndex: 2,
 
 		replaceHighlight: true,
+		customHighlightColor: "#ffffff",
 
 		clearYellowRow: true,
 		exludesYellowClearing: true,
 		protectMrg: true,
 		protectK: true,
+
+		customMrgColoring: false,
+		lowMrgCol: "#FFE0E0",
+		okMrgCol: "#FFF5C0",
+		highMrgCol: "#D4EDDA",
+		overMrgCol: "#c99aee",
 
 		fixLabels: true
 	};
@@ -214,7 +221,7 @@
 
 			tableStyle.innerHTML = `
 				.row-highlight{
-					background-color: #ffffff !important;
+					background-color: ${config.customHighlightColor} !important;
 				}
 			`;
 			document.body.appendChild(tableStyle);
