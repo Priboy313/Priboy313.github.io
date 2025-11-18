@@ -48,10 +48,10 @@
 
 	const config = loadConfig();
 
-    const filtersClasses = {
-        hidden: 'hidden-filter',
-    };
-    const filtersClassesVals = Object.values(filtersClasses);
+	const filtersClasses = {
+		hidden: 'hidden-filter',
+	};
+	const filtersClassesVals = Object.values(filtersClasses);
 
 	const customFiltersStyle = document.createElement('style');
 	customFiltersStyle.innerHTML = `
@@ -189,7 +189,7 @@
 	.green-label{
 		color: green;
 	}
-    `;
+	`;
 
 const customFiltersHiddenStyle = document.createElement('style');
 filtersClassesVals.forEach(filterClass => {
@@ -287,7 +287,7 @@ customFiltersGridStyle.innerHTML = `
 		color: #000;
 		padding: 0 0 2px 0;
 	}
-`;
+	`;
 
 const customFiltersDisabledStyle = document.createElement('style');
 customFiltersDisabledStyle.innerHTML = `
@@ -313,9 +313,8 @@ customFiltersDisabledStyle.innerHTML = `
 	}
 	`;
 
-	const customFiltersSummaryTableStyle = document.createElement('style');
-	customFiltersSummaryTableStyle.innerHTML = `
-
+const customFiltersSummaryTableStyle = document.createElement('style');
+customFiltersSummaryTableStyle.innerHTML = `
 	.custom-orders-table-wrapper {
 		display: none;
 		position: fixed;
@@ -444,8 +443,7 @@ customFiltersDisabledStyle.innerHTML = `
 	.table-mx-header{
 		background-color: rgba(250, 233, 203, 1)!important;
 	}
-
-`;
+	`;
 
 const customFiltersDevStyle = document.createElement('style');
 customFiltersDevStyle.innerHTML = `
@@ -468,276 +466,283 @@ customFiltersDevStyle.innerHTML = `
 	.hidden{
 		display: none;
 	}
-`;
+	`;
 
-    document.head.appendChild(customFiltersStyle);
+	document.head.appendChild(customFiltersStyle);
 	document.head.appendChild(customFiltersHiddenStyle);
 	document.head.appendChild(customFiltersGridStyle);
 	document.head.appendChild(customFiltersDisabledStyle);
 	document.head.appendChild(customFiltersSummaryTableStyle);
 	document.head.appendChild(customFiltersDevStyle);
 
-    const customFiltersButton = document.createElement('input');
-    customFiltersButton.type = 'button';
-    customFiltersButton.value = 'Show Custom Filters';
-    customFiltersButton.className = 'custom-filters-button';
+	const customFiltersButton = document.createElement('input');
+	customFiltersButton.type = 'button';
+	customFiltersButton.value = 'Show Custom Filters';
+	customFiltersButton.className = 'custom-filters-button';
 
-    const barBlue = document.querySelector('.titlebar-blue').querySelector('form')
+	const barBlue = document.querySelector('.titlebar-blue').querySelector('form')
 		barBlue.appendChild(customFiltersButton);
 
 
 		// Плавающее окно
 
-    const floatingWindow = document.createElement('div');
-    floatingWindow.className = 'custom-floating-window';
-    floatingWindow.innerHTML = `
-        <div class="custom-header">
-            <span>PMS FBA Orders Custom Filters ${script_version}</span>
-            <span class="custom-close-btn">&times;</span>
-        </div>
-        <div class="custom-content">
+	const floatingWindow = document.createElement('div');
+	floatingWindow.className = 'custom-floating-window';
+	floatingWindow.innerHTML = `
+		<div class="custom-header">
+			<span>PMS FBA Orders Custom Filters ${script_version}</span>
+			<span class="custom-close-btn">&times;</span>
+		</div>
+		<div class="custom-content">
 
-            <div class="custom-filter custom-filter-header">
-                <span id="orders-read-header" class="custom-filter-header-label red-label">ORDERS NOT READED</span>
-            </div>
+			<div class="custom-filter custom-filter-header">
+				<span id="orders-read-header" class="custom-filter-header-label red-label">ORDERS NOT READED</span>
+			</div>
 
 			<div class=" custom-filter-header-stats">
-                <span class="grid-header-label">Hidden</span>
-                <span class="grid-header-label">Shown</span>
-                <span class="grid-header-label">NoCost</span>
-                <span class="grid-header-label">AmznGr</span>
-                <span class="grid-header-label">Refund</span>
-                <span class="grid-header-label">Replace</span>
-                <span class="grid-header-value" id="orders-hidden-stat">0</span>
-                <span class="grid-header-value" id="orders-keep-stat">0</span>
-                <span class="grid-header-value" id="orders-nocost-stat">0</span>
-                <span class="grid-header-value" id="orders-amzngr-stat">0</span>
-                <span class="grid-header-value" id="orders-refund-stat">0</span>
-                <span class="grid-header-value" id="orders-replacement-stat">0</span>
-            </div>
-
-            <div class="custom-filter">
-                <input type="button" value="READ ORDERS TABLE"
-                id="orders-read-table" class="custom-filter-oneline-button">
-            </div>
-
-            <div class="custom-filter">
-                <input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
-            </div>
+				<span class="grid-header-label">Hidden</span>
+				<span class="grid-header-label">Shown</span>
+				<span class="grid-header-label">NoCost</span>
+				<span class="grid-header-label">AmznGr</span>
+				<span class="grid-header-label">Refund</span>
+				<span class="grid-header-label">Replace</span>
+				<span class="grid-header-value" id="orders-hidden-stat">0</span>
+				<span class="grid-header-value" id="orders-keep-stat">0</span>
+				<span class="grid-header-value" id="orders-nocost-stat">0</span>
+				<span class="grid-header-value" id="orders-amzngr-stat">0</span>
+				<span class="grid-header-value" id="orders-refund-stat">0</span>
+				<span class="grid-header-value" id="orders-replacement-stat">0</span>
+			</div>
 
 			<div class="custom-filter">
-                <input type="button" value="Calculate Countries Summary Table" id="orders-calculate-country-sku" class="custom-filter-oneline-button">
-            </div>
+				<input type="button" value="READ ORDERS TABLE"
+				id="orders-read-table" class="custom-filter-oneline-button">
+			</div>
 
-            <div class="custom-filter">
-                <input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
-            </div>
+			<div class="custom-filter">
+				<input type="button" value="Calculate Shown Summary Table" id="orders-calculate-shown-sku" class="custom-filter-oneline-button">
+			</div>
 
-            <div class="custom-filter bordered-filter">
-                <form class="filter-grid">
-                    <div class="grid-row">
-                        <label class="grid-label">Hide Margin &ge;</label>
-                        <div class="input-group">
-                            <input type="number" name="order-margin-thr" value="15"
-                                id="order-margin-thr" class="margin-input">
-                            <span class="percent">%</span>
-                        </div>
-                        <input type="button" value="Apply"
-                            id="order-margin-filter-apply" class="grid-button">
-                    </div>
+			<div class="custom-filter">
+				<input type="button" value="Calculate Countries Summary Table" id="orders-calculate-country-sku" class="custom-filter-oneline-button">
+			</div>
 
-                    <div class="grid-row">
-                        <label class="grid-label">Keep Margin &ge;</label>
-                        <div class="input-group">
-                            <input type="number" name="order-overmargin" value="50"
-                                id="order-overmargin" class="margin-input">
-                            <span class="percent">%</span>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" checked="true"
-                                id="order-overmargin-apply" class="grid-checkbox">
-                        </div>
-                    </div>
-
-                </form>
-            </div>
+			<div class="custom-filter">
+				<input type="button" value="Reset Filters" id="reset-orders-filters" class="custom-filter-oneline-button">
+			</div>
 
 			<div class="custom-filter bordered-filter">
-                <form class="filter-grid">
+				<form class="filter-grid">
+					<div class="grid-row">
+						<label class="grid-label">Hide Margin &ge;</label>
+						<div class="input-group">
+							<input type="number" name="order-margin-thr" value="15"
+								id="order-margin-thr" class="margin-input">
+							<span class="percent">%</span>
+						</div>
+						<input type="button" value="Apply"
+							id="order-margin-filter-apply" class="grid-button">
+					</div>
+
+					<div class="grid-row">
+						<label class="grid-label">Keep Margin &ge;</label>
+						<div class="input-group">
+							<input type="number" name="order-overmargin" value="50"
+								id="order-overmargin" class="margin-input">
+							<span class="percent">%</span>
+						</div>
+						<div class="checkbox-wrapper">
+							<input type="checkbox" checked="true"
+								id="order-overmargin-apply" class="grid-checkbox">
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<div class="custom-filter bordered-filter">
+				<form class="filter-grid">
 
 					<div class="grid-row-3">
-                        <label class="grid-label">NoCost Orders </label>
-                        <input type="button" value="Show" id="orders-show-nocost-skus-apply" class="grid-button">
+						<label class="grid-label">NoCost Orders </label>
+						<input type="button" value="Show" id="orders-show-nocost-skus-apply" class="grid-button">
 						<input type="button" value="Hide" id="orders-hide-nocost-skus-apply" class="grid-button">
-                    </div>
+					</div>
 
 					<div class="grid-row-3">
-                        <label class="grid-label">AmznGr Orders </label>
-                        <input type="button" value="Show" id="orders-show-amzngr-skus-apply" class="grid-button">
+						<label class="grid-label">AmznGr Orders </label>
+						<input type="button" value="Show" id="orders-show-amzngr-skus-apply" class="grid-button">
 						<input type="button" value="Hide" id="orders-hide-amzngr-skus-apply" class="grid-button">
-                    </div>
+					</div>
 
 					<div class="grid-row-3">
-                        <label class="grid-label">Refund Orders </label>
-                        <input type="button" value="Show" id="order-non-refund-filter-apply" class="grid-button">
+						<label class="grid-label">Refund Orders </label>
+						<input type="button" value="Show" id="order-non-refund-filter-apply" class="grid-button">
 						<input type="button" value="Hide" id="order-refund-filter-apply" class="grid-button">
-                    </div>
+					</div>
 
-                    <div class="grid-row-3">
-                        <label class="grid-label">Replace Orders </label>
-                        <input type="button" value="Show" id="order-non-replacement-filter-apply" class="grid-button">
+					<div class="grid-row-3">
+						<label class="grid-label">Replace Orders </label>
+						<input type="button" value="Show" id="order-non-replacement-filter-apply" class="grid-button">
 						<input type="button" value="Hide" id="order-replacement-filter-apply" class="grid-button">
-                    </div>
+					</div>
+
+					<div class="grid-row-3">
+						<label class="grid-label">Missing Orders </label>
+						<input type="button" value="Show" id="order-show-missing-filter-apply" class="grid-button">
+						<input type="button" value="Hide" id="order-hide-missing-filter-apply" class="grid-button">
+					</div>
 
 				</form>
-            </div>
+			</div>
 
 			<div class="custom-filter bordered-filter">
-                <form class="filter-grid">
+				<form class="filter-grid">
 
 					<div class="grid-row-3">
-                        <label class="grid-label">US Orders </label>
-                        <input type="button" value="Show" id="orders-show-us-country-apply" class="grid-button">
+						<label class="grid-label">US Orders </label>
+						<input type="button" value="Show" id="orders-show-us-country-apply" class="grid-button">
 						<input type="button" value="Hide" id="orders-hide-us-country-apply" class="grid-button">
-                    </div>
+					</div>
 
 					<div class="grid-row-3">
-                        <label class="grid-label">CA Orders </label>
-                        <input type="button" value="Show" id="orders-show-ca-country-apply" class="grid-button">
+						<label class="grid-label">CA Orders </label>
+						<input type="button" value="Show" id="orders-show-ca-country-apply" class="grid-button">
 						<input type="button" value="Hide" id="orders-hide-ca-country-apply" class="grid-button">
-                    </div>
+					</div>
 
 					<div class="grid-row-3">
-                        <label class="grid-label">MX Orders </label>
-                        <input type="button" value="Show" id="order-show-mx-country-apply" class="grid-button">
+						<label class="grid-label">MX Orders </label>
+						<input type="button" value="Show" id="order-show-mx-country-apply" class="grid-button">
 						<input type="button" value="Hide" id="order-hide-mx-country-apply" class="grid-button">
-                    </div>
+					</div>
 
-                    <div class="grid-row-3">
-                        <label class="grid-label">Other Orders </label>
-                        <input type="button" value="Show" id="order-show-other-country-apply" class="grid-button">
+					<div class="grid-row-3">
+						<label class="grid-label">Other Orders </label>
+						<input type="button" value="Show" id="order-show-other-country-apply" class="grid-button">
 						<input type="button" value="Hide" id="order-hide-other-country-apply" class="grid-button">
-                    </div>
+					</div>
 
 				</form>
-            </div>
+			</div>
 
-        </div>
-    `;
+		</div>
+	`;
 
 
 		// Сводная таблица по СКУ
 		
-    const ordersCustomTableWindow = document.createElement('div');
-    ordersCustomTableWindow.className = 'custom-orders-table-wrapper';
-    ordersCustomTableWindow.innerHTML = `
-        <div class="custom-orders-table-header">
-            <span class='custom-orders-title'>
-                <span class='table-title'></span>
-                <span class='table-title-date-range'></span>
-            </span>
-            <span class="custom-close-btn">&times;</span>
-        </div>
-        <div class="custom-orders-table-buttons custom-filter">
-            <input type="button" value="Export to XLSX" id="orders-export-xlsx" class="custom-filter-oneline-button">
-        </div>
-        <table class="custom-orders-table">
-            <thead></thead>
-            <tbody></tbody>
-        </table>
-    `;
+	const ordersCustomTableWindow = document.createElement('div');
+	ordersCustomTableWindow.className = 'custom-orders-table-wrapper';
+	ordersCustomTableWindow.innerHTML = `
+		<div class="custom-orders-table-header">
+			<span class='custom-orders-title'>
+				<span class='table-title'></span>
+				<span class='table-title-date-range'></span>
+			</span>
+			<span class="custom-close-btn">&times;</span>
+		</div>
+		<div class="custom-orders-table-buttons custom-filter">
+			<input type="button" value="Export to XLSX" id="orders-export-xlsx" class="custom-filter-oneline-button">
+		</div>
+		<table class="custom-orders-table">
+			<thead></thead>
+			<tbody></tbody>
+		</table>
+	`;
 
-    const scriptSheetJS = document.createElement('script');
-    scriptSheetJS.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js';
+	const scriptSheetJS = document.createElement('script');
+	scriptSheetJS.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js';
 
-    document.head.appendChild(scriptSheetJS);
-    document.body.appendChild(floatingWindow);
-    document.body.appendChild(ordersCustomTableWindow);
+	document.head.appendChild(scriptSheetJS);
+	document.body.appendChild(floatingWindow);
+	document.body.appendChild(ordersCustomTableWindow);
 
 
-    // ====== Функции управления ======= \\
+	// ====== Функции управления ======= \\
 
-    let virtualOrdersList = Array();
+	let virtualOrdersList = Array();
 
-    const toggleCustomElements = (enable = false) => {
-        const container = document.querySelector('.custom-content');
-        const elementsToToggle = Array.from(container.children).slice(3);
+	const toggleCustomElements = (enable = false) => {
+		const container = document.querySelector('.custom-content');
+		const elementsToToggle = Array.from(container.children).slice(3);
 
-        elementsToToggle.forEach(el => {
-            if(enable) {
-                el.classList.remove('disabled');
-                el.querySelectorAll('input, button').forEach(input => {
-                    input.disabled = false;
-                });
-            } else {
-                el.classList.add('disabled');
-                el.querySelectorAll('input, button').forEach(input => {
-                    input.disabled = true;
-                });
-            }
-        });
-    };
+		elementsToToggle.forEach(el => {
+			if(enable) {
+				el.classList.remove('disabled');
+				el.querySelectorAll('input, button').forEach(input => {
+					input.disabled = false;
+				});
+			} else {
+				el.classList.add('disabled');
+				el.querySelectorAll('input, button').forEach(input => {
+					input.disabled = true;
+				});
+			}
+		});
+	};
 
-    const toggleCustomFiltersHeader = (enable = false, ordersLen = 0) => {
-        const header = document.querySelector('.custom-filter-header')
-        const label = header.querySelector('#orders-read-header');
+	const toggleCustomFiltersHeader = (enable = false, ordersLen = 0) => {
+		const header = document.querySelector('.custom-filter-header')
+		const label = header.querySelector('#orders-read-header');
 
-        if(enable) {
-            label.classList.remove('red-label');
-            label.classList.add('green-label');
-            label.innerHTML = `${ordersLen} ORDERS READED`;
-        } else {
-            label.classList.remove('green-label');
-            label.classList.add('red-label');
-            label.innerHTML = 'ORDERS NOT READED';
-        }
-    };
+		if(enable) {
+			label.classList.remove('red-label');
+			label.classList.add('green-label');
+			label.innerHTML = `${ordersLen} ORDERS READED`;
+		} else {
+			label.classList.remove('green-label');
+			label.classList.add('red-label');
+			label.innerHTML = 'ORDERS NOT READED';
+		}
+	};
 
-    const createVirtualOrdersList = (tableBody) => {
-        virtualOrdersList = Array();
-        let virtualOrder;
+	const createVirtualOrdersList = (tableBody) => {
+		virtualOrdersList = Array();
+		let virtualOrder;
 
-        Array.from(tableBody.children).forEach((childEl) => {
-            if (childEl.classList.contains('order-block-top')){
-                virtualOrder = new Order(childEl);
-            }
-            else if (childEl.classList.contains('order-block-mid')){
-                virtualOrder.addOrderMidRow(childEl);
-            }
-            else if (childEl.classList.contains('order-block-bottom')){
-                virtualOrder.setOrderBottomRow(childEl);
-                virtualOrdersList.push(virtualOrder);
-            }
-        });
+		Array.from(tableBody.children).forEach((childEl) => {
+			if (childEl.classList.contains('order-block-top')){
+				virtualOrder = new Order(childEl);
+			}
+			else if (childEl.classList.contains('order-block-mid')){
+				virtualOrder.addOrderMidRow(childEl);
+			}
+			else if (childEl.classList.contains('order-block-bottom')){
+				virtualOrder.setOrderBottomRow(childEl);
+				virtualOrdersList.push(virtualOrder);
+			}
+		});
 
 		// --- ОТЛАДКА --- //
 		// Выводит в консоль содержание виртуального списка ордеров.
-        // console.log('virtualOrdersList', virtualOrdersList);
-    }
+		// console.log('virtualOrdersList', virtualOrdersList);
+	}
 
 
-    class Order {
+	class Order {
 		constructor(topRow) {
-            this.orderTopRow = topRow;
-            this.orderBottomRow = null;
+			this.orderTopRow = topRow;
+			this.orderBottomRow = null;
 			this.orderNum = topRow.querySelector('.table-order').querySelector('a').textContent.replace('\n', '');
 			this.country = this.getCountry(topRow.querySelector('.table-order'))
 			this.owner = topRow.querySelector('.green').innerHTML;
-            this.date = topRow.querySelectorAll('.table-order')[1].innerHTML.replace('\n', '').split('<br>')[0].trim();
-            this.SKU = null;
-            this.margin = 0;
-            this.price = 0;
-            this.cost = 0;
-            this.qty = 0;
-            this.profit = 0;
-            this.fee = 0;
+			this.date = topRow.querySelectorAll('.table-order')[1].innerHTML.replace('\n', '').split('<br>')[0].trim();
+			this.SKU = null;
+			this.margin = 0;
+			this.price = 0;
+			this.cost = 0;
+			this.qty = 0;
+			this.profit = 0;
+			this.fee = 0;
 
-            this.isHidden = false;
-            this.orderMidRowsList = Array();
-            this.isRefundOrder = false;
+			this.isHidden = false;
+			this.orderMidRowsList = Array();
+			this.isRefundOrder = false;
 			this.isCostNotSet = false;
 			this.isAmznGr = false;
 			this.isReplacement = false;
+			this.isMissing = false;
 		}
 
 		getCountry(tableOrder){
@@ -746,11 +751,11 @@ customFiltersDevStyle.innerHTML = `
 			return countryTag && countryTag.textContent.trim() ? countryTag.textContent.trim() : "US";
 		}
 
-        addOrderMidRow(midRow){
-            this.orderMidRowsList.push(new OrderMidRow(midRow));
-            this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
+		addOrderMidRow(midRow){
+			this.orderMidRowsList.push(new OrderMidRow(midRow));
+			this.checkFeeIsRefund(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
 			this.checkIsCostNotSet(this.orderMidRowsList[this.orderMidRowsList.length - 1]);
-        }
+		}
 
 		checkIsReplacement(){
 			if (this.isCostNotSet == false){
@@ -766,193 +771,199 @@ customFiltersDevStyle.innerHTML = `
 			}
 		}
 
-        checkFeeIsRefund(midRow){
-            if (midRow.isRefundOrder == true){
-                this.isRefundOrder = true;
-            }
-        }
+		checkFeeIsRefund(midRow){
+			if (midRow.isRefundOrder == true){
+				this.isRefundOrder = true;
+			}
+		}
 
-        checkIsCostNotSet(midRow){
-            if (midRow.isCostNotSet == true){
-                this.isCostNotSet = true;
-            }
-        }
+		checkIsCostNotSet(midRow){
+			if (midRow.isCostNotSet == true){
+				this.isCostNotSet = true;
+			}
+		}
 
-        setOrderBottomRow(bottomRow){
-            this.orderBottomRow = bottomRow;
-            let chars = Array();
+		checkIsMissing(SKU){
+			if (SKU.includes(".Missing")){
+				this.isMissing = true;
+			}
+		}
 
-            bottomRow.querySelector('b').textContent.split('\n').forEach((char) => {
-                char = char.trim();
-                if (char == '') return;
-                chars.push(char);
-            });
+		setOrderBottomRow(bottomRow){
+			this.orderBottomRow = bottomRow;
+			let chars = Array();
 
-            this.margin = parseFloat(chars[chars.length - 1].replace('%', ''));
-            this.price = parseFloat(chars[0].replace('$', '').split(': ')[1]);
-            this.cost = parseFloat(chars[1].replace('$', '').split(': ')[1]);
-            this.fee = parseFloat(chars[2].split(': ')[1].replace('$', ''));
-            this.profit = parseFloat(chars[3].replace('$', '').split(': ')[1]);
+			bottomRow.querySelector('b').textContent.split('\n').forEach((char) => {
+				char = char.trim();
+				if (char == '') return;
+				chars.push(char);
+			});
 
-            this.orderMidRowsList.forEach((midRow) => {
-                this.qty += midRow.qty;
-            });
+			this.margin = parseFloat(chars[chars.length - 1].replace('%', ''));
+			this.price = parseFloat(chars[0].replace('$', '').split(': ')[1]);
+			this.cost = parseFloat(chars[1].replace('$', '').split(': ')[1]);
+			this.fee = parseFloat(chars[2].split(': ')[1].replace('$', ''));
+			this.profit = parseFloat(chars[3].replace('$', '').split(': ')[1]);
+
+			this.orderMidRowsList.forEach((midRow) => {
+				this.qty += midRow.qty;
+			});
 
 			this.checkIsReplacement();
 			this.SKU = this.orderMidRowsList[0].SKU;
 			this.checkIsAmznGr(this.orderMidRowsList[0].SKU);
-        }
+			this.checkIsMissing(this.SKU);
+		}
+	}
 
-    }
+	class OrderMidRow {
+		constructor(midRow) {
+			this.midRow = midRow;
+			this.SKU = "";
 
-    class OrderMidRow {
-        constructor(midRow) {
-            this.midRow = midRow;
-            this.SKU = "";
+			this.cost = 0;
+			this.price = 0;
+			this.qty = 0;
+			this.fee = 0;
+			this.margin = 0;
+			this.profit = 0;
 
-            this.cost = 0;
-            this.price = 0;
-            this.qty = 0;
-            this.fee = 0;
-            this.margin = 0;
-            this.profit = 0;
+			this.isRefundOrder = this.checkFeeIsRefund();
+			this.isCostNotSet = this.checkCostIsNotSet();
 
-            this.isRefundOrder = this.checkFeeIsRefund();
-            this.isCostNotSet = this.checkCostIsNotSet();
+			this.setValues();
+		}
 
-            this.setValues();
-        }
+		setValues(){
+			if (this.isRefundOrder == false){
+				if (this.isCostNotSet == false){
+					this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+					this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+				} else {
 
-        setValues(){
-            if (this.isRefundOrder == false){
-                if (this.isCostNotSet == false){
-                    this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-                    this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-                } else {
+					this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
+					this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
+				}
+			}
+		}
 
-                    this.SKU    = this.midRow.querySelector('.col1').querySelector('a').textContent.replace('\n', '');
-                    this.qty    = parseFloat(this.midRow.querySelector('.col7').querySelector('b').innerHTML);
-                }
-            }
-        }
+		checkFeeIsRefund(){
+			if (this.midRow.querySelector('.fee').innerHTML.includes('Refund')){
+				return true;
+			} else {
+				return false;
+			}
+		}
 
-        checkFeeIsRefund(){
-            if (this.midRow.querySelector('.fee').innerHTML.includes('Refund')){
-                return true;
-            } else {
-                return false;
-            }
-        }
+		checkCostIsNotSet(){
+			if (this.midRow.querySelector('.col3').innerHTML.includes('Not Set')){
+				return true;
+			}
+		}
+	}
 
-        checkCostIsNotSet(){
-            if (this.midRow.querySelector('.col3').innerHTML.includes('Not Set')){
-                return true;
-            }
-        }
-    }
+	const scrapOrders = () => {
+		const tableHover = document.querySelector('.table-hover');
+		const tableBody = tableHover.querySelector('tbody');
+		const rows = Array.from(tableBody.querySelectorAll('.order-block-top'));
 
-    const scrapOrders = () => {
-        const tableHover = document.querySelector('.table-hover');
-        const tableBody = tableHover.querySelector('tbody');
-        const rows = Array.from(tableBody.querySelectorAll('.order-block-top'));
+		createVirtualOrdersList(tableBody);
 
-        createVirtualOrdersList(tableBody);
+		return rows.length;
+	};
 
-        return rows.length;
-    };
-
-    const calcOrdersHeaderStats = () => {
-        const cellHiddenStat = floatingWindow.querySelector("#orders-hidden-stat");
-        const cellKeepStat = floatingWindow.querySelector("#orders-keep-stat");
-        const cellNoCostStat = floatingWindow.querySelector("#orders-nocost-stat");
+	const calcOrdersHeaderStats = () => {
+		const cellHiddenStat = floatingWindow.querySelector("#orders-hidden-stat");
+		const cellKeepStat = floatingWindow.querySelector("#orders-keep-stat");
+		const cellNoCostStat = floatingWindow.querySelector("#orders-nocost-stat");
 		const cellAmznGrStat = floatingWindow.querySelector("#orders-amzngr-stat");
-        const cellRefundStat = floatingWindow.querySelector("#orders-refund-stat");
+		const cellRefundStat = floatingWindow.querySelector("#orders-refund-stat");
 		const cellReplacementStat = floatingWindow.querySelector("#orders-replacement-stat");
 
-        let hiddenCount = 0;
-        let noCostCount = 0;
+		let hiddenCount = 0;
+		let noCostCount = 0;
 		let amzngrCount = 0;
-        let refundCount = 0;
+		let refundCount = 0;
 		let replacementCount = 0;
 
-        virtualOrdersList.forEach(order => {
-            if (order.isRefundOrder) refundCount++;
-            if (order.isHidden) hiddenCount++;
+		virtualOrdersList.forEach(order => {
+			if (order.isRefundOrder) refundCount++;
+			if (order.isHidden) hiddenCount++;
 			if (order.isAmznGr) amzngrCount++;
-            if (order.isCostNotSet) noCostCount++;
+			if (order.isCostNotSet) noCostCount++;
 			if (order.isReplacement) replacementCount++;
-        })
+		})
 
-        cellHiddenStat.innerHTML = hiddenCount;
-        cellKeepStat.innerHTML = virtualOrdersList.length - hiddenCount;
-        cellNoCostStat.innerHTML = noCostCount;
+		cellHiddenStat.innerHTML = hiddenCount;
+		cellKeepStat.innerHTML = virtualOrdersList.length - hiddenCount;
+		cellNoCostStat.innerHTML = noCostCount;
 		cellAmznGrStat.innerHTML = amzngrCount;
-        cellRefundStat.innerHTML = refundCount;
+		cellRefundStat.innerHTML = refundCount;
 		cellReplacementStat.innerHTML = replacementCount;
-    }
+	}
 
-    const addFilterClassToOrders = (order, filterClass) => {
-        order.orderTopRow.classList.add(filterClass);
-        order.orderBottomRow.classList.add(filterClass);
-        order.orderMidRowsList.forEach((midRow) => {
-            midRow.midRow.classList.add(filterClass);
-        });
-        order.isHidden = true;
-    };
+	const addFilterClassToOrders = (order, filterClass) => {
+		order.orderTopRow.classList.add(filterClass);
+		order.orderBottomRow.classList.add(filterClass);
+		order.orderMidRowsList.forEach((midRow) => {
+			midRow.midRow.classList.add(filterClass);
+		});
+		order.isHidden = true;
+	};
 
 
 	// ФИЛЬТРЫ
 
 
-    const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
-        virtualOrdersList.forEach((order) => {
-            if (overmarginApply == false){
+	const applyHiddenMarginFilter = (margin=15, overmargin=50, overmarginApply=true) => {
+		virtualOrdersList.forEach((order) => {
+			if (overmarginApply == false){
 
-                if (order.margin >= margin){
-                    addFilterClassToOrders(order, filtersClasses.hidden);
-                }
+				if (order.margin >= margin){
+					addFilterClassToOrders(order, filtersClasses.hidden);
+				}
 
-            } else {
+			} else {
 
-                if (order.margin >= margin && order.margin <= overmargin){
-                    addFilterClassToOrders(order, filtersClasses.hidden);
-                }
+				if (order.margin >= margin && order.margin <= overmargin){
+					addFilterClassToOrders(order, filtersClasses.hidden);
+				}
 
-            }
-        });
-    };
+			}
+		});
+	};
 
-    const applyHiddenRefundFilter = () => {
-        virtualOrdersList.forEach((order) => {
-            if (order.isRefundOrder == true){
-                addFilterClassToOrders(order, filtersClasses.hidden);
-            }
-        });
-    };
+	const applyHiddenRefundFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isRefundOrder == true){
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
+		});
+	};
 
-    const applyHiddenNonRefundFilter = () => {
-        virtualOrdersList.forEach((order) => {
-            if (order.isRefundOrder == false){
-                addFilterClassToOrders(order, filtersClasses.hidden);
-            }
-        });
-    }
+	const applyHiddenNonRefundFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isRefundOrder == false){
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
+		});
+	}
 
-    const applyHiddenNoCostFilter = () => {
-        virtualOrdersList.forEach((order) => {
-            if (order.isCostNotSet == true){
-                addFilterClassToOrders(order, filtersClasses.hidden);
-            }
-        });
-    };
+	const applyHiddenNoCostFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isCostNotSet == true){
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
+		});
+	};
 
-    const applyShowNoCostFilter = () => {
-        virtualOrdersList.forEach((order) => {
-            if (order.isCostNotSet == false){
-                addFilterClassToOrders(order, filtersClasses.hidden);
-            }
-        });
-    };
+	const applyShowNoCostFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isCostNotSet == false){
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
+		});
+	};
 
 	const applyShowNoAmznGrFilter = () => {
 		virtualOrdersList.forEach((order) => {
@@ -986,6 +997,21 @@ customFiltersDevStyle.innerHTML = `
 		});
 	}
 
+	const applyShowMissingFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isMissing == false){
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
+		});
+	}
+
+	const applyShowNoMissingFilter = () => {
+		virtualOrdersList.forEach((order) => {
+			if (order.isMissing == true){
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
+		});
+	}
 
 	const noOtherCountrys = ["US", "CA", "MX"]
 
@@ -1040,62 +1066,62 @@ customFiltersDevStyle.innerHTML = `
 	const applyShowOtherCountryFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (noOtherCountrys.includes(order.country)) {
-            	addFilterClassToOrders(order, filtersClasses.hidden);
-        	}
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
 		});
 	}
 
 	const applyShowNoOtherCountryFilter = () => {
 		virtualOrdersList.forEach((order) => {
 			if (!noOtherCountrys.includes(order.country)) {
-            	addFilterClassToOrders(order, filtersClasses.hidden);
-        	}
+				addFilterClassToOrders(order, filtersClasses.hidden);
+			}
 		});
 	}
 
-    const applyResetFilters = () => {
-        virtualOrdersList.forEach((order) => {
-            order.isHidden = false;
-            order.orderTopRow.classList.remove(...filtersClassesVals);
-            order.orderBottomRow.classList.remove(...filtersClassesVals);
-            order.orderMidRowsList.forEach((midRow) => {
-                midRow.midRow.classList.remove(...filtersClassesVals);
-            });
-        });
-    };
+	const applyResetFilters = () => {
+		virtualOrdersList.forEach((order) => {
+			order.isHidden = false;
+			order.orderTopRow.classList.remove(...filtersClassesVals);
+			order.orderBottomRow.classList.remove(...filtersClassesVals);
+			order.orderMidRowsList.forEach((midRow) => {
+				midRow.midRow.classList.remove(...filtersClassesVals);
+			});
+		});
+	};
 
 	const calcOrdersCustomSummaryTable = (virtualList) => {
 		const summaryData = {};
-        virtualList.forEach((order) => {
-            if (!summaryData[order.SKU]) {
-                summaryData[order.SKU] = {
-                    user: "",
-                    count: 0,
-                    qty: 0,
-                    refunds: 0,
-                    cost: 0,
-                    price: 0,
-                    fee: 0,
-                    margin: 0,
-                    profit: 0
-                };
-            }
+		virtualList.forEach((order) => {
+			if (!summaryData[order.SKU]) {
+				summaryData[order.SKU] = {
+					user: "",
+					count: 0,
+					qty: 0,
+					refunds: 0,
+					cost: 0,
+					price: 0,
+					fee: 0,
+					margin: 0,
+					profit: 0
+				};
+			}
 
-            summaryData[order.SKU].user = order.owner;
-            summaryData[order.SKU].count++;
-            summaryData[order.SKU].qty += order.qty;
-            summaryData[order.SKU].refunds += order.isRefundOrder ? 1 : 0;
-            summaryData[order.SKU].cost += order.cost;
-            summaryData[order.SKU].price += order.price;
-            summaryData[order.SKU].fee += order.fee;
-            summaryData[order.SKU].profit += order.profit;
-        });
+			summaryData[order.SKU].user = order.owner;
+			summaryData[order.SKU].count++;
+			summaryData[order.SKU].qty += order.qty;
+			summaryData[order.SKU].refunds += order.isRefundOrder ? 1 : 0;
+			summaryData[order.SKU].cost += order.cost;
+			summaryData[order.SKU].price += order.price;
+			summaryData[order.SKU].fee += order.fee;
+			summaryData[order.SKU].profit += order.profit;
+		});
 
 		const tableTitle = ordersCustomTableWindow.querySelector('.table-title');
 		tableTitle.textContent = "FBA Orders Custom Summary Table ";
 
-        const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
-        tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
+		const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
+		tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
 
 		const tableHead = ordersCustomTableWindow.querySelector('thead');
 		tableHead.innerHTML = `
@@ -1113,99 +1139,99 @@ customFiltersDevStyle.innerHTML = `
 			</tr>
 		`;
 
-        const tableBody = ordersCustomTableWindow.querySelector('tbody');
-        tableBody.innerHTML = '';
+		const tableBody = ordersCustomTableWindow.querySelector('tbody');
+		tableBody.innerHTML = '';
 
-        Object.keys(summaryData).forEach((sku) => {
-            let margin = summaryData[sku].price == 0 ? -100 : (summaryData[sku].profit / summaryData[sku].price * 100).toFixed(2);
-            const row = document.createElement('tr');
-            if (margin < 0) {
-                row.classList.add('custom-orders-table-row-negative-margin');
-            } else if (margin < 15) {
-                row.classList.add('custom-orders-table-row-low-margin');
-            }
+		Object.keys(summaryData).forEach((sku) => {
+			let margin = summaryData[sku].price == 0 ? -100 : (summaryData[sku].profit / summaryData[sku].price * 100).toFixed(2);
+			const row = document.createElement('tr');
+			if (margin < 0) {
+				row.classList.add('custom-orders-table-row-negative-margin');
+			} else if (margin < 15) {
+				row.classList.add('custom-orders-table-row-low-margin');
+			}
 
-            row.innerHTML = `
-            <td class='sum-user'    >${summaryData[sku].user}</td>
-            <td class='sum-sku'     >${sku}</td>
-            <td class='sum-count'   >${summaryData[sku].count}</td>
-            <td class='sum-qty'     >${summaryData[sku].qty}</td>
-            <td class='sum-refunds' >${summaryData[sku].refunds}</td>
-            <td class='sum-cost'    >${summaryData[sku].cost.toFixed(2)}</td>
-            <td class='sum-price'   >${summaryData[sku].price.toFixed(2)}</td>
-            <td class='sum-fee'     >${summaryData[sku].fee.toFixed(2)}</td>
-            <td class='sum-margin'  >${margin}</td>
-            <td class='sum-profit'  >${summaryData[sku].profit.toFixed(2)}</td>
-            `;
-            tableBody.appendChild(row);
-        });
+			row.innerHTML = `
+			<td class='sum-user'    >${summaryData[sku].user}</td>
+			<td class='sum-sku'     >${sku}</td>
+			<td class='sum-count'   >${summaryData[sku].count}</td>
+			<td class='sum-qty'     >${summaryData[sku].qty}</td>
+			<td class='sum-refunds' >${summaryData[sku].refunds}</td>
+			<td class='sum-cost'    >${summaryData[sku].cost.toFixed(2)}</td>
+			<td class='sum-price'   >${summaryData[sku].price.toFixed(2)}</td>
+			<td class='sum-fee'     >${summaryData[sku].fee.toFixed(2)}</td>
+			<td class='sum-margin'  >${margin}</td>
+			<td class='sum-profit'  >${summaryData[sku].profit.toFixed(2)}</td>
+			`;
+			tableBody.appendChild(row);
+		});
 	};
 
 	const calcCountriesCustomSummaryTable = (virtualList) => {
 		const summaryData = {};
-        virtualList.forEach((order) => {
-            if (!summaryData[order.SKU]) {
-                summaryData[order.SKU] = {
-                    user: "",
-                    count: 0,
+		virtualList.forEach((order) => {
+			if (!summaryData[order.SKU]) {
+				summaryData[order.SKU] = {
+					user: "",
+					count: 0,
 					
-                    qtyUS: 0,
+					qtyUS: 0,
 					priceUS: 0,
-                    marginUS: 0,
-                    profitUS: 0,
+					marginUS: 0,
+					profitUS: 0,
 
 					qtyCA: 0,
 					priceCA: 0,
 					marginCA: 0,
-                    profitCA: 0,
+					profitCA: 0,
 
 					qtyMX: 0,
 					priceMX: 0,
 					marginMX: 0,
-                    profitMX: 0,
+					profitMX: 0,
 
 					qtyOT: 0,
 					priceOT: 0,
 					marginOT: 0,
-                    profitOT: 0,
-                };
-            }
+					profitOT: 0,
+				};
+			}
 
-            summaryData[order.SKU].user = order.owner;
-            summaryData[order.SKU].count++;
+			summaryData[order.SKU].user = order.owner;
+			summaryData[order.SKU].count++;
 
 			switch (order.country) {
 				case "US":
 					summaryData[order.SKU].qtyUS += order.qty;
 					summaryData[order.SKU].priceUS += order.price;
-            		summaryData[order.SKU].profitUS += order.profit;
+					summaryData[order.SKU].profitUS += order.profit;
 					break;
 
 				case "CA":
 					summaryData[order.SKU].qtyCA += order.qty;
 					summaryData[order.SKU].priceCA += order.price;
-            		summaryData[order.SKU].profitCA += order.profit;
+					summaryData[order.SKU].profitCA += order.profit;
 					break;
 
 				case "MX":
 					summaryData[order.SKU].qtyMX += order.qty;
 					summaryData[order.SKU].priceMX += order.price;
-            		summaryData[order.SKU].profitMX += order.profit;
+					summaryData[order.SKU].profitMX += order.profit;
 					break;
 			
 				default:
 					summaryData[order.SKU].qtyOT += order.qty;
 					summaryData[order.SKU].priceOT += order.price;
-            		summaryData[order.SKU].profitOT += order.profit;
+					summaryData[order.SKU].profitOT += order.profit;
 					break;
 			}
-        });
+		});
 
 		const tableTitle = ordersCustomTableWindow.querySelector('.table-title');
 		tableTitle.textContent = "FBA Orders Countries Summary Table ";
 
-        const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
-        tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
+		const tableTitleRange = ordersCustomTableWindow.querySelector('.table-title-date-range');
+		tableTitleRange.textContent = `(${virtualOrdersList[0].date.split(' ')[0]} - ${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]})`;
 
 		const tableHead = ordersCustomTableWindow.querySelector('thead');
 		tableHead.innerHTML = `
@@ -1232,17 +1258,17 @@ customFiltersDevStyle.innerHTML = `
 			</tr>
 		`;
 
-        const tableBody = ordersCustomTableWindow.querySelector('tbody');
-        tableBody.innerHTML = '';
+		const tableBody = ordersCustomTableWindow.querySelector('tbody');
+		tableBody.innerHTML = '';
 
-        Object.keys(summaryData).forEach((sku) => {
-            let marginUS = summaryData[sku].qtyUS == 0 ? 0 : (summaryData[sku].profitUS / summaryData[sku].priceUS * 100).toFixed(2);
+		Object.keys(summaryData).forEach((sku) => {
+			let marginUS = summaryData[sku].qtyUS == 0 ? 0 : (summaryData[sku].profitUS / summaryData[sku].priceUS * 100).toFixed(2);
 			let marginCA = summaryData[sku].qtyCA == 0 ? 0 : (summaryData[sku].profitCA / summaryData[sku].priceCA * 100).toFixed(2);
 			let marginMX = summaryData[sku].qtyMX == 0 ? 0 : (summaryData[sku].profitMX / summaryData[sku].priceMX * 100).toFixed(2);
 			let marginOT = summaryData[sku].qtyOT == 0 ? 0 : (summaryData[sku].profitOT / summaryData[sku].priceOT * 100).toFixed(2);
 
-            const row = document.createElement('tr');
-            if ((summaryData[sku].qtyUS > 0 && marginUS < 0) || 
+			const row = document.createElement('tr');
+			if ((summaryData[sku].qtyUS > 0 && marginUS < 0) || 
 				(summaryData[sku].qtyCA > 0 && marginCA < 0) || 
 				(summaryData[sku].qtyMX > 0 && marginMX < 0) || 
 				(summaryData[sku].qtyOT > 0 && marginOT < 0)) {
@@ -1255,258 +1281,268 @@ customFiltersDevStyle.innerHTML = `
 				row.classList.add('custom-orders-table-row-low-margin');
 			}
 
-            row.innerHTML = `
-            <td class='sum-user'    >${summaryData[sku].user}</td>
-            <td class='sum-sku'     >${sku}</td>
-            <td class='sum-count'   >${summaryData[sku].count}</td>
+			row.innerHTML = `
+			<td class='sum-user'    >${summaryData[sku].user}</td>
+			<td class='sum-sku'     >${sku}</td>
+			<td class='sum-count'   >${summaryData[sku].count}</td>
 
-            <td class='sum-qty'     >${summaryData[sku].qtyUS}</td>
-            <td class='sum-margin'  >${marginUS}</td>
-            <td class='sum-profit'  >${summaryData[sku].profitUS.toFixed(2)}</td>
+			<td class='sum-qty'     >${summaryData[sku].qtyUS}</td>
+			<td class='sum-margin'  >${marginUS}</td>
+			<td class='sum-profit'  >${summaryData[sku].profitUS.toFixed(2)}</td>
 
 			<td class='sum-qty'     >${summaryData[sku].qtyCA}</td>
-            <td class='sum-margin'  >${marginCA}</td>
-            <td class='sum-profit'  >${summaryData[sku].profitCA.toFixed(2)}</td>
+			<td class='sum-margin'  >${marginCA}</td>
+			<td class='sum-profit'  >${summaryData[sku].profitCA.toFixed(2)}</td>
 
 			<td class='sum-qty'     >${summaryData[sku].qtyMX}</td>
-            <td class='sum-margin'  >${marginMX}</td>
-            <td class='sum-profit'  >${summaryData[sku].profitMX.toFixed(2)}</td>
+			<td class='sum-margin'  >${marginMX}</td>
+			<td class='sum-profit'  >${summaryData[sku].profitMX.toFixed(2)}</td>
 
 			<td class='sum-qty'     >${summaryData[sku].qtyOT}</td>
-            <td class='sum-margin'  >${marginOT}</td>
-            <td class='sum-profit'  >${summaryData[sku].profitOT.toFixed(2)}</td>
-            `;
-            tableBody.appendChild(row);
-        });
+			<td class='sum-margin'  >${marginOT}</td>
+			<td class='sum-profit'  >${summaryData[sku].profitOT.toFixed(2)}</td>
+			`;
+			tableBody.appendChild(row);
+		});
 	};
 
 	const calcOrdersCustomShownSummaryTable = () => {
 		calcOrdersCustomSummaryTable(virtualOrdersList.filter(order => !order.isHidden))
-    };
+	};
 
 	const calcOrdersCountriesShownSummaryTable = () => {
 		calcCountriesCustomSummaryTable(virtualOrdersList.filter(order => !order.isHidden))
-    };
+	};
 
-    const makeTableSortable = (table) => {
-        const headers = table.querySelectorAll('th');
-        headers.forEach((header, index) => {
-            header.addEventListener('click', () => {
-                const isAscending = header.classList.contains('asc');
-                sortTableByColumn(table, index, !isAscending);
-                headers.forEach((h) => h.classList.remove('asc', 'desc'));
-                header.classList.toggle('asc', !isAscending);
-                header.classList.toggle('desc', isAscending);
-            });
-        });
-    };
+	const makeTableSortable = (table) => {
+		const headers = table.querySelectorAll('th');
+		headers.forEach((header, index) => {
+			header.addEventListener('click', () => {
+				const isAscending = header.classList.contains('asc');
+				sortTableByColumn(table, index, !isAscending);
+				headers.forEach((h) => h.classList.remove('asc', 'desc'));
+				header.classList.toggle('asc', !isAscending);
+				header.classList.toggle('desc', isAscending);
+			});
+		});
+	};
 
-    const sortTableByColumn = (table, column, ascending = true) => {
-        const dirModifier = ascending ? 1 : -1;
-        const rows = Array.from(table.querySelector('tbody').querySelectorAll('tr'));
+	const sortTableByColumn = (table, column, ascending = true) => {
+		const dirModifier = ascending ? 1 : -1;
+		const rows = Array.from(table.querySelector('tbody').querySelectorAll('tr'));
 
-        const sortedRows = rows.sort((a, b) => {
-            const aColText = a.querySelectorAll(`td:nth-child(${column + 1})`)[0].textContent.trim();
-            const bColText = b.querySelectorAll(`td:nth-child(${column + 1})`)[0].textContent.trim();
+		const sortedRows = rows.sort((a, b) => {
+			const aColText = a.querySelectorAll(`td:nth-child(${column + 1})`)[0].textContent.trim();
+			const bColText = b.querySelectorAll(`td:nth-child(${column + 1})`)[0].textContent.trim();
 
-            const aColValue = isNaN(aColText) ? aColText : parseFloat(aColText);
-            const bColValue = isNaN(bColText) ? bColText : parseFloat(bColText);
+			const aColValue = isNaN(aColText) ? aColText : parseFloat(aColText);
+			const bColValue = isNaN(bColText) ? bColText : parseFloat(bColText);
 
-            return aColValue < bColValue ? (1 * dirModifier) : (-1 * dirModifier);
-        });
+			return aColValue < bColValue ? (1 * dirModifier) : (-1 * dirModifier);
+		});
 
-        while (table.querySelector('tbody').firstChild) {
-            table.querySelector('tbody').removeChild(table.querySelector('tbody').firstChild);
-        };
+		while (table.querySelector('tbody').firstChild) {
+			table.querySelector('tbody').removeChild(table.querySelector('tbody').firstChild);
+		};
 
-        table.querySelector('tbody').append(...sortedRows);
-    };
+		table.querySelector('tbody').append(...sortedRows);
+	};
 
-    const exportCustomSummaryTableToXLSX = (table) => {
-        const ws = XLSX.utils.table_to_sheet(table);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Orders Summary');
-        let corp = ""
-        if (window.location.href.includes('plexsupply') == true){ corp = 'PlexSupply'; }
-        if (window.location.href.includes('officechase') == true){ corp = 'OfficeChase'; }
-        if (window.location.href.includes('marksonsupply') == true){ corp = 'Markson'; }
+	const exportCustomSummaryTableToXLSX = (table) => {
+		const ws = XLSX.utils.table_to_sheet(table);
+		const wb = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'Orders Summary');
+		let corp = ""
+		if (window.location.href.includes('plexsupply') == true){ corp = 'PlexSupply'; }
+		if (window.location.href.includes('officechase') == true){ corp = 'OfficeChase'; }
+		if (window.location.href.includes('marksonsupply') == true){ corp = 'Markson'; }
 
-        XLSX.writeFile(wb, `${corp}_Summary_Orders_${virtualOrdersList[0].date.split(' ')[0]}-${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]}.xlsx`);
-    };
-
-
-    const showWindow = (window) => {
-        window.style.display = 'block';
-    };
-    const hideWindow = (window) => {
-        window.style.display = 'none';
-    };
+		XLSX.writeFile(wb, `${corp}_Summary_Orders_${virtualOrdersList[0].date.split(' ')[0]}-${virtualOrdersList[virtualOrdersList.length - 1].date.split(' ')[0]}.xlsx`);
+	};
 
 
-    const initEventListeners = () => {
-        document.addEventListener('keydown', handleKeyPress);
+	const showWindow = (window) => {
+		window.style.display = 'block';
+	};
+	const hideWindow = (window) => {
+		window.style.display = 'none';
+	};
 
-        toggleCustomElements(false);
 
-        document.getElementById('orders-read-table').addEventListener('click', async () => {
-            try {
-                let ordersLenght = scrapOrders();
-                toggleCustomFiltersHeader(true, ordersLenght);
-                toggleCustomElements(true);
-                calcOrdersHeaderStats();
+	const initEventListeners = () => {
+		document.addEventListener('keydown', handleKeyPress);
 
-            } catch (error) {
-                console.error('Error loading orders:', error);
-            }
-        });
+		toggleCustomElements(false);
 
-        document.getElementById('order-margin-filter-apply').addEventListener('click', () => {
-            const margin = parseFloat(document.getElementById('order-margin-thr').value);
-            const overmargin = parseFloat(document.getElementById('order-overmargin').value);
-            const overmarginApply = document.getElementById('order-overmargin-apply').checked;
+		document.getElementById('orders-read-table').addEventListener('click', async () => {
+			try {
+				let ordersLenght = scrapOrders();
+				toggleCustomFiltersHeader(true, ordersLenght);
+				toggleCustomElements(true);
+				calcOrdersHeaderStats();
 
-            applyHiddenMarginFilter(margin, overmargin, overmarginApply);
-            calcOrdersHeaderStats();
-        });
+			} catch (error) {
+				console.error('Error loading orders:', error);
+			}
+		});
 
-        document.getElementById('order-refund-filter-apply').addEventListener('click', () => {
-            applyHiddenRefundFilter();
-            calcOrdersHeaderStats();
-        });
+		document.getElementById('order-margin-filter-apply').addEventListener('click', () => {
+			const margin = parseFloat(document.getElementById('order-margin-thr').value);
+			const overmargin = parseFloat(document.getElementById('order-overmargin').value);
+			const overmarginApply = document.getElementById('order-overmargin-apply').checked;
 
-        document.getElementById('order-non-refund-filter-apply').addEventListener('click', () => {
-            applyHiddenNonRefundFilter();
-            calcOrdersHeaderStats();
-        });
+			applyHiddenMarginFilter(margin, overmargin, overmarginApply);
+			calcOrdersHeaderStats();
+		});
 
-        document.getElementById('reset-orders-filters').addEventListener('click', () => {
-            applyResetFilters();
-            calcOrdersHeaderStats();
-        });
+		document.getElementById('order-refund-filter-apply').addEventListener('click', () => {
+			applyHiddenRefundFilter();
+			calcOrdersHeaderStats();
+		});
 
-        document.getElementById("orders-show-nocost-skus-apply").addEventListener('click', () => {
-            applyShowNoCostFilter();
-            calcOrdersHeaderStats();
-        });
+		document.getElementById('order-non-refund-filter-apply').addEventListener('click', () => {
+			applyHiddenNonRefundFilter();
+			calcOrdersHeaderStats();
+		});
 
-        document.getElementById("orders-hide-nocost-skus-apply").addEventListener('click', () => {
-            applyHiddenNoCostFilter();
-            calcOrdersHeaderStats();
-        });
+		document.getElementById('reset-orders-filters').addEventListener('click', () => {
+			applyResetFilters();
+			calcOrdersHeaderStats();
+		});
+
+		document.getElementById("orders-show-nocost-skus-apply").addEventListener('click', () => {
+			applyShowNoCostFilter();
+			calcOrdersHeaderStats();
+		});
+
+		document.getElementById("orders-hide-nocost-skus-apply").addEventListener('click', () => {
+			applyHiddenNoCostFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("orders-show-amzngr-skus-apply").addEventListener('click', () => {
-            applyShowAmznGrFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowAmznGrFilter();
+			calcOrdersHeaderStats();
+		});
 
-        document.getElementById("orders-hide-amzngr-skus-apply").addEventListener('click', () => {
-            applyShowNoAmznGrFilter();
-            calcOrdersHeaderStats();
-        });
+		document.getElementById("orders-hide-amzngr-skus-apply").addEventListener('click', () => {
+			applyShowNoAmznGrFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("order-non-replacement-filter-apply").addEventListener('click', () => {
-            applyShowReplacementFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowReplacementFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("order-replacement-filter-apply").addEventListener('click', () => {
-            applyShowNoReplacementFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowNoReplacementFilter();
+			calcOrdersHeaderStats();
+		});
 
-        document.getElementById("orders-show-us-country-apply").addEventListener('click', () => {
-            applyShowUSFilter();
-            calcOrdersHeaderStats();
-        });
+		document.getElementById("order-show-missing-filter-apply").addEventListener('click', () => {
+			applyShowMissingFilter();
+			calcOrdersHeaderStats();
+		});
+
+		document.getElementById("order-hide-missing-filter-apply").addEventListener('click', () => {
+			applyShowNoMissingFilter();
+			calcOrdersHeaderStats();
+		});
+
+		document.getElementById("orders-show-us-country-apply").addEventListener('click', () => {
+			applyShowUSFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("orders-hide-us-country-apply").addEventListener('click', () => {
-            applyShowNoUSFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowNoUSFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("orders-show-ca-country-apply").addEventListener('click', () => {
-            applyShowCAFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowCAFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("orders-hide-ca-country-apply").addEventListener('click', () => {
-            applyShowNoCAFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowNoCAFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("order-show-mx-country-apply").addEventListener('click', () => {
-            applyShowMXFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowMXFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("order-hide-mx-country-apply").addEventListener('click', () => {
-            applyShowNoMXFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowNoMXFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("order-show-other-country-apply").addEventListener('click', () => {
-            applyShowOtherCountryFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowOtherCountryFilter();
+			calcOrdersHeaderStats();
+		});
 
 		document.getElementById("order-hide-other-country-apply").addEventListener('click', () => {
-            applyShowNoOtherCountryFilter();
-            calcOrdersHeaderStats();
-        });
+			applyShowNoOtherCountryFilter();
+			calcOrdersHeaderStats();
+		});
 
-        floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
+		floatingWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(floatingWindow));
 
 		document.getElementById('orders-calculate-shown-sku').addEventListener('click', () => {
 			// hideWindow(ordersCustomTableWindow);
-            showWindow(ordersCustomTableWindow);
-            calcOrdersCustomShownSummaryTable();
-            makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
-        });
+			showWindow(ordersCustomTableWindow);
+			calcOrdersCustomShownSummaryTable();
+			makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+		});
 
 		document.getElementById('orders-calculate-country-sku').addEventListener('click', () => {
-            // hideWindow(ordersCustomTableWindow);
-            showWindow(ordersCustomTableWindow);
-            calcOrdersCountriesShownSummaryTable();
-            makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
-        });
+			// hideWindow(ordersCustomTableWindow);
+			showWindow(ordersCustomTableWindow);
+			calcOrdersCountriesShownSummaryTable();
+			makeTableSortable(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+		});
 
-        ordersCustomTableWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(ordersCustomTableWindow));
+		ordersCustomTableWindow.querySelector('.custom-close-btn').addEventListener('click', () => hideWindow(ordersCustomTableWindow));
 
-        ordersCustomTableWindow.querySelector('#orders-export-xlsx').addEventListener('click', () => {
-            exportCustomSummaryTableToXLSX(ordersCustomTableWindow.querySelector('.custom-orders-table'));
-        });
+		ordersCustomTableWindow.querySelector('#orders-export-xlsx').addEventListener('click', () => {
+			exportCustomSummaryTableToXLSX(ordersCustomTableWindow.querySelector('.custom-orders-table'));
+		});
 
-        document.querySelector('.custom-filters-button').addEventListener('click', () => {
+		document.querySelector('.custom-filters-button').addEventListener('click', () => {
 			if (floatingWindow.style.display != 'block'){
 				showWindow(floatingWindow);
 			}
-        });
-    };
+		});
+	};
 
-    const handleKeyPress = (e) => {
-        try{
-            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+	const handleKeyPress = (e) => {
+		try{
+			if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyL') {
-                e.preventDefault();
-                showWindow(floatingWindow);
-                return;
-            }
+			if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === 'KeyL') {
+				e.preventDefault();
+				showWindow(floatingWindow);
+				return;
+			}
 
-            if (e.key === 'Escape') {
-                if (ordersCustomTableWindow.style.display === 'block') {
-                    hideWindow(ordersCustomTableWindow);
-                } else if (floatingWindow.style.display === 'block') {
-                    hideWindow(floatingWindow);
-                }
-                return;
-            }
-        } catch (error) {
-            console.error('+++ Error on key press:', error);
-        }
-    };
+			if (e.key === 'Escape') {
+				if (ordersCustomTableWindow.style.display === 'block') {
+					hideWindow(ordersCustomTableWindow);
+				} else if (floatingWindow.style.display === 'block') {
+					hideWindow(floatingWindow);
+				}
+				return;
+			}
+		} catch (error) {
+			console.error('+++ Error on key press:', error);
+		}
+	};
 
-    initEventListeners();
+	initEventListeners();
 
-    floatingWindow.addEventListener('click', (e) => e.stopPropagation());
+	floatingWindow.addEventListener('click', (e) => e.stopPropagation());
 })(settingsJSON, role);
