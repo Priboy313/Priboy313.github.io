@@ -327,7 +327,7 @@
 						background: #243037 !important;
 					}
 					
-					#navbar-main {
+					#navbar-main .nav-ul .nav-li .nav-div{
 						color: #ecf0fb !important;
 					}
 				`;
