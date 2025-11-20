@@ -317,6 +317,17 @@
 				`;
 			}
 
+			if (config.setCustomNavColors) {
+				customStyle.innerHTML += `
+					#navbar-main #navbar #nav-belt{
+						background: #121921 !important;
+					}
+
+					#navbar-main #navbar #nav-main {
+						background: #243037 !important;}
+				`;
+			}
+
 			if (config.hidePrime){
 				customStyle.innerHTML += `
 					#primeDPUpsellContainer,
