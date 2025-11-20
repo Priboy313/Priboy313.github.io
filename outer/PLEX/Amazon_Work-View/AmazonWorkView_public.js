@@ -325,10 +325,7 @@
 
 					#navbar-main #navbar #nav-main {
 						background: #243037 !important;
-					}
-					
-					#navbar-main .nav-ul{
-						color: #ecf0fb !important;
+						color: #ecf0fb !important
 					}
 				`;
 			}
