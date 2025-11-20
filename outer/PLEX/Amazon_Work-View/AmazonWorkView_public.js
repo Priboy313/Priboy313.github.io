@@ -329,6 +329,14 @@
 				`;
 			}
 
+			if (config.hideFitBanner) {
+				customStyle.innerHTML += `
+					#automotiveDesktopFitmentCardNA_feature_div{
+						display: none !important;
+					}
+				`;
+			}
+
 			if (config.hidePrime){
 				customStyle.innerHTML += `
 					#primeDPUpsellContainer,

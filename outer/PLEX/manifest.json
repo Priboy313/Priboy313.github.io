@@ -14,6 +14,7 @@
 				"hideSubNavbar": { "label": "Скрыть поднавигацию", "type": "boolean", "default": true },
 				"setCustomNavColors": { "label": "Защитить фон навигации (dev)", "type": "boolean", "default": false, "role": ["aboba", "dodev"] },
 				"hideAdBanner": { "label": "Скрыть баннер", "type": "boolean", "default": true },
+				"hideFitBanner": { "label": "Скрыть баннер Confirmed Fit (dev)", "type": "boolean", "default": false, "role": ["aboba", "dodev"] },
 				"hidePrime": { "label": "Скрыть баннер Prime", "type": "boolean", "default": true },
 				"hideReturns": { "label": "Скрыть Returns", "type": "boolean", "default": true },
 				"hideProtectionPlan": { "label": "Скрыть Protection Plan", "type": "boolean", "default": true }
