@@ -324,8 +324,7 @@
 					}
 
 					#navbar-main #navbar #nav-main {
-						background: #243037 !important;
-						color: #ecf0fb !important
+						background: #e1e8ee !important;
 					}
 				`;
 			}
