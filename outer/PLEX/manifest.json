@@ -12,7 +12,7 @@
 			"clearAmazon": { "label": "Очистить элементы Амазона", "type": "boolean-expand", "default": true, "values": {
 				"hideNavbar": { "label": "Скрыть навигацию", "type": "boolean", "default": true },
 				"hideSubNavbar": { "label": "Скрыть поднавигацию", "type": "boolean", "default": true },
-				"setCustomNavColors": { "label": "Защитить фон навигации", "type": "boolean", "default": false, "role": ["aboba", "dodev"] },
+				"setCustomNavColors": { "label": "Защитить фон навигации (dev)", "type": "boolean", "default": false, "role": ["aboba", "dodev"] },
 				"hideAdBanner": { "label": "Скрыть баннер", "type": "boolean", "default": true },
 				"hidePrime": { "label": "Скрыть баннер Prime", "type": "boolean", "default": true },
 				"hideReturns": { "label": "Скрыть Returns", "type": "boolean", "default": true },
