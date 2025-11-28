@@ -45,14 +45,16 @@
 		return finalConfig;
 	}
 
-	async function main() {
-		console.log(`========== ${SCRIPT_ID} PUBLIC`);
+	function runImmediate(config) {
+		console.log(`== [${SCRIPT_ID}] Выполнение немедленных исправлений...`);
 
-		const config = loadConfig();
-		
 		if (config.styleFix){
 			addCustomCSS(config);
 		}
+	}
+
+	async function runOnLoad(config) {
+		console.log(`== [${SCRIPT_ID}] Выполнение исправлений после загрузки страницы...`);
 
 		const isItemPage = (window.location.href.includes('index.aspx?tab=7&sku='));
 
@@ -64,6 +66,22 @@
 			if (config.disableClickableElements){
 				DisableClickableElements();
 			}
+		}
+	}
+
+	async function main() {
+		console.log(`========== ${SCRIPT_ID} PUBLIC`);
+
+		const config = loadConfig();
+		
+		runImmediate(config);
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', () => {
+				runOnLoad(config);
+			});
+		} else {
+			runOnLoad(config);
 		}
 	}
 
