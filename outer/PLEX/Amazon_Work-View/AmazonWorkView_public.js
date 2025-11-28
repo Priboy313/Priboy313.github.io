@@ -48,12 +48,16 @@
 		return finalConfig;
 	}
 
-	async function main() {
-		console.log("========== AMZNWV PUBLIC");
-
-		const config = loadConfig();
+	function runImmediate(config){
+		console.log(`== [${SCRIPT_ID}] Выполнение немедленных задач...`);
 
 		addCustomCSS(config);
+	}
+
+	async function runOnLoad(config) {
+		console.log(`== [${SCRIPT_ID}] Выполнение задач после загрузки DOM...`);
+
+		await waitForElement("#titleSection");
 
 		if (config.addMirrorLinks){
 			set_mirror_links();
@@ -71,36 +75,56 @@
 		}
 	}
 
+	async function main() {
+		console.log(`== [${SCRIPT_ID}] Запуск основной функции...`);
+
+		const config = loadConfig();
+
+		runImmediate(config);
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', () => {
+				runOnLoad(config);
+			});
+		} else {
+			runOnLoad(config);
+		}
+	}
+
 	function waitForElement(selector, timeout = 10000) {
 		return new Promise((resolve, reject) => {
 			if (!selector) {
 				return resolve(null);
 			}
 
-			const element = document.querySelector(selector);
-			if (element) {
-				return resolve(element);
-			}
-
-			let observer;
-			let timeoutId;
-
-			observer = new MutationObserver(() => {
-				const foundElement = document.querySelector(selector);
-				if (foundElement) {
-					clearTimeout(timeoutId);
-					observer.disconnect();
-					resolve(foundElement);
+			if (document.body) {
+				const element = document.querySelector(selector);
+				if (element) {
+					return resolve(element);
 				}
-			});
 
-			timeoutId = setTimeout(() => {
-				observer.disconnect();
-				console.warn(`Элемент "${selector}" не появился за ${timeout} мс.`);
-				resolve(null);
-			}, timeout);
+				let observer;
+				let timeoutId;
 
-			observer.observe(document.body, { childList: true, subtree: true });
+				observer = new MutationObserver(() => {
+					const foundElement = document.querySelector(selector);
+					if (foundElement) {
+						clearTimeout(timeoutId);
+						observer.disconnect();
+						resolve(foundElement);
+					}
+				});
+
+				timeoutId = setTimeout(() => {
+					observer.disconnect();
+					console.warn(`Элемент "${selector}" не появился за ${timeout} мс.`);
+					resolve(null);
+				}, timeout);
+
+				observer.observe(document.body, { childList: true, subtree: true });
+			} else {
+                document.addEventListener('DOMContentLoaded', () => resolve(waitForElement(selector, timeout)), { once: true });
+            }
 		});
 	}
 
