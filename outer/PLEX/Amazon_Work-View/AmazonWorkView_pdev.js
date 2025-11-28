@@ -55,6 +55,10 @@
 	}
 
 	async function runOnLoad(config) {
+		console.log(`== [${SCRIPT_ID}] Выполнение задач после загрузки DOM...`);
+
+		await waitForElement("#titleSection");
+
 		if (config.addMirrorLinks){
 			set_mirror_links();
 		}
