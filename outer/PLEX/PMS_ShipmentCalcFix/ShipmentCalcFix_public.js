@@ -62,35 +62,25 @@
 
 	async function addEstBlackPrice(config) {
 		let attempts = 0;
-		const maxAttempts = 2;
+		const maxAttempts = 50;
 		const waitInterval = 200;
 
-		let toptables = [];
-		let table = null;
-		let subtables = [];
-		let rows = [];
+		const dataRowsClass = "accDS";
 
-		while ( rows.length === 0 && attempts < maxAttempts) {
-			toptables = document.querySelectorAll("table");
-			console.log(`== [${SCRIPT_ID}] Найдены верхнеуровневые таблицы:`, toptables);
-			
-			if (table) {
-				console.log(`== [${SCRIPT_ID}] Найдена основная таблица:`, table);
-				subtables = table.querySelectorAll("table")
-			}
+		let dataRows = [];
 
-			if (subtables.length > 0) {
-				console.log(`== [${SCRIPT_ID}] Найдены подтаблицы:`, subtables);
-			}
+		while (dataRows.length === 0 && attempts < maxAttempts) {
 
-			if (rows.length === 0) {
+			dataRows = document.querySelectorAll(`.${dataRowsClass}`);
+
+			if (dataRows.length === 0) {
 				attempts++;
 				console.log(`== [${SCRIPT_ID}] Попытка ${attempts}/${maxAttempts}`);
                 await new Promise(resolve => setTimeout(resolve, waitInterval));
 			}
 		}
 
-		if (rows.length === 0) {
+		if (dataRows.length === 0) {
             console.warn(`== [${SCRIPT_ID}] Таблица не загружена за ${maxAttempts * waitInterval}мс — пропуск addEstBlackPrice`);
             return;
         }
@@ -98,7 +88,7 @@
 		console.log("====== Начало добавления Estimated Black Price ======");
 		console.log("====== " + "addEstBlackPrice: " + config.addEstBlackPrice);
 		console.log("====== " + "blackPriceMltp: " + config.blackPriceMltp);
-		console.log(rows);
+		console.log(dataRows);
 
 	}
 
