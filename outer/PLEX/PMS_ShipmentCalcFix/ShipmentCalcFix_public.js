@@ -73,7 +73,6 @@
 		let dataRows = [];
 
 		while (dataRows.length === 0 && attempts < maxAttempts) {
-
 			dataRows = document.querySelectorAll(`.${dataRowsClass}`);
 
 			if (dataRows.length === 0) {
@@ -87,6 +86,8 @@
             console.warn(`== [${SCRIPT_ID}] Таблица не загружена за ${maxAttempts * waitInterval}мс — пропуск addEstBlackPrice`);
             return;
         }
+
+		console.log(`== [${SCRIPT_ID}]\n${dataRows}`);
 
 		dataRows.forEach(row => {
 			const subtable = row.querySelector('table');
