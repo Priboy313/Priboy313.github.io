@@ -76,6 +76,18 @@
 		}
 	},
 
+	"shipmentCalcFix": {
+		"name": "Shipments Calc Fixes (dev)",
+		"ver": "1.0r",
+		"role": ["aboba", "dodev"],
+		"description": "Улучшения для PMS Shipping Calculator",
+		"settings": {
+			"addEstBlackPrice": { "label": "Добавить Factory Pack в описание товара", "type": "boolean-expand", "default": false, "values": {
+				"blackPriceMltp": { "label": "Множитель от красной цены", "type": "int", "default": 1.3 }
+			} }
+		}
+	},
+
 	"fbaOCF": {
 		"name": "PMS FBA Orders Custom Filters",
 		"ver": "1.0r",
