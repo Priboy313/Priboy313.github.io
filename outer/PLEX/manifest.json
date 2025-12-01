@@ -82,7 +82,7 @@
 		"role": ["aboba", "dodev"],
 		"description": "Улучшения для PMS Shipping Calculator",
 		"settings": {
-			"addEstBlackPrice": { "label": "Добавить Factory Pack в описание товара", "type": "boolean-expand", "default": false, "values": {
+			"addEstBlackPrice": { "label": "Добавить расчётную чёрную цену", "type": "boolean-expand", "default": false, "values": {
 				"blackPriceMltp": { "label": "Множитель от красной цены", "type": "float", "default": 1.3 }
 			} }
 		}
