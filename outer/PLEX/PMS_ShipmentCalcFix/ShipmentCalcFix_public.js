@@ -41,7 +41,9 @@
 	async function runOnLoad(config) {
 		console.log(`== [${SCRIPT_ID}] Выполнение задач после загрузки DOM...`);
 
-		addEstBlackPrice(config);
+		if (config.addEstBlackPrice) {
+			addEstBlackPrice(config);
+		}
 	}
 
 	async function main() {
