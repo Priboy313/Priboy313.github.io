@@ -85,11 +85,10 @@
             return;
         }
 
-		console.log("====== Начало добавления Estimated Black Price ======");
-		console.log("====== " + "addEstBlackPrice: " + config.addEstBlackPrice);
-		console.log("====== " + "blackPriceMltp: " + config.blackPriceMltp);
-		console.log(dataRows);
-
+		dataRows.forEach(row => {
+			const cells = row.querySelectorAll('td');
+			console.log(cells);
+		});
 	}
 
 	main();
