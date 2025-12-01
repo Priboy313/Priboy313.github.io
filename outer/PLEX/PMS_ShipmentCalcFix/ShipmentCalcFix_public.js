@@ -73,7 +73,7 @@
 			table = document.querySelector("table");
 			
 			if (table) {
-				let subtables = table.querySelectorAll("table")
+				subtables = table.querySelectorAll("table")
 			}
 
 			if (subtables.length > 0) {
