@@ -96,7 +96,7 @@
 			const blackCell = cells[cells.length + blackRIndex];
 
 			const redCellPriceB = redCell.querySelector('b');
-			let redPrice = redCellPriceB.textContent.replace("$", "").split(': ')[1];
+			let redPrice = redCellPriceB.textContent.replace("$", "");
 
 			console.log(`Red Price: ${redPrice}`);
 			console.log(`Black Cell: ${blackCell.textContent.split(': ')[1]}`);
