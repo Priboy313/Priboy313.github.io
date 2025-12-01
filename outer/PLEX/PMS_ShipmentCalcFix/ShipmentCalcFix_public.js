@@ -96,10 +96,10 @@
 			const blackCell = cells[cells.length + blackRIndex];
 
 			const redCellPriceSpan = redCell.querySelector('span');
-			const redPrice = parseFloat(redCellPriceSpan.textContent.replace("$", ""));
+			const redPrice = redCellPriceSpan.textContent.replace("$", "");
 
 			console.log(`Red Price: ${redPrice}`);
-			console.log(`Black Cell: ${blackCell.textContent}`);
+			console.log(`Black Cell: ${blackCell.textContent.replace(" ", "")}`);
 		});
 	}
 
