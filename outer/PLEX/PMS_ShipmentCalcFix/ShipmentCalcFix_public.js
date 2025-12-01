@@ -87,11 +87,13 @@
             return;
         }
 
-		console.log(dataRows);
-
 		dataRows.forEach(row => {
+
+			
 			const subtable = row.querySelector('table');
 			const cells = subtable.querySelectorAll('td');
+			
+			console.log(cells);
 			
 			const redCell = cells[cells.length + redRIndex];
 			const blackCell = cells[cells.length + blackRIndex];
