@@ -99,8 +99,10 @@
 			const redCellPriceSpan = redCell.querySelector('span');
 			let redPrice = redCellPriceSpan.textContent.replace("$", "");
 
-			console.log(`Red Cell: ${redCell.textContent}\n`);
-			console.log(`Black Cell: ${blackCell.textContent.split(': ')[1]}`);
+			const blackCellPriceSpan = blackCell.querySelector('span');
+
+			console.log(`Red Cell: ${redPrice}\n`);
+			console.log(`Black Cell: ${blackCellPriceSpan.textContent}`);
 		});
 	}
 
