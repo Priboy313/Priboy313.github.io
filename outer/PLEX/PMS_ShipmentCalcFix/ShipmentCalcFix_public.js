@@ -87,7 +87,7 @@
             return;
         }
 
-		console.log(`== [${SCRIPT_ID}]\n${dataRows}`);
+		console.log(dataRows);
 
 		dataRows.forEach(row => {
 			const subtable = row.querySelector('table');
@@ -99,7 +99,7 @@
 			const redCellPriceSpan = redCell.querySelector('span');
 			let redPrice = redCellPriceSpan.textContent.replace("$", "");
 
-			console.log(`Red Price: ${redPrice}`);
+			console.log(`Red Cell: ${redCell.textContent}\n`);
 			console.log(`Black Cell: ${blackCell.textContent.split(': ')[1]}`);
 		});
 	}
