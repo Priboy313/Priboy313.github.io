@@ -62,15 +62,16 @@
 
 	async function addEstBlackPrice(config) {
 		let attempts = 0;
-		const maxAttempts = 50;
+		const maxAttempts = 2;
 		const waitInterval = 200;
 
-		let table = null
+		let toptables = [];
+		let table = null;
 		let subtables = [];
 		let rows = [];
 
 		while ( rows.length === 0 && attempts < maxAttempts) {
-			table = document.querySelector("table");
+			toptables = document.querySelectorAll("table");
 			
 			if (table) {
 				console.log(`== [${SCRIPT_ID}] Найдена основная таблица:`, table);
