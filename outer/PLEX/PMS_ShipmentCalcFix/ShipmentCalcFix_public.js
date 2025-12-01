@@ -41,8 +41,6 @@
 	async function runOnLoad(config) {
 		console.log(`== [${SCRIPT_ID}] Выполнение задач после загрузки DOM...`);
 
-		await waitForElement('.accDS');
-
 		addEstBlackPrice(config);
 	}
 
@@ -62,53 +60,37 @@
 		}
 	}
 
-	function addEstBlackPrice(config) {
-		const table = document.querySelector('tbody');
+	async function addEstBlackPrice(config) {
+		let attempts = 0;
+		const maxAttempts = 50;
+		const waitInterval = 200;
 
-		const rows = table.querySelectorAll('.accDS');
+		let table = null
+		let rows = [];
+
+		while ( rows.length === 0 && attempts < maxAttempts) {
+			table = document.querySelector("tbody");
+			if (table) {
+				rows = table.querySelectorAll(".accDS");
+			}
+
+			if (rows.length === 0) {
+				attempts++;
+				console.log(`== [${SCRIPT_ID}] Попытка ${attempts}/${maxAttempts}`);
+                await new Promise(resolve => setTimeout(resolve, waitInterval));
+			}
+		}
+
+		if (rows.length === 0) {
+            console.warn(`== [${SCRIPT_ID}] Таблица не загружена за ${maxAttempts * waitInterval}мс — пропуск addEstBlackPrice`);
+            return;
+        }
 
 		console.log("====== Начало добавления Estimated Black Price ======");
 		console.log("====== " + "addEstBlackPrice: " + config.addEstBlackPrice);
 		console.log("====== " + "blackPriceMltp: " + config.blackPriceMltp);
 		console.log(rows);
 
-	}
-
-	function waitForElement(selector, timeout = 10000) {
-		return new Promise((resolve, reject) => {
-			if (!selector) {
-				return resolve(null);
-			}
-
-			if (document.body) {
-				const element = document.querySelector(selector);
-				if (element) {
-					return resolve(element);
-				}
-
-				let observer;
-				let timeoutId;
-
-				observer = new MutationObserver(() => {
-					const foundElement = document.querySelector(selector);
-					if (foundElement) {
-						clearTimeout(timeoutId);
-						observer.disconnect();
-						resolve(foundElement);
-					}
-				});
-
-				timeoutId = setTimeout(() => {
-					observer.disconnect();
-					console.warn(`Элемент "${selector}" не появился за ${timeout} мс.`);
-					resolve(null);
-				}, timeout);
-
-				observer.observe(document.body, { childList: true, subtree: true });
-			} else {
-                document.addEventListener('DOMContentLoaded', () => resolve(waitForElement(selector, timeout)), { once: true });
-            }
-		});
 	}
 
 	main();
