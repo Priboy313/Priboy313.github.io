@@ -72,6 +72,7 @@
 
 		while ( rows.length === 0 && attempts < maxAttempts) {
 			toptables = document.querySelectorAll("table");
+			console.log(`== [${SCRIPT_ID}] Найдены верхнеуровневые таблицы:`, toptables);
 			
 			if (table) {
 				console.log(`== [${SCRIPT_ID}] Найдена основная таблица:`, table);
