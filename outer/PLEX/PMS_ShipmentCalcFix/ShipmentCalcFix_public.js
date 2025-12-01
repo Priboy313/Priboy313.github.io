@@ -67,6 +67,9 @@
 
 		const dataRowsClass = "accDS";
 
+		const redRIndex = -2;
+		const blackRIndex = -1;
+
 		let dataRows = [];
 
 		while (dataRows.length === 0 && attempts < maxAttempts) {
@@ -88,7 +91,12 @@
 		dataRows.forEach(row => {
 			const subtable = row.querySelector('table');
 			const cells = subtable.querySelectorAll('td');
-			console.log(cells);
+			
+			const redCell = cells[cells.length + redRIndex];
+			const blackCell = cells[cells.length + blackRIndex];
+
+			console.log(`Red Cell: ${redCell}`);
+			console.log(`Black Cell: ${blackCell}`);
 		});
 	}
 
