@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Amazon Work View
-// @version      1.9
+// @name         Shipping Calculator Fix
+// @version      1.0
+// @description  Shipping Calculator Fix
 // @author       Priboy313
-// @description  Amazon Work View
 // @match        https://pms.plexsupply.com/pms/shippingcalculator.xhtml
 // @match        https://pms.officechase.com/pms/shipmentcalculator.xhtml
 // @match        https://pms.marksonsupply.com/pms/shipmentcalculator.xhtml
