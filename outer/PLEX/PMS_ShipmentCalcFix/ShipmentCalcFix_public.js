@@ -69,9 +69,11 @@
 		let rows = [];
 
 		while ( rows.length === 0 && attempts < maxAttempts) {
-			table = document.querySelector("tbody");
+			table = document.querySelector("table");
+			let tbody = table.querySelector("tbody");
+
 			if (table) {
-				rows = table.querySelectorAll(".accDS");
+				rows = tbody.querySelectorAll(".accDS");
 			}
 
 			if (rows.length === 0) {
