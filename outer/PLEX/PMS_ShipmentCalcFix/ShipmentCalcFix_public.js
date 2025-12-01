@@ -70,9 +70,9 @@
 
 		while ( rows.length === 0 && attempts < maxAttempts) {
 			table = document.querySelector("table");
-			let tbody = table.querySelector("tbody");
-
+			
 			if (table) {
+				let tbody = table.querySelector("tbody")
 				rows = tbody.querySelectorAll(".accDS");
 			}
 
