@@ -93,8 +93,6 @@
 			const subtable = row.querySelector('table');
 			const cells = subtable.querySelectorAll('td');
 			
-			console.log(cells);
-			
 			const redCell = cells[cells.length + redRIndex];
 			const blackCell = cells[cells.length + blackRIndex];
 
@@ -104,7 +102,7 @@
 
 			const blackCellPriceSpan = blackCell.querySelector('span');
 
-			let result = `(EstNLP: ${(redPrice * config.blackPriceMltp).toFixed(2)})`;
+			let result = `(EstNLP: \$${(redPrice * config.blackPriceMltp).toFixed(2)})`;
 
 			blackCellPriceSpan.textContent += result;
 		});
