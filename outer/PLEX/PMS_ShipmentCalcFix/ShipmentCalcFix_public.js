@@ -86,7 +86,8 @@
         }
 
 		dataRows.forEach(row => {
-			const cells = row.querySelectorAll('td');
+			const subtable = row.querySelector('table');
+			const cells = subtable.querySelectorAll('td');
 			console.log(cells);
 		});
 	}
