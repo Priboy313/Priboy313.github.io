@@ -73,6 +73,7 @@
 			table = document.querySelector("table");
 			
 			if (table) {
+				console.log(`== [${SCRIPT_ID}] Найдена основная таблица:`, table);
 				subtables = table.querySelectorAll("table")
 			}
 
