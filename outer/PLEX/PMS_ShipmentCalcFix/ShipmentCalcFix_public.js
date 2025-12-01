@@ -102,9 +102,9 @@
 
 			const blackCellPriceSpan = blackCell.querySelector('span');
 
-			let result = `\n(EstNLP: \$${(redPrice * config.blackPriceMltp).toFixed(2)})`;
+			let result = `<br>(EstNLP: \$${(redPrice * config.blackPriceMltp).toFixed(2)})`;
 
-			blackCellPriceSpan.textContent += result;
+			blackCellPriceSpan.innerHTML += result;
 		});
 	}
 
