@@ -67,8 +67,8 @@
 
 		const dataRowsClass = "accDS";
 
-		const redRIndex = -2;
-		const blackRIndex = -1;
+		const redRIndex = -3;
+		const blackRIndex = -2;
 
 		let dataRows = [];
 
@@ -88,8 +88,6 @@
         }
 
 		dataRows.forEach(row => {
-
-			
 			const subtable = row.querySelector('table');
 			const cells = subtable.querySelectorAll('td');
 			
