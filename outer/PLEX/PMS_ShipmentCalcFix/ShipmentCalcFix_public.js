@@ -66,14 +66,18 @@
 		const waitInterval = 200;
 
 		let table = null
+		let subtables = [];
 		let rows = [];
 
 		while ( rows.length === 0 && attempts < maxAttempts) {
 			table = document.querySelector("table");
 			
 			if (table) {
-				let tbody = table.querySelector("tbody")
-				rows = tbody.querySelectorAll(".accDS");
+				let subtables = table.querySelectorAll("table")
+			}
+
+			if (subtables.length > 0) {
+				console.log(`== [${SCRIPT_ID}] Найдены подтаблицы:`, subtables);
 			}
 
 			if (rows.length === 0) {
