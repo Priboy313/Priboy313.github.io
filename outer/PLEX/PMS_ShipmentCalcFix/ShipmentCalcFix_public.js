@@ -97,8 +97,8 @@
 			const blackCell = cells[cells.length + blackRIndex];
 
 			const redCellPriceSpan = redCell.querySelector('span');
-			let redPrice = redCellPriceSpan.textContent.replace("$", "").split(': ')[1];
-			redPrice = parseFloat(redPrice);
+			let redPrice = redCellPriceSpan.textContent.replace("$", "").split(': ');
+			// redPrice = parseFloat(redPrice);
 
 			const blackCellPriceSpan = blackCell.querySelector('span');
 
