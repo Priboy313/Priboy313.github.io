@@ -1,0 +1,56 @@
+{
+"skills": {
+    "items": [
+        {"name": "C#", "icon": "fab fa-csharp"},
+        {"name": "Unity", "icon": "fab fa-unity"},
+        {"name": "JS", "icon": "fab fa-js"},
+        {"name": "CSS", "icon": "fab fa-css3-alt"},
+        {"name": "Python", "icon": "fab fa-python"}
+    ]
+},
+
+"en": {
+	"hero": {
+		"title": "About (in-dev)",
+		"photo": "/pages/src/dev-ava.jpg",
+		"intro": "Short resume — profession, key skills and contact offer."
+	},
+	"edu": {
+		"title": "Education",
+		"items": [
+			["2025", "IJunior", "C#, Unity3D", "Junior Unity Developer"],
+			["2021-2025", "Moscow Witte University", "Applied Informatics, Artificial Intelligence and Data Analysis", "Bachelor's Degree"],
+			["2018-2021", "Moscow Business College", "Programming in Computer Systems", "Specialist Diploma, Technician-Programmer"]
+		]
+	},
+	"projects": {
+		"title": "Projects",
+		"items": [
+			"Project A</strong> — short description and link.",
+			"Project B</strong> — short description and link."
+		]
+	}
+},
+"ru": {
+	"hero": {
+		"title": "Обо мне (dev)",
+		"photo": "/pages/src/dev-ava.jpg",
+		"intro": "Краткое резюме — профессия, ключевые навыки и предложение связаться."
+	},
+	"edu": {
+		"title": "Образование",
+		"items": [
+			["2025", "ЯЮниор", "C#, Unity3D", "Junior Unity Developer"],
+			["2021-2025", "Московский Университет имени С.Ю. Витте", "Прикладная информатика, Искусственный интеллект и анализ данных", "Бакалавриат"],
+			["2018-2021", "Московский Бизнес Колледж", "Программирование в компьютерных системах", "Специалитет, Техник-программист"]
+		]
+	},
+	"projects": {
+		"title": "Проекты",
+		"items": [
+			"Project A — короткое описание и ссылка.",
+			"Project B</strong> — короткое описание и ссылка."
+		]
+	}
+}
+}

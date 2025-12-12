@@ -19,6 +19,7 @@
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/scrollbar.css'>
 
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/hero_layout.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/profile.css'>
 
 	<!--framework-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -79,34 +80,36 @@
 		<div class="page-shell">
 			<div class="center-panel">
 				<div class="lang-buttons" aria-label="language switch">
-					<button class="lang">EN</button>
-					<button class="lang">RU</button>
+					<button id="lang-en" class="lang">EN</button>
+					<button id="lang-ru" class="lang">RU</button>
 				</div>
 
 				<section class="hero" role="main">
-					<h1 class="hero-title">About (in-dev)</h1>
+					<h1 class="hero-title"></h1>
 					
 					<div class="hero-content">
-						<img class="profile" src="/pages/src/dev-ava.jpg" alt="Photo">
+						<div class="profile-section">
+							<img class="profile" src="/pages/src/dev-ava.jpg" alt="Photo">
+	
+							<div class="skills-container">
+								<div class="skills"></div>
+							</div>
+						</div>
 						
-
 						<div class="bio">
-							<p class="intro">Краткое резюме — профессия, ключевые навыки и предложение связаться.</p>
+							<p class="intro"></p>
 
-							<h2>Education</h2>
-							<ul class="education">
-								<li>2015–2019 — Университет, факультет / специальность</li>
-								<li>Курсы: JS, Web, Data</li>
-							</ul>
+							<h2 class="h-education"></h2>
+							<ul class="education"></ul>
 
-							<h2>Projects</h2>
-							<ul class="projects">
-								<li><strong>Project A</strong> — короткое описание и ссылка.</li>
-								<li><strong>Project B</strong> — короткое описание и ссылка.</li>
-							</ul>
+							<h2 class="h-projects"></h2>
+							<ul class="projects"></ul>
 						</div>
 					</div>
 				</section>
+
+				<script type="module" src='/pages/scripts/fill-profile.js'></script>
+
 			</div>
 		</div>
 	</main>

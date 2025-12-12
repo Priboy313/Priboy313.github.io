@@ -1,0 +1,73 @@
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    width: fit-content;
+}
+
+.skills-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 180px;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.skill-tag {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid var(--key-act-color);
+    color: var(--key-act-color);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.skill-tag i { 
+    font-size: 0.9em; 
+}
+
+.education, .projects {
+    margin: 8px 0 16px 20px;
+    color: #eee;
+    list-style: none;
+    padding: 0;
+}
+
+.education li, .projects li { 
+    margin: 6px 0; 
+}
+
+.education-item {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: 2px solid var(--key-act-color);
+}
+
+.edu-header {
+    font-weight: bold;
+}
+
+.edu-specialty {
+    font-size: 0.9em;
+    color: #bbb;
+    margin-top: 0.25rem;
+}
+
+.edu-degree {
+    font-size: 0.85em;
+    font-style: italic;
+    color: #999;
+    margin-top: 0.25rem;
+}
