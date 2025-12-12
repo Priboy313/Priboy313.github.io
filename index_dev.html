@@ -12,12 +12,13 @@
 
 	<!--style-->
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/root_var.css'>
+	
+	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_bg.css'>
 
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/html.css'>
-	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_bg.css'>
-	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/header {new menu}.css'>
-	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/cv_card.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/scrollbar.css'>
+
+	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/hero_layout.css'>
 
 	<!--framework-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -34,7 +35,7 @@
 	<script src='/pages/scripts/animated_bg.js'></script>
 
 	<!-- head menu generation-->
-	<header>
+	<!-- <header>
 		<div class="header_logo">
 			<img class="logo_ico" src="/pages/src/ico2.png">
 		</div>
@@ -70,13 +71,42 @@
 
 
 	</header>
-	<script src='/pages/scripts/menu.js'></script>
+	<script src='/pages/scripts/menu.js'></script> -->
+
+	<!-- main -->
 
 	<main>
-		<div class="wrapper">
-			<div class="cv_card">
-				cv card xml-like style :/ <br>
-				(in process)
+		<div class="page-shell">
+			<div class="center-panel">
+				<div class="lang-buttons" aria-label="language switch">
+					<button class="lang">EN</button>
+					<button class="lang">RU</button>
+				</div>
+
+				<section class="hero" role="main">
+					<h1 class="hero-title">About (in-dev)</h1>
+					
+					<div class="hero-content">
+						<img class="profile" src="/pages/src/dev-ava.jpg" alt="Photo">
+						
+
+						<div class="bio">
+							<p class="intro">Краткое резюме — профессия, ключевые навыки и предложение связаться.</p>
+
+							<h2>Education</h2>
+							<ul class="education">
+								<li>2015–2019 — Университет, факультет / специальность</li>
+								<li>Курсы: JS, Web, Data</li>
+							</ul>
+
+							<h2>Projects</h2>
+							<ul class="projects">
+								<li><strong>Project A</strong> — короткое описание и ссылка.</li>
+								<li><strong>Project B</strong> — короткое описание и ссылка.</li>
+							</ul>
+						</div>
+					</div>
+				</section>
 			</div>
 		</div>
 	</main>

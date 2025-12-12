@@ -4,7 +4,7 @@
 <head>
 	<meta charset='utf-8'>
 	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-	<title>Pr InSite</title>
+	<title>Pr InSite {dev}</title>
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,11 +12,13 @@
 
 	<!--style-->
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/root_var.css'>
+	
+	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_bg.css'>
 
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/html.css'>
-	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/animated_bg.css'>
-	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/header.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/scrollbar.css'>
+
+	<link rel='stylesheet' type='text/css' media='screen' href='/pages/css/hero_layout.css'>
 
 	<!--framework-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -36,43 +38,75 @@
 	<!-- <header>
 		<div class="header_logo">
 			<img class="logo_ico" src="/pages/src/ico2.png">
-			<div class="logo_text">
-				<div class="logo_name">Priboy313</div>
-				<div class="logo_tagline">PROFILE PORTFOLIO</div>
-			</div>
 		</div>
 
-		<nav class="menu">
-			<ul id="mobile_menu">
-				<li>
-					<a href="/index.html" class="nav_back">Home</a>
+		<nav class="navigation">
+			<ul>
+				<li class="list">
+					<a href="#">
+						<span class="icon"></span>
+						<span class="title">CV</span>
+					</a>
 				</li>
-				<li>
-					<a href="/pages/about.html" class="nav_about">About</a>
+				<li class="list">
+					<a href="#">
+						<span class="icon"></span>
+						<span class="title">PROJECTS</span>
+					</a>
 				</li>
-				<li>
-					<a href="/pages/projects.html" class="nav_projects">Projects</a>
+				<li class="list">
+					<a href="#">
+						<span class="icon"></span>
+						<span class="title">PRESENTATIONS</span>
+					</a>
 				</li>
-				<li>
-					<a href="/pages/presentations.html" class="nav_presentations">Presentations</a>
-				</li>
-				<li>
-					<a href="" class="nav_outer">Outers</a>
+				<li class="list">
+					<a href="#">
+						<span class="icon"></span>
+						<span class="title">OUTER</span>
+					</a>
 				</li>
 			</ul>
-
-			<button class="menu_expanded_button" aria-expanded="false" aria-controls="mobile_menu">
-				<i class="fa-solid fa-bars"></i>
-			</button>
 		</nav>
+
+
 	</header>
 	<script src='/pages/scripts/menu.js'></script> -->
 
+	<!-- main -->
+
 	<main>
-		<div class="wrapper">
-			<div class="cv_card">
-				Просто удалённое хранилище для моих проектов <br>
-				(in process)
+		<div class="page-shell">
+			<div class="center-panel">
+				<div class="lang-buttons" aria-label="language switch">
+					<button class="lang">EN</button>
+					<button class="lang">RU</button>
+				</div>
+
+				<section class="hero" role="main">
+					<h1 class="hero-title">About (in-dev)</h1>
+					
+					<div class="hero-content">
+						<img class="profile" src="/pages/src/dev-ava.jpg" alt="Photo">
+						
+
+						<div class="bio">
+							<p class="intro">Краткое резюме — профессия, ключевые навыки и предложение связаться.</p>
+
+							<h2>Education</h2>
+							<ul class="education">
+								<li>2015–2019 — Университет, факультет / специальность</li>
+								<li>Курсы: JS, Web, Data</li>
+							</ul>
+
+							<h2>Projects</h2>
+							<ul class="projects">
+								<li><strong>Project A</strong> — короткое описание и ссылка.</li>
+								<li><strong>Project B</strong> — короткое описание и ссылка.</li>
+							</ul>
+						</div>
+					</div>
+				</section>
 			</div>
 		</div>
 	</main>

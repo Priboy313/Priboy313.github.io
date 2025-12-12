@@ -1,0 +1,108 @@
+
+.page-shell {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding: 20px; */
+    box-sizing: border-box;
+}
+
+.center-panel {
+    position: relative;
+    width: 100%;
+    max-width: var(--max-width-desktop);
+    height: calc(100vh - 40px);
+    background: var(--panel-bg);
+    color: #fff;
+    padding: var(--panel-padding);
+    box-sizing: border-box;
+    border-radius: var(--panel-radius);
+    overflow: auto;
+}
+
+@media (max-width: 780px) {
+    .page-shell { padding: 0; }
+    .center-panel {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        border-radius: 0;
+        padding: 20px;
+    }
+}
+
+.lang-buttons {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.lang {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.lang:hover { background: rgba(255,255,255,0.04); }
+
+.hero-title {
+    margin: 4px 0 18px 0;
+    font-size: 34px;
+    letter-spacing: 0.6px;
+}
+
+.hero-content {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.profile {
+    width: 180px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    order: 2; /* справа */
+    flex-shrink: 0;
+}
+
+.bio {
+    flex: 1;
+    order: 1;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.intro {
+    margin-bottom: 14px;
+    color: #ddd;
+}
+
+.education, .projects {
+    margin: 8px 0 16px 20px;
+    color: #eee;
+}
+
+.education li, .projects li { margin: 6px 0; }
+
+@media (max-width: 700px) {
+    .hero-content { flex-direction: column; align-items: center; text-align: center; }
+    .profile { order: 0; width: 160px; height: 160px; margin-bottom: 12px; }
+    .bio { order: 1; }
+    .lang-buttons { top: 8px; right: 8px; }
+}
+
+@media (min-width: 1200px) {
+    .page-shell { 
+		padding-left: var(--panel-padding-1200);
+		padding-right: var(--panel-padding-1200); 
+	}
+    .center-panel { max-width: var(--panel-max-width-1200); }
+}

@@ -31,7 +31,9 @@
 		"description": "Улучшения для инвентаря PMS.",
 		"settings": {
 			"userObserver": { "label": "Отмечать не свои SKU", "type": "boolean-expand", "default": true, "values": {
-				"allowedUsers": { "label": "Список своих аккаунтов", "type": "list", "default": ["IgorP", "Jerry", "IgorDemping", "Igor Panasenko"] }
+				"allowedUsers": { "label": "Список своих аккаунтов", "type": "list", "default": 
+					["IgorP", "Jerry", "IgorDemping", "Igor Panasenko"] 
+				}
 			} },
 			"hideAmznGr": { "label": "Скрывать строки грейдов", "type": "boolean-expand", "default": false, "values": {
 				"skuColIndex": { "label": "Номер колонки СКУ", "type": "int", "default": 2 }

@@ -14,7 +14,6 @@
 	src: local(masonchronicles), url(/pages/fonts/masonchronicles.ttf);
 }
 
-
 * {
 	margin: 0;
 	padding: 0;
@@ -32,12 +31,12 @@ body {
 
 }
 
-
-.wrapper {
+main {
 	position: absolute;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	justify-content: center;
 
 	top: 0;
 
@@ -50,8 +49,7 @@ body {
 	overflow: hidden;
 }
 
-.wrapper .content,
-.wrapper .item_wrapper {
+.page-shell {
 	pointer-events: all;
 }
 

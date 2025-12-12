@@ -29,3 +29,17 @@
 
 	--btn-act-text-color: black;
 }
+
+	/* hero layout */
+:root{
+    --panel-bg: rgba(0, 0, 0, 0.49);
+    --panel-radius: 12px;
+    --panel-padding: 28px;
+
+	/* max-windth 1200px */
+	--panel-padding-1200: 1vw;
+	--panel-max-width-1200: 1000px;
+
+    --max-width-desktop: 1100px;
+    --accent: #ffd400;
+}
