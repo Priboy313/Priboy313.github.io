@@ -49,6 +49,13 @@
     margin: 6px 0; 
 }
 
+.education-section {
+    max-height: 190px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+}
+
 .education-item {
     margin-bottom: 1rem;
     padding: 0.5rem 0 0.5rem 1rem;
