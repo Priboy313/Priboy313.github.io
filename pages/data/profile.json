@@ -1,19 +1,23 @@
 {
-"skills": {
-    "items": [
-        {"name": "C#", "icon": ""},
-        {"name": "Unity", "icon": "fab fa-unity"},
-        {"name": "JS", "icon": "fab fa-js"},
-        {"name": "CSS", "icon": "fab fa-css3-alt"},
-        {"name": "Python", "icon": "fab fa-python"}
-    ]
+"universe": {
+	"photoUrl": "/pages/src/dev-ava.jpg",
+
+	"skills": {
+		"items": [
+			{"name": "C#", "icon": ""},
+			{"name": "Unity", "icon": "fab fa-unity"},
+			{"name": "JS", "icon": "fab fa-js"},
+			{"name": "CSS", "icon": "fab fa-css3-alt"},
+			{"name": "Python", "icon": "fab fa-python"}
+		]
+	}
 },
 
 "en": {
 	"hero": {
 		"title": "About (in-dev)",
-		"photo": "/pages/src/dev-ava.jpg",
-		"intro": "Short resume — profession, key skills and contact offer."
+		"name": "Kirill Vorobyov, 1999",
+		"intro": "Gamer, Game Developer, Web Developer (Frontend, hobby)"
 	},
 	"edu": {
 		"title": "Education",
@@ -26,8 +30,8 @@
 	"projects": {
 		"title": "Projects",
 		"items": [
-			"Project A</strong> — short description and link.",
-			"Project B</strong> — short description and link."
+			"Project A — short description and link.",
+			"Project B — short description and link."
 		]
 	}
 },
@@ -35,8 +39,8 @@
 "ru": {
 	"hero": {
 		"title": "Обо мне (dev)",
-		"photo": "/pages/src/dev-ava.jpg",
-		"intro": "Краткое резюме — профессия, ключевые навыки и предложение связаться."
+		"name": "Воробьёв Кирилл, 1999",
+		"intro": "Геймер, разработчик игр, веб-разработчик (фронтенд, хобби)"
 	},
 	"edu": {
 		"title": "Образование",
@@ -50,7 +54,7 @@
 		"title": "Проекты",
 		"items": [
 			"Project A — короткое описание и ссылка.",
-			"Project B</strong> — короткое описание и ссылка."
+			"Project B — короткое описание и ссылка."
 		]
 	}
 }

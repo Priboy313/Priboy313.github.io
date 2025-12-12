@@ -68,11 +68,12 @@ function fillProfile(lang) {
 
 	if (HERO) {
 		HERO.querySelector(".hero-title").textContent = profileData[lang].hero.title;
-		HERO.querySelector(".profile").src = profileData[lang].hero.photo;
+		HERO.querySelector(".profile").src = profileData.universe.photoUrl;
 
 		const skillsContainer = document.querySelector('.skills');
-		fillSkills(skillsContainer, profileData.skills.items);
+		fillSkills(skillsContainer, profileData.universe.skills.items);
 
+		HERO.querySelector(".name").textContent = profileData[lang].hero.name;
 		HERO.querySelector(".intro").textContent = profileData[lang].hero.intro;
 		
 		HERO.querySelector(".h-education").textContent = profileData[lang].edu.title;
