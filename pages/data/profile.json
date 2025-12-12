@@ -1,7 +1,7 @@
 {
 "skills": {
     "items": [
-        {"name": "C#", "icon": "fab fa-csharp"},
+        {"name": "C#", "icon": ""},
         {"name": "Unity", "icon": "fab fa-unity"},
         {"name": "JS", "icon": "fab fa-js"},
         {"name": "CSS", "icon": "fab fa-css3-alt"},
@@ -31,6 +31,7 @@
 		]
 	}
 },
+
 "ru": {
 	"hero": {
 		"title": "Обо мне (dev)",
