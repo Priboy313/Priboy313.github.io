@@ -13,6 +13,7 @@
     width: 100%;
     max-width: var(--max-width-desktop);
     height: calc(100vh - 40px);
+	max-height: 100vh;
     background: var(--panel-bg);
     color: #fff;
     padding: var(--panel-padding);
@@ -50,12 +51,6 @@
     font-weight: 600;
 }
 .lang:hover { background: rgba(255,255,255,0.04); }
-
-.hero-title {
-    margin: 4px 0 18px 0;
-    font-size: 34px;
-    letter-spacing: 0.6px;
-}
 
 .hero-content {
     display: flex;

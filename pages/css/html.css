@@ -49,6 +49,10 @@ main {
 	overflow: hidden;
 }
 
+a {
+	color: var(--key-act-color);
+}
+
 .page-shell {
 	pointer-events: all;
 }

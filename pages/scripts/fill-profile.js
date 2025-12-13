@@ -13,12 +13,28 @@ async function fetchProfileData() {
 
 function fillSkills(container, items){
     container.innerHTML = '';
+
     items.forEach(skill => {
-        const tag = document.createElement('span');
+        const tag = document.createElement('a');
         tag.className = 'skill-tag';
+		tag.href = skill.href || '#';
         tag.innerHTML = `<i class="${skill.icon}"></i> ${skill.name}`;
+
         container.appendChild(tag);
     });
+}
+
+function fillContacts(container, items){
+	container.innerHTML = '';
+
+	items.forEach(item => {
+		const link = document.createElement('a');
+		link.className = 'contact-link';
+		link.href = item.href;
+		link.textContent = item.text;
+
+		container.appendChild(link);
+	});
 }
 
 function fillEducation(container, items){
@@ -67,14 +83,18 @@ function fillProfile(lang) {
 	const HERO = document.body.querySelector(".hero");
 
 	if (HERO) {
-		HERO.querySelector(".hero-title").textContent = profileData[lang].hero.title;
-		HERO.querySelector(".profile").src = profileData.universe.photoUrl;
+		HERO.querySelector(".name").textContent = profileData[lang].hero.name;
+		HERO.querySelector(".profile").src = profileData.universal.photoUrl;
 
 		const skillsContainer = document.querySelector('.skills');
-		fillSkills(skillsContainer, profileData.universe.skills.items);
+		fillSkills(skillsContainer, profileData.universal.skills.items);
 
-		HERO.querySelector(".name").textContent = profileData[lang].hero.name;
 		HERO.querySelector(".intro").textContent = profileData[lang].hero.intro;
+
+		HERO.querySelector(".h-contacts").textContent = profileData[lang].contacts.title;
+		HERO.querySelector(".contacts .contact-email").textContent = profileData.universal.contacts.email;
+		const contactLinksContainer = HERO.querySelector(".contacts .contact-links");
+		fillContacts(contactLinksContainer, profileData.universal.contacts.links);
 		
 		HERO.querySelector(".h-education").textContent = profileData[lang].edu.title;
 		const eduContainer = HERO.querySelector(".education");
@@ -83,6 +103,10 @@ function fillProfile(lang) {
 		HERO.querySelector(".h-projects").textContent = profileData[lang].projects.title;
 		const projectsContainer = HERO.querySelector(".projects");
 		fillProjects(projectsContainer, profileData[lang].projects.items);
+
+		HERO.querySelector(".h-eduProjects").textContent = profileData[lang].eduProjects.title;
+		const eduProjectsContainer = HERO.querySelector(".eduProjects");
+		fillProjects(eduProjectsContainer, profileData[lang].eduProjects.items);
 
 	}
 	else {

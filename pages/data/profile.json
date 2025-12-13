@@ -1,23 +1,33 @@
 {
-"universe": {
+"universal": {
 	"photoUrl": "/pages/src/dev-ava.jpg",
 
 	"skills": {
 		"items": [
-			{"name": "C#", "icon": ""},
-			{"name": "Unity", "icon": "fab fa-unity"},
-			{"name": "JS", "icon": "fab fa-js"},
-			{"name": "CSS", "icon": "fab fa-css3-alt"},
-			{"name": "Python", "icon": "fab fa-python"}
+			{"name": "C#", "icon": "", "href": ""},
+			{"name": "Unity", "icon": "fab fa-unity", "href": ""},
+			{"name": "JS", "icon": "fab fa-js", "href": ""},
+			{"name": "CSS", "icon": "fab fa-css3-alt", "href": ""},
+			{"name": "Python", "icon": "fab fa-python", "href": ""}
+		]
+	},
+
+	"contacts": {
+		"email": "Priboy313@yandex.ru",
+		"links": [
+			{"href": "https://github.com/Priboy313", "text": "GitHub"},
+			{"href": "https://hh.ru/resume/3a8261a1ff0933b96a0039ed1f745675667779", "text": "HH.ru"}
 		]
 	}
 },
 
 "en": {
 	"hero": {
-		"title": "About (in-dev)",
 		"name": "Kirill Vorobyov, 1999",
 		"intro": "Gamer, Game Developer, Web Developer (Frontend, hobby)"
+	},
+	"contacts": {
+		"title": "Contacts"
 	},
 	"edu": {
 		"title": "Education",
@@ -33,14 +43,23 @@
 			"Project A — short description and link.",
 			"Project B — short description and link."
 		]
+	},
+	"eduProjects": {
+		"title": "Educational Projects",
+		"items": [
+			"EduProject A — short description and link.",
+			"EduProject B — short description and link."
+		]
 	}
 },
 
 "ru": {
 	"hero": {
-		"title": "Обо мне (dev)",
 		"name": "Воробьёв Кирилл, 1999",
 		"intro": "Геймер, разработчик игр, веб-разработчик (фронтенд, хобби)"
+	},
+	"contacts": {
+		"title": "Контакты"
 	},
 	"edu": {
 		"title": "Образование",
@@ -55,6 +74,13 @@
 		"items": [
 			"Project A — короткое описание и ссылка.",
 			"Project B — короткое описание и ссылка."
+		]
+	},
+	"eduProjects": {
+		"title": "Учебные проекты",
+		"items": [
+			"EduProject A — короткое описание и ссылка.",
+			"EduProject B — короткое описание и ссылка."
 		]
 	}
 }
