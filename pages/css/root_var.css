@@ -33,8 +33,11 @@
 	/* hero layout */
 :root{
     --panel-bg: rgba(0, 0, 0, 0.35);
-    --panel-radius: 12px;
-    --panel-padding: 28px;
+    --panel-radius: 16px;
+    --panel-padding: 40px;
+
+	--panel-width: clamp(320px, 85vw, 1400px);
+	--panel-height: clamp(600px, 92vh, 1100px); 
 
 	/* max-windth 1200px */
 	--panel-padding-1200: 1vw;

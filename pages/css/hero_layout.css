@@ -1,19 +1,24 @@
 
 .page-shell {
     min-height: 100vh;
+	width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* padding: 20px; */
+    padding: 2vh 0;
     box-sizing: border-box;
+	pointer-events: none;
 }
 
 .center-panel {
+	pointer-events: all;
+
     position: relative;
-    width: 100%;
+
+    width: var(--panel-width);
     max-width: var(--max-width-desktop);
-    height: calc(100vh - 40px);
-	max-height: 100vh;
+    height: var(--panel-height);
+	max-height: 96vh;
 	
     background: var(--panel-bg);
 	backdrop-filter: blur(12px);
@@ -26,17 +31,34 @@
     box-sizing: border-box;
     border-radius: var(--panel-radius);
     overflow: auto;
+
+	transition: width 0.3s ease, height 0.3s ease;
 }
 
-@media (max-width: 780px) {
-    .page-shell { padding: 0; }
+@media (max-width: 900px) {
+	:root {
+		--panel-padding: 24px;
+	}
+
+    .page-shell { 
+		padding: 0; 
+	}
+
     .center-panel {
-        width: 100%;
-        height: auto;
-        min-height: 100vh;
-        border-radius: 0;
+        width: 95vw;
+        height: 94vw;
+        border-radius: 12px;
         padding: 20px;
     }
+
+	.hero-content {
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	.bio {
+		width: 100%;
+	}
 }
 
 .lang-buttons {
