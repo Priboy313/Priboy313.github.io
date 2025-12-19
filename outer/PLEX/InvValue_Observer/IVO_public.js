@@ -71,9 +71,12 @@
 	function setSubscribe(){
 		const table = document.querySelector('.table-hover');
 		const observer = subscribeToTableUpdates(table, (updatedTable) => {
-			console.log('=== NEW TABLE ROWS DETECTED ===');
-			console.log(updatedTable);
-			
+
+			if (ROLE == "dodev") {
+				console.log('=== NEW TABLE ROWS DETECTED ===');
+				console.log(updatedTable);
+			}
+
 			checkTableRows(updatedTable);
 		});
 	}
