@@ -32,6 +32,7 @@
 	const amznGrForm = "amzn.gr"; 
 	const amznGrClass = "hidden-amzn-gr";
 	const wrongUserClass = "wrong-user";
+	const LTSFpopupClass = "ltsf-popup-hidden";
 
 	function loadConfig() {
 		console.log(`== [${SCRIPT_ID}] Обработка полученной конфигурации...`, settingsJSON);
@@ -109,6 +110,10 @@
 
 		if (tableBodys.length > 1){
 			tableBody = tableBodys[1];
+
+			if (config.hideLTSFpopup){
+				tableBodys[0].classList.add(LTSFpopupClass);
+			}
 		}
 		else {
 			tableBody = tableBodys[0];
@@ -251,6 +256,17 @@
 			customStyle.innerHTML += `
 				.${amznGrClass}{
 					display: none!important;
+				}
+			`;
+		}
+
+		if (config.hideLTSFpopup){
+			customStyle.innerHTML += `
+				.${LTSFpopupClass} {
+					display: none!important;
+					height: 0!important;
+					width: 0!important;
+					overflow: hidden!important;
 				}
 			`;
 		}

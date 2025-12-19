@@ -53,7 +53,8 @@
 				"highMrgCol": { "label": "Марж < 30", "type": "color", "default": "#D4EDDA" },
 				"overMrgCol": { "label": "Марж > 30", "type": "color", "default": "#c99aee" }
 			} },
-			"fixLabels": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true }
+			"fixLabels": { "label": "Убрать минимальную ширину колонки Labels", "type": "boolean", "default": true },
+			"hideLTSFpopup": { "label": "Скрыть подсказку столбца LTSF", "type": "boolean", "default": true }
 		}
 	},
 
