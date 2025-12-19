@@ -104,7 +104,7 @@
 	}
 
 	function checkTableRows(table){
-		let tableBody = table.querySelectorAll('tbody')[1];
+		let tableBody = table.querySelector('tbody');
 		let rows = Array.from(tableBody.querySelectorAll('tr'));
 
 		if (rows.length <= 0){
