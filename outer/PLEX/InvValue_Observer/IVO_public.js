@@ -104,7 +104,21 @@
 	}
 
 	function checkTableRows(table){
-		let tableBody = table.querySelector('tbody');
+		let tableBodys = table.querySelectorAll('tbody');
+		let tableBody;
+
+		if (tableBodys.length > 1){
+			tableBody = tableBodys[1];
+		}
+		else {
+			tableBody = tableBodys[0];
+		}
+
+		if (!tableBody){
+			console.error(`========== ${SCRIPT_ID} Не удалось найти тело таблицы!`);
+			return;
+		}
+
 		let rows = Array.from(tableBody.querySelectorAll('tr'));
 
 		if (rows.length <= 0){
