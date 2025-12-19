@@ -26,7 +26,8 @@
 		highMrgCol: "#D4EDDA",
 		overMrgCol: "#c99aee",
 
-		fixLabels: true
+		fixLabels: true,
+		hideLTSFpopup: true
 	};
 
 	const amznGrForm = "amzn.gr"; 
