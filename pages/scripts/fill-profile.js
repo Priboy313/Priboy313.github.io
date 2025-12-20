@@ -1,11 +1,11 @@
 const DATA_URL = '/pages/data/profile.json';
 let profileData = null;
 
-async function fetchProfileData() {
+async function fetchData() {
 	const response = await fetch(DATA_URL);
 
 	if (!response.ok) {
-		throw new Error(`Failed to fetch profile data: ${response.status} ${response.statusText}`);
+		throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
 	}
 
 	return await response.json();
@@ -79,7 +79,7 @@ function fillProjects(container, items){
 	});
 }
 
-function fillProfile(lang) {
+function fillData(lang) {
 	const HERO = document.body.querySelector(".hero");
 
 	if (HERO) {
@@ -118,19 +118,19 @@ function fillProfile(lang) {
 document.addEventListener('DOMContentLoaded', async () => {
 	try {
 
-		profileData = await fetchProfileData();
-		fillProfile("en");
+		profileData = await fetchData();
+		fillData("en");
 
 		document.getElementById('lang-en').addEventListener('click', () => {
-            fillProfile('en');
+            fillData('en');
         });
 
         document.getElementById('lang-ru').addEventListener('click', () => {
-            fillProfile('ru');
+            fillData('ru');
         });
 
 	} catch (error) {
-		console.error('Error loading profile data:', error);
+		console.error('Error loading data:', error);
 	}
 });
 

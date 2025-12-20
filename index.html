@@ -27,6 +27,7 @@
 
 	<!--script-->
 	<script src='/pages/scripts/sidebar.js'></script>
+	<script src='/pages/scripts/header-menu.js'></script>
 
 </head>
 
@@ -35,54 +36,31 @@
 	<section class="back_animated_section"></section>
 	<script src='/pages/scripts/animated_bg.js'></script>
 
-	<!-- head menu generation-->
-	<!-- <header>
-		<div class="header_logo">
-			<img class="logo_ico" src="/pages/src/ico2.png">
-		</div>
-
-		<nav class="navigation">
-			<ul>
-				<li class="list">
-					<a href="#">
-						<span class="icon"></span>
-						<span class="title">CV</span>
-					</a>
-				</li>
-				<li class="list">
-					<a href="#">
-						<span class="icon"></span>
-						<span class="title">PROJECTS</span>
-					</a>
-				</li>
-				<li class="list">
-					<a href="#">
-						<span class="icon"></span>
-						<span class="title">PRESENTATIONS</span>
-					</a>
-				</li>
-				<li class="list">
-					<a href="#">
-						<span class="icon"></span>
-						<span class="title">OUTER</span>
-					</a>
-				</li>
-			</ul>
-		</nav>
-
-
-	</header>
-	<script src='/pages/scripts/menu.js'></script> -->
-
-	<!-- main -->
+	<!-- main content -->
 
 	<main>
 		<div class="page-shell">
 			<div class="center-panel">
-				<div class="lang-buttons" aria-label="language switch">
-					<button id="lang-en" class="lang">EN</button>
-					<button id="lang-ru" class="lang">RU</button>
-				</div>
+				<header class="top-header">
+					<div class="menu-toggle" aria-label="toggle menu">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<nav class="menu-container">
+						<ul class="menu-list">
+							<li class="menu-item"><a href="#about" class="menu-link about-link">About</a></li>
+							<li class="menu-item"><a href="#projects" class="menu-link projects-link">Projects</a></li>
+							<li class="menu-item"><a href="#education" class="menu-link presentations-link">Presentations</a></li>
+						</ul>
+					</nav>
+					<div class="lang-buttons" aria-label="language switch">
+						<button id="lang-en" class="lang">EN</button>
+						<button id="lang-ru" class="lang">RU</button>
+					</div>
+
+					<script type="module" src='/pages/scripts/fill-header.js'></script>
+				</header>
 
 				<section class="hero" role="main">
 					<h1 class="name"></h1>

@@ -1,0 +1,19 @@
+{
+"universal": {
+	"about_href": "https://priboy313.github.io/",
+	"projects_href": "https://priboy313.github.io/",
+	"presentations_href": "https://priboy313.github.io/"
+},
+
+"en": {
+	"about": "About",
+	"projects": "Projects",
+	"presentations": "Presentations"
+},
+
+"ru": {
+	"about": "Обо мне",
+	"projects": "Проекты",
+	"presentations": "Презентации"
+}
+}
