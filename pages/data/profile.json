@@ -37,20 +37,6 @@
 			["2021-2025", "Moscow Witte University", "Applied Informatics, Artificial Intelligence and Data Analysis", "Bachelor's Degree"],
 			["2018-2021", "Moscow Business College", "Programming in Computer Systems", "Specialist Diploma, Technician-Programmer"]
 		]
-	},
-	"projects": {
-		"title": "Projects",
-		"items": [
-			"Project A — short description and link.",
-			"Project B — short description and link."
-		]
-	},
-	"eduProjects": {
-		"title": "Educational Projects",
-		"items": [
-			"EduProject A — short description and link.",
-			"EduProject B — short description and link."
-		]
 	}
 },
 
@@ -68,20 +54,6 @@
 			["2025", "ЯЮниор", "C#, Unity3D", "Junior Unity Developer"],
 			["2021-2025", "Московский Университет имени С.Ю. Витте", "Прикладная информатика, Искусственный интеллект и анализ данных", "Бакалавриат"],
 			["2018-2021", "Московский Бизнес Колледж", "Программирование в компьютерных системах", "Специалитет, Техник-программист"]
-		]
-	},
-	"projects": {
-		"title": "Проекты",
-		"items": [
-			"Project A — короткое описание и ссылка.",
-			"Project B — короткое описание и ссылка."
-		]
-	},
-	"eduProjects": {
-		"title": "Учебные проекты",
-		"items": [
-			"EduProject A — короткое описание и ссылка.",
-			"EduProject B — короткое описание и ссылка."
 		]
 	}
 }

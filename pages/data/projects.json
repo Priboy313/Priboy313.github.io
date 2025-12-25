@@ -1,0 +1,31 @@
+{
+"en": {
+	"projects": [
+		{
+			"year": 2025,
+			"tags": ["C#", "Unity"],
+			"type": "educational",
+			"title": "2D Platformer",
+			"description": "Educational platformer project",
+			"links": [
+				{"type": "github", "url": "https://github.com/Priboy313/HW-2D-Platformer", "label": "GitHub"}
+			]
+		}
+	]
+},
+
+"ru": {
+	"projects": [
+		{
+			"year": 2025,
+			"tags": ["C#", "Unity"],
+			"type": "educational",
+			"title": "Учебный 2D Платформер",
+			"description": "Учебный проект с курса ЯЮниор",
+			"links": [
+				{"type": "github", "url": "https://github.com/Priboy313/HW-2D-Platformer", "label": "GitHub"}
+			]
+		}
+	]
+}
+}

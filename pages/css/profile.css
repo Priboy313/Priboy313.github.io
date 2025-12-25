@@ -56,7 +56,7 @@
 }
 
 .education, .projects {
-	margin: 8px 0 16px 20px;
+	margin: 8px 0 16px 10px;
 	color: #eee;
 	list-style: none;
 	padding: 0;
@@ -74,9 +74,18 @@
 }
 
 .education-item {
+	background: rgba(255, 255, 255, 0.05);
 	margin-bottom: 1rem;
 	padding: 0.5rem 0 0.5rem 1rem;
 	border-left: 2px solid var(--key-act-color);
+	border-radius: 8px;
+	transition: all 0.3s ease;
+}
+
+.education-item:hover {
+	background: rgba(255, 255, 255, 0.08);
+	transform: translateX(8px);
+	box-shadow: 0 4px 15px rgba(0, 255, 0, 0.15);
 }
 
 .edu-header {

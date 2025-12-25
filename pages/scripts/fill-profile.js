@@ -1,11 +1,23 @@
 const DATA_URL = '/pages/data/profile.json';
+const PROJECTS_DATA_URL = '/pages/data/projects.json';
 let profileData = null;
+let projectsData = null;
 
 async function fetchData() {
 	const response = await fetch(DATA_URL);
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+	}
+
+	return await response.json();
+}
+
+async function fetchProjectsData() {
+	const response = await fetch(PROJECTS_DATA_URL);
+
+	if (!response.ok) {
+		throw new Error(`Failed to fetch projects data: ${response.status} ${response.statusText}`);
 	}
 
 	return await response.json();
@@ -73,9 +85,69 @@ function fillProjects(container, items){
 	container.innerHTML = '';
 
 	items.forEach(item => {
-		const li = document.createElement('li');
-		li.textContent = item;
-		container.appendChild(li);
+		if (typeof item === 'string') {
+			const li = document.createElement('li');
+			li.textContent = item;
+			container.appendChild(li);
+		}
+		else if (typeof item === 'object') {
+			const li = document.createElement('li');
+			li.className = 'project-item';
+
+			const projectHeader = document.createElement('div');
+			projectHeader.className = 'project-header';
+
+			const title = document.createElement('h3');
+			title.className = 'project-title';
+			title.textContent = item.title;
+
+			const year = document.createElement('span');
+			year.className = 'project-year';
+			year.textContent = item.year;
+
+			projectHeader.appendChild(title);
+			projectHeader.appendChild(year);
+
+			const description = document.createElement('p');
+			description.className = 'project-description';
+			description.textContent = item.description;
+
+			const tags = document.createElement('div');
+			tags.className = 'project-tags';
+
+			item.tags.forEach(tag => {
+				const tagSpan = document.createElement('span');
+				tagSpan.className = 'project-tag';
+				tagSpan.textContent = tag;
+				tags.appendChild(tagSpan);
+			});
+
+			const links = document.createElement('div');
+			links.className = 'project-links';
+
+			if (item.links && Array.isArray(item.links)) {
+				item.links.forEach(link => {
+					if (link.url && link.url.trim() !== '') {
+						const linkA = document.createElement('a');
+						linkA.href = link.url;
+						linkA.textContent = link.label || link.type;
+						linkA.className = `project-link project-link-${link.type}`;
+						linkA.target = '_blank';
+						linkA.rel = 'noopener noreferrer';
+						links.appendChild(linkA);
+					}
+				});
+			}
+
+			li.appendChild(projectHeader);
+			li.appendChild(description);
+			li.appendChild(tags);
+			if (links.children.length > 0) {
+				li.appendChild(links);
+			}
+
+			container.appendChild(li);
+		}
 	});
 }
 
@@ -100,13 +172,15 @@ function fillData(lang) {
 		const eduContainer = HERO.querySelector(".education");
 		fillEducation(eduContainer, profileData[lang].edu.items);
 
-		HERO.querySelector(".h-projects").textContent = profileData[lang].projects.title;
+		HERO.querySelector(".h-projects").textContent = lang === 'en' ? 'Projects' : 'Проекты';
 		const projectsContainer = HERO.querySelector(".projects");
-		fillProjects(projectsContainer, profileData[lang].projects.items);
+		const workProjects = filterProjectsByType(projectsData[lang].projects, 'work');
+		fillProjects(projectsContainer, workProjects);
 
-		HERO.querySelector(".h-eduProjects").textContent = profileData[lang].eduProjects.title;
+		HERO.querySelector(".h-eduProjects").textContent = lang === 'en' ? 'Educational Projects' : 'Учебные проекты';
 		const eduProjectsContainer = HERO.querySelector(".eduProjects");
-		fillProjects(eduProjectsContainer, profileData[lang].eduProjects.items);
+		const educationalProjects = filterProjectsByType(projectsData[lang].projects, 'educational');
+		fillProjects(eduProjectsContainer, educationalProjects);
 
 	}
 	else {
@@ -119,6 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	try {
 
 		profileData = await fetchData();
+		projectsData = await fetchProjectsData();
 		fillData("en");
 
 		document.getElementById('lang-en').addEventListener('click', () => {
@@ -134,3 +209,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	}
 });
 
+function filterProjectsByType(items, type) {
+	return items.filter(item => item.type === type);
+}
