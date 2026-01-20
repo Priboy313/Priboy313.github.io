@@ -24,7 +24,7 @@
 
 "en": {
 	"hero": {
-		"name": "Kirill Vorobyov, 1999",
+		"name": "Kirill Vorobyov",
 		"intro": "Gamer, Game Developer, Web Developer (Frontend, hobby)"
 	},
 	"contacts": {
@@ -42,7 +42,7 @@
 
 "ru": {
 	"hero": {
-		"name": "Воробьёв Кирилл, 1999",
+		"name": "Воробьёв Кирилл",
 		"intro": "Геймер, разработчик игр, веб-разработчик (фронтенд, хобби)"
 	},
 	"contacts": {

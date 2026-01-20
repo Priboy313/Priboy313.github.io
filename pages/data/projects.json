@@ -6,7 +6,7 @@
 			"tags": ["C#", "Unity"],
 			"type": "educational",
 			"title": "2D Platformer",
-			"description": "Educational platformer project",
+			"description": "A learning project from the IJunior course. It is a prototype of a 2D platformer with basic custom-written mechanics: movement, jumping, spawning enemies and collectibles, damage and health system, animation, basic enemy AI, and a skill system",
 			"links": [
 				{"type": "github", "url": "https://github.com/Priboy313/HW-2D-Platformer", "label": "GitHub"}
 			]
@@ -20,8 +20,8 @@
 			"year": 2025,
 			"tags": ["C#", "Unity"],
 			"type": "educational",
-			"title": "Учебный 2D Платформер",
-			"description": "Учебный проект с курса ЯЮниор",
+			"title": "2D Платформер",
+			"description": "Учебный проект с курса ЯЮниор. Представляет собой прототип 2D платформера с базовыми самописными механиками: передвижение, прыжки, спавн противников и коллектаблов, система урона и здоровья, анимация, базовый ии противников, система скилов.",
 			"links": [
 				{"type": "github", "url": "https://github.com/Priboy313/HW-2D-Platformer", "label": "GitHub"}
 			]

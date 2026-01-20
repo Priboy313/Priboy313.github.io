@@ -26,7 +26,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 12px;
+	margin-bottom: 5px;
 }
 
 .project-title {
@@ -55,7 +55,7 @@
 	display: flex;
 	gap: 8px;
 	flex-wrap: wrap;
-	margin: 12px 0;
+	margin: 5px 0;
 }
 
 .project-tag {
@@ -63,7 +63,7 @@
 	color: var(--key-act-color);
 	padding: 4px 10px;
 	border-radius: 4px;
-	font-size: 0.85em;
+	font-size: 0.7em;
 	border: 1px solid rgba(0, 255, 0, 0.3);
 }
 

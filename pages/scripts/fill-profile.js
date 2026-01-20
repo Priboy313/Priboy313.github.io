@@ -140,8 +140,8 @@ function fillProjects(container, items){
 			}
 
 			li.appendChild(projectHeader);
-			li.appendChild(description);
 			li.appendChild(tags);
+			li.appendChild(description);
 			if (links.children.length > 0) {
 				li.appendChild(links);
 			}
