@@ -207,6 +207,8 @@
 	function setUserMarkUpdate(row, cells){
 		let user = cells[cellIndex["User"]]?.innerText?.trim() || "";
 
+		print(`Проверка пользователя в строке: ${user}`);
+
 		if (config.allowedUsers.includes(user) == false){
 			row.classList.add(wrongUserClass);
 		}
