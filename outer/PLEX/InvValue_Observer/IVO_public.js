@@ -10,7 +10,6 @@
 		allowedUsers: ["IgorP", "Jerry", "IgorDemping"],
 
 		hideAmznGr: true,
-		skuColIndex: 2,
 
 		replaceHighlight: true,
 		customHighlightColor: "#ffffff",
@@ -32,6 +31,8 @@
 
 	let cellIndex = {
 		"SKU": 1,
+		"Margin 30 days": 20,
+		"K": 21,
 		"User": 22
 	};
 
@@ -141,10 +142,6 @@
 			if (config.hideAmznGr) hideAmzngrRows(row, cells);
 			if (config.clearYellowRow) clearYellowRow(row, cells);
 			if (config.customMrgColoring) setCustomMrgColor(cells);
-
-			if (ROLE == "dodev") {
-				setUserMarkUpdate(row, cells);
-			}
 		});
 	}
 
@@ -165,8 +162,11 @@
 			let shouldClear = true;
 
 			if (config.exludesYellowClearing) {
-				const hasFK = cell.querySelector('input.factorK');
-				const isMargin = cell.innerText.includes('%');
+				// const hasFK = cell.querySelector('input.factorK');
+				// const isMargin = cell.innerText.includes('%');
+
+				const hasFK = cells[cellIndex["K"]];
+				const isMargin = cells[cellIndex["Margin 30 days"]];
 
 				if (config.protectK && hasFK) {
 					shouldClear = false;
@@ -185,29 +185,18 @@
 
 	function hideAmzngrRows(row, cells){
 		try {
-			let skuCellNum = config.skuColIndex - 1;
-			let sku = cells[skuCellNum]?.innerText || "";
+			let sku = cells[cellIndex["SKU"]]?.innerText || "";
 
 			if (sku.includes(amznGrForm)){
 				row.classList.add(amznGrClass);
 			}
 		} catch (error) {
-			console.error(`========== ${SCRIPT_ID} Ошибка в определении колонки СКУ!`);
+			print(`${SCRIPT_ID} Ошибка в определении колонки СКУ!`);
 		}
 	}
 
 	function setUserMark(row, cells){
-		let user = cells[cells.length - 2]?.innerText?.trim() || "";
-
-		if (config.allowedUsers.includes(user) == false){
-			row.classList.add(wrongUserClass);
-		}
-	}
-
-	function setUserMarkUpdate(row, cells){
 		let user = cells[cellIndex["User"]]?.innerText?.trim() || "";
-
-		print(`Проверка пользователя в строке: ${user}`);
 
 		if (config.allowedUsers.includes(user) == false){
 			row.classList.add(wrongUserClass);
