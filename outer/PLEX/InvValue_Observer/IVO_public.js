@@ -152,7 +152,7 @@
 		let tableHeaders = table.querySelectorAll('thead th');
 
 		tableHeaders.forEach((header, index) => {
-			if (cellIndex.hasOwnProperty(header.innerText.trim())){
+			if (header.innerText.trim() in cellIndex){
 				cellIndex[header.innerText.trim()] = index;
 			}
 		});
