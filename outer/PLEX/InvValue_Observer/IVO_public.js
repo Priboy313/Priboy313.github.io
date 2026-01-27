@@ -30,6 +30,11 @@
 		hideLTSFpopup: true
 	};
 
+	let cellIndex = {
+		"SKU": 1,
+		"User": 22
+	};
+
 	const amznGrForm = "amzn.gr"; 
 	const amznGrClass = "hidden-amzn-gr";
 	const wrongUserClass = "wrong-user";
@@ -61,7 +66,7 @@
 	let config;
 
 	async function main() {
-		console.log(`========== ${SCRIPT_ID} PUBLIC`);
+		print(`PUBLIC`);
 
 		config = loadConfig();
 		
@@ -73,12 +78,10 @@
 	function setSubscribe(){
 		const table = document.querySelector('.table-hover');
 		const observer = subscribeToTableUpdates(table, (updatedTable) => {
+			print('NEW TABLE ROWS DETECTED');
+			print(updatedTable);
 
-			if (ROLE == "dodev") {
-				console.log('=== NEW TABLE ROWS DETECTED ===');
-				console.log(updatedTable);
-			}
-
+			updateCellIndex(updatedTable);
 			checkTableRows(updatedTable);
 		});
 	}
@@ -121,7 +124,7 @@
 		}
 
 		if (!tableBody){
-			console.error(`========== ${SCRIPT_ID} Не удалось найти тело таблицы!`);
+			print(`Не удалось найти тело таблицы!`);
 			return;
 		}
 
@@ -138,6 +141,20 @@
 			if (config.hideAmznGr) hideAmzngrRows(row, cells);
 			if (config.clearYellowRow) clearYellowRow(row, cells);
 			if (config.customMrgColoring) setCustomMrgColor(cells);
+
+			if (ROLE == "dodev") {
+				setUserMarkUpdate(row, cells);
+			}
+		});
+	}
+
+	function updateCellIndex(table){
+		let tableHeaders = table.querySelectorAll('thead th');
+
+		tableHeaders.forEach((header, index) => {
+			if (cellIndex.contains(header.innerText.trim())){
+				cellIndex[header.innerText.trim()] = index;
+			}
 		});
 	}
 
@@ -181,6 +198,14 @@
 
 	function setUserMark(row, cells){
 		let user = cells[cells.length - 2]?.innerText?.trim() || "";
+
+		if (config.allowedUsers.includes(user) == false){
+			row.classList.add(wrongUserClass);
+		}
+	}
+
+	function setUserMarkUpdate(row, cells){
+		let user = cells[cellIndex["User"]]?.innerText?.trim() || "";
 
 		if (config.allowedUsers.includes(user) == false){
 			row.classList.add(wrongUserClass);
@@ -273,6 +298,12 @@
 		}
 
 		document.head.appendChild(customStyle);
+	}
+
+	function print(text){
+		if (ROLE == "dodev"){
+			console.log(`==== [${SCRIPT_ID}] ${text}`);
+		}
 	}
 
 	main();
