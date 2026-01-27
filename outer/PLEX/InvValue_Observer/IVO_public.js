@@ -7,7 +7,7 @@
 
 	const DEFAULTS  = {
 		userObserver: true,
-		allowedUsers: ["IgorP", "Jerry", "IgorDemping"],
+		allowedUsers: ["IgorP", "Jerry", "IgorDemping", "Igor Panasenko"],
 
 		hideAmznGr: true,
 
@@ -162,17 +162,12 @@
 			let shouldClear = true;
 
 			if (config.exludesYellowClearing) {
-				// const hasFK = cell.querySelector('input.factorK');
-				// const isMargin = cell.innerText.includes('%');
 
-				const hasFK = cells[cellIndex["K"]];
-				const isMargin = cells[cellIndex["Margin 30 days"]];
-
-				if (config.protectK && hasFK) {
+				if (config.protectK && cell === cells[cellIndex["K"]]) {
 					shouldClear = false;
 				}
 
-				if (config.protectMrg && isMargin) {
+				if (config.protectMrg && cell === cells[cellIndex["Margin 30 days"]]) {
 					shouldClear = false;
 				}
 			}
