@@ -42,7 +42,7 @@
 	const LTSFpopupClass = "ltsf-popup-hidden";
 
 	function loadConfig() {
-		console.log(`== [${SCRIPT_ID}] Обработка полученной конфигурации...`, settingsJSON);
+		print(`[Обработка полученной конфигурации...`, settingsJSON);
 		
         let settingsData = {};
         try {
@@ -50,16 +50,16 @@
                 settingsData = JSON.parse(settingsJSON);
             }
         } catch (e) {
-            console.error(`== [${SCRIPT_ID}] Ошибка парсинга JSON-строки настроек:`, e);
-            console.warn(`== [${SCRIPT_ID}] Используются настройки по умолчанию.`);
+            print(`Ошибка парсинга JSON-строки настроек:`, e);
+            print(`Используются настройки по умолчанию.`);
             return DEFAULTS;
         }
 
 		const mySavedSettings = settingsData[SCRIPT_ID] || {};
-		console.log(`== [${SCRIPT_ID}] Получены настройки для этого скрипта:`, mySavedSettings);
+		print(`Получены настройки для этого скрипта:`, mySavedSettings);
 		
 		const finalConfig = { ...DEFAULTS, ...mySavedSettings };
-		console.log(`== [${SCRIPT_ID}] Финальный конфиг после слияния:`, finalConfig);
+		print(`Финальный конфиг после слияния:`, finalConfig);
 		
 		return finalConfig;
 	}
@@ -89,7 +89,7 @@
 
 	function subscribeToTableUpdates(tableElement, callback) {
 		if (!tableElement || (tableElement instanceof Node) == false) {
-			console.error('Table element is not a valid Node', tableElement);
+			print('Table element is not a valid Node', tableElement);
 			return;
 		}
 
