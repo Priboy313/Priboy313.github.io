@@ -35,9 +35,7 @@
 					["IgorP", "Jerry", "IgorDemping", "Igor Panasenko"] 
 				}
 			} },
-			"hideAmznGr": { "label": "Скрывать строки грейдов", "type": "boolean-expand", "default": false, "values": {
-				"skuColIndex": { "label": "Номер колонки СКУ", "type": "int", "default": 2 }
-			} },
+			"hideAmznGr": { "label": "Скрывать строки грейдов", "type": "boolean", "default": false},
 			"replaceHighlight": { "label": "Переопределить цвет выделения строки", "type": "boolean-expand", "default": false, "values": {
 				"customHighlightColor": { "label": "Кастомный цвет выделенной строки", "type": "color", "default": "#ffffff" }
 			} },
