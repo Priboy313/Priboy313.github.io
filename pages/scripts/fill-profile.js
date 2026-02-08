@@ -172,15 +172,15 @@ function fillData(lang) {
 		const eduContainer = HERO.querySelector(".education");
 		fillEducation(eduContainer, profileData[lang].edu.items);
 
-		HERO.querySelector(".h-projects").textContent = lang === 'en' ? 'Projects' : 'Проекты';
-		const projectsContainer = HERO.querySelector(".projects");
-		const workProjects = filterProjectsByType(projectsData[lang].projects, 'work');
-		fillProjects(projectsContainer, workProjects);
+		// HERO.querySelector(".h-projects").textContent = lang === 'en' ? 'Projects' : 'Проекты';
+		// const projectsContainer = HERO.querySelector(".projects");
+		// const workProjects = filterProjectsByType(projectsData[lang].projects, 'work');
+		// fillProjects(projectsContainer, workProjects);
 
-		HERO.querySelector(".h-eduProjects").textContent = lang === 'en' ? 'Educational Projects' : 'Учебные проекты';
-		const eduProjectsContainer = HERO.querySelector(".eduProjects");
-		const educationalProjects = filterProjectsByType(projectsData[lang].projects, 'educational');
-		fillProjects(eduProjectsContainer, educationalProjects);
+		// HERO.querySelector(".h-eduProjects").textContent = lang === 'en' ? 'Educational Projects' : 'Учебные проекты';
+		// const eduProjectsContainer = HERO.querySelector(".eduProjects");
+		// const educationalProjects = filterProjectsByType(projectsData[lang].projects, 'educational');
+		// fillProjects(eduProjectsContainer, educationalProjects);
 
 	}
 	else {

@@ -17,9 +17,9 @@ function fillData(lang) {
 	const HEADER = document.querySelector('header');
 	const MENU = HEADER.querySelector('.menu-container');
 
-	console.log("headerData");
-	console.log(HEADER);
-	console.log(MENU);
+	// console.log("headerData");
+	// console.log(HEADER);
+	// console.log(MENU);
 
 	const ABOUT = MENU.querySelector('.about-link');
 	if (ABOUT) {
