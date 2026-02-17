@@ -19,6 +19,7 @@
 		hidePrime: true,
 		hideReturns: true,
 		hideProtectionPlan: true,
+		hideRufusTooltip: true,
 		
 		clearGrabley: true,
 		clearRevseller: true,
@@ -389,6 +390,14 @@
 			if (config.hideProtectionPlan){
 				customStyle.innerHTML += `
 					#desktop-dp-ilm_feature_div_01{
+						display: none !important;
+					}
+				`;
+			}
+
+			if (config.hideRufusTooltip){
+				customStyle.innerHTML += `
+					#rufus-ask-rufus-tooltip{
 						display: none !important;
 					}
 				`;
