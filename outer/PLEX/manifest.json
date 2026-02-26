@@ -21,7 +21,9 @@
 				"hideRufusTooltip": { "label": "Скрыть тултип Rufus", "type": "boolean", "default": true }
 			} },
 			"clearGrabley": { "label": "Очистить элементы Grabley", "type": "boolean", "default": true },
-			"clearRevseller": { "label": "Очистить элементы RevSeller", "type": "boolean", "default": true }
+			"clearRevseller": { "label": "Очистить элементы RevSeller (dev)", "type": "boolean-expand", "default": false,  "role": ["aboba", "dodev"], "values": {
+				"hideRtgCCol": { "label": "Скрыть колонку RtgCount", "type": "boolean", "default": true,  "role": ["aboba", "dodev"] }
+			} }
 		}
 	},
 

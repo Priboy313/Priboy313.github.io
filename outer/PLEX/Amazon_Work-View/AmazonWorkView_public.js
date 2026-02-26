@@ -22,7 +22,8 @@
 		hideRufusTooltip: true,
 		
 		clearGrabley: true,
-		clearRevseller: true,
+		clearRevseller: false,
+		hideRtgCCol: false
 	};
 
 
@@ -73,6 +74,12 @@
 			setInterval(function() {
 				set_fee_in_revseller_calc();
 			}, 100);
+		}
+
+		if (config.clearRevseller){
+			if (config.hideRtgCCol){
+				clear_revseller_table();
+			}
 		}
 	}
 
@@ -317,6 +324,30 @@
 		title_link_section.appendChild(link_us);
 		title_link_section.appendChild(link_ca);
 		title_link_section.appendChild(link_mx);
+	}
+
+	function clear_revseller_table(){
+
+		function fixTable() {
+			const cellsToRemove = document.querySelectorAll('th[data-col-key="ratingCount"], td[data-col-key="ratingCount"]');
+			cellsToRemove.forEach(el => el.remove());
+
+			const colspans = document.querySelectorAll('#aic-ext-offers-widget-table td[colspan="7"]');
+			colspans.forEach(el => el.setAttribute('colspan', '6'));
+		}
+
+		const observer = new MutationObserver(() => {
+			if (document.querySelector('th[data-col-key="ratingCount"]')) {
+				fixTable();
+			}
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+
+		fixTable();
 	}
 
 	function addCustomCSS(config){
