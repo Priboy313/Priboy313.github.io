@@ -22,7 +22,7 @@
 			} },
 			"clearGrabley": { "label": "Очистить элементы Grabley", "type": "boolean", "default": true },
 			"clearRevseller": { "label": "Очистить элементы RevSeller (dev)", "type": "boolean-expand", "default": false,  "role": ["aboba", "dodev"], "values": {
-				"hideRtgCCol": { "label": "Скрыть колонку RtgCount", "type": "boolean", "default": true,  "role": ["aboba", "dodev"] }
+				"hideRtgCCol": { "label": "Скрыть колонку RtgCount", "type": "boolean", "default": false,  "role": ["aboba", "dodev"] }
 			} }
 		}
 	},
