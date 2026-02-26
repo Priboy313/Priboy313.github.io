@@ -77,6 +77,7 @@
 		}
 
 		if (config.clearRevseller){
+			await waitForElement("#aic-ext-popup-fba-result-available");
 			if (config.hideRtgCCol){
 				clear_revseller_table();
 			}
