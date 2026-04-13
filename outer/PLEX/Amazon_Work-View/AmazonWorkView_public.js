@@ -555,7 +555,7 @@
 			}
 
 			.seller-modal-content .copy-btn  {
-				color: ${config.buttonCol} !important;
+				color: #FFF !important;
 			}
 			`;
 		}
