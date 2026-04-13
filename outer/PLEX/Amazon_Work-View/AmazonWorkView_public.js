@@ -23,7 +23,10 @@
 		
 		clearGrabley: true,
 		clearRevseller: false,
-		hideRtgCCol: false
+		hideRtgCCol: false,
+
+		fixCountStock: false,
+		buttonCol: "#028dc2"
 	};
 
 
@@ -504,6 +507,22 @@
 			customStyle.innerHTML += `
 			#dp {
 				margin-left: 0 !important;
+			}
+			`;
+		}
+
+		if (config.fixCountStock){
+			customStyle.innerHTML += `
+			.plasmo-csui-container button {
+				background-color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .modal-header-custom {
+				background-color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .modal-footer {
+				background: linear-gradient(135deg, ${config.buttonCol} 0%, ${config.buttonCol} 100%) !important;
 			}
 			`;
 		}
