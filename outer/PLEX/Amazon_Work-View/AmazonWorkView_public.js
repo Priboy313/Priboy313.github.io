@@ -534,7 +534,7 @@
 			}
 
 			.seller-modal-content .stock-value {
-				color: ${config.buttonCol} !important;
+				color: #000000 !important;
 			}
 
 			.seller-modal-content .badge-fbm {
@@ -542,11 +542,19 @@
 				border: 1px solid ${config.buttonCol} !important;
 			}
 
-			.seller-modal-content .price-cel {
+			.seller-modal-content .price-cell {
 				color: ${config.buttonCol} !important;
 			}
 
 			.seller-modal-content .condition-new {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .filter-radio  {
+				accent-color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .copy-btn  {
 				color: ${config.buttonCol} !important;
 			}
 			`;
