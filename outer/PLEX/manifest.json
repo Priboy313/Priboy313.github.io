@@ -24,7 +24,7 @@
 			"clearRevseller": { "label": "Очистить элементы RevSeller (dev)", "type": "boolean-expand", "default": false,  "role": ["aboba", "dodev"], "values": {
 				"hideRtgCCol": { "label": "Скрыть колонку RtgCount", "type": "boolean", "default": false,  "role": ["aboba", "dodev"] }
 			} },
-			"fixCountStock": { "label": "Изменить CountStock", "type": "boolean-expand", "default": false, "role": ["aboba", "dodev"], "values": {
+			"fixCountStock": { "label": "Изменить CountStock (dev)", "type": "boolean-expand", "default": false, "role": ["aboba", "dodev"], "values": {
 				"buttonCol": { "label": "Цвет акцента", "type": "color", "default": "#028dc2" }
 			} }
 		}
