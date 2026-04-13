@@ -524,6 +524,31 @@
 			.seller-modal-content .modal-footer {
 				background: linear-gradient(135deg, ${config.buttonCol} 0%, ${config.buttonCol} 100%) !important;
 			}
+
+			.seller-modal-content .stats-card::before {
+				background: linear-gradient(90deg, ${config.buttonCol}, ${config.buttonCol}) !important;
+			}
+
+			.seller-modal-content .stats-card-icon-wrap {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .stock-value {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .badge-fbm {
+				color: ${config.buttonCol} !important;
+				border: 1px solid ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .price-cel {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .condition-new {
+				color: ${config.buttonCol} !important;
+			}
 			`;
 		}
 
