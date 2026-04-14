@@ -26,7 +26,9 @@
 		overMrgCol: "#c99aee",
 
 		fixLabels: true,
-		hideLTSFpopup: true
+		hideLTSFpopup: true,
+
+		hideAOutline: false
 	};
 
 	let cellIndex = {
@@ -281,6 +283,14 @@
 					overflow: hidden!important;
 				}
 			`;
+		}
+
+		if (config.hideAOutline){
+			customStyle.innerHTML += ` 
+				a:focus {
+					outline: none !important;
+				}
+			`
 		}
 
 		document.head.appendChild(customStyle);
