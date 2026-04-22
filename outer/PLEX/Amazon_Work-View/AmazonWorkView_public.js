@@ -542,7 +542,35 @@
 				border: 1px solid ${config.buttonCol} !important;
 			}
 
+			.seller-modal-content .badge-fba {
+				background: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .seller-avatar {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .star-icon {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .seller-link {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .stock-icon {
+				color: ${config.buttonCol} !important;
+			}
+
 			.seller-modal-content .price-cell {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .reviews-icon {
+				color: ${config.buttonCol} !important;
+			}
+
+			.seller-modal-content .cond-icon {
 				color: ${config.buttonCol} !important;
 			}
 
