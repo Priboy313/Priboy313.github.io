@@ -554,6 +554,10 @@
 				color: ${config.buttonCol} !important;
 			}
 
+			.seller-modal-content .price-icon {
+				color: ${config.buttonCol} !important;
+			}
+
 			.seller-modal-content .seller-link {
 				color: ${config.buttonCol} !important;
 			}
