@@ -88,8 +88,6 @@
 	}
 
 	async function main() {
-		console.log(`== [${SCRIPT_ID}] Запуск основной функции...`);
-
 		const config = loadConfig();
 
 		runImmediate(config);

@@ -296,9 +296,9 @@
 		document.head.appendChild(customStyle);
 	}
 
-	function print(text){
+	function print(...args){
 		if (ROLE == "dodev"){
-			console.log(`==== [${SCRIPT_ID}] ${text}`);
+			console.log(`==== [${SCRIPT_ID}]`, ...args);
 		}
 	}
 
