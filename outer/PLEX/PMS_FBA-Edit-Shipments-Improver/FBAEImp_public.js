@@ -66,7 +66,7 @@
 	function calcPOSummaryTable() {
 
 		function getPOData() {
-			let poData = {}
+			let poData = new Map();
 
 			let shipmentTable = document.body.querySelectorAll("table.t-blue")[1];
 
@@ -81,48 +81,45 @@
 				return [false, poData];
 			}
 
-			shipmentTableRows.forEach(row => {
+			for (let i = 0; i < shipmentTableRows.length; i++) {
+				let row = shipmentTableRows[i];
 				let cells = row.querySelectorAll("td");
 
 				if (cells.length < 11) {
-					return;
+					continue;
 				}
 
-				let po = cells[1]?.querySelector("input")?.value || "no";
+				let po = cells[1]?.querySelector("input")?.value || "err";
 				let shipped = cells[9]?.querySelector("input")?.value || 0;
 				let received = cells[10]?.innerText.trim() || 0;
 
-				if (po == "no") {
-					return;
+				if (po == "err") {
+					continue;
 				}
 
 				shipped = parseInt(shipped, 10) || 0;
 				received = parseInt(received, 10) || 0;
 
-				if (!poData[po]) {
-					poData[po] = [ [], [] ];
+				if (!poData.has(po)) {
+					poData.set(po, [ [], [] ]);
 				}
 
-				poData[po][0].push(shipped);
-				poData[po][1].push(received);
-			});
+				poData.get(po)[0].push(shipped);
+				poData.get(po)[1].push(received);
+			}
 
 			return [true, poData];
 		}
 
 		function validatePOData(poData) {
-			let poDataValidate = {};
+			let poDataValidate = new Map();
 			
-			Object.keys(poData).forEach(key => {
-				let data = poData[key];
-
+			poData.forEach((data, key) => {
 				let shippedSum = data[0].reduce((acc, curr) => acc + curr, 0);
 				let receivedSum = data[1].reduce((acc, curr) => acc + curr, 0);
 
-				if (!poDataValidate[key]) {
-					poDataValidate[key] = [shippedSum, receivedSum];
-				}
-			})
+				poDataValidate.set(key, [shippedSum, receivedSum]);
+			});
 
 			return poDataValidate;
 		}
@@ -136,8 +133,7 @@
 			summaryTable.style.marginLeft = '2.5%';
 			summaryTable.style.width = '20%';
 
-			Object.keys(poData).forEach(key => {
-				let data = poData[key];
+			poData.forEach((data, key) => {
 				let shipped = data[0];
 				let received = data[1];
 				let diff = received - shipped;
@@ -181,9 +177,9 @@
 			return;
 		}
 
-		poData = validatePOData(poData[1]);
+		let validatedData = validatePOData(poData[1]);
 
-		createTable(poData);
+		createTable(validatedData);
 	}
 
 
