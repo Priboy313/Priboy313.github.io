@@ -63,6 +63,17 @@
 		}
 	},
 
+	"fbaEditShipmentsImprover": {
+		"name": "PMS FBA Edit Shipments Improver (dev)",
+		"ver": "1.0r",
+		"role": ["aboba", "dodev"],
+		"description": "Улучшения для PMS FBA Edit",
+		"settings": {
+			"calcPOSummaryTable": { "label": "Добавить таблицу саммари PO", "type": "boolean", "default": false},
+			"showShipmentInfo": { "label": "Добавить шипментам информацию из Transfer List", "type": "boolean", "default": false}
+		}
+	},
+
 	"orgFix": {
 		"name": "Orgill Fixes",
 		"ver": "1.0r",
