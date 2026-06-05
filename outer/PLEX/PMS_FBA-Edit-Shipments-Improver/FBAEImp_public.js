@@ -43,8 +43,17 @@
 	async function runOnLoad(config) {
 		print(`Выполнение задач после загрузки DOM...`);
 
-		if (config.calcPOSummaryTable) {
-			calcPOSummaryTable()
+		let extractResult = extractRawTableData();
+
+		if (extractResult) {
+
+			if (config.showShipmentInfo) {
+				setShipmentsInfo();
+			}
+			
+			if (config.calcPOSummaryTable) {
+				calcPOSummaryTable();
+			}
 		}
 	}
 
@@ -62,51 +71,71 @@
 		}
 	}
 
+	let RAW_SHIPMENTS_TABLE = new Map();
+
+	function extractRawTableData() {
+		let shipmentTable = document.body.querySelectorAll("table.t-blue")[1];
+		
+		if (!shipmentTable) {
+			print("Таблица шипментов не найдена");
+			return false;
+		}
+
+		let shipmentTableRows = shipmentTable.querySelectorAll("tbody tr");
+
+		if (shipmentTableRows.length < 1) {
+			print("В таблице шипментов не найдено строк");
+			return false;
+		}
+
+		RAW_SHIPMENTS_TABLE.clear();
+
+		for (let i = 0; i < shipmentTableRows.length; i++) {
+			let row = shipmentTableRows[i];
+			let cells = row.querySelectorAll("td");
+
+			if (cells.length < 14) {
+				continue;
+			}
+
+			let shipment = cells[0]?.querySelector("a")?.innerText || "error_shipment";
+			let po = cells[1]?.querySelector("input")?.value || "error_po";
+			let shipped = cells[9]?.querySelector("input")?.value || 0;
+			let received = cells[10]?.innerText.trim() || 0;
+			let shipmentStatus = cells[11]?.innerText.trim() || "error_status";
+
+			shipped = parseInt(shipped, 10) || 0;
+			received = parseInt(received, 10) || 0;
+
+			RAW_SHIPMENTS_TABLE.set(shipment, {
+				po: po,
+				shipped: shipped,
+				received: received,
+				shipment_status: shipmentStatus
+			});
+		}
+
+		return true;
+	}
+
 
 	function calcPOSummaryTable() {
 
 		function getPOData() {
 			let poData = new Map();
 
-			let shipmentTable = document.body.querySelectorAll("table.t-blue")[1];
-
-			if (!shipmentTable) {
-				print("Таблица шипментов не найдена");
-				return [false, poData];
+			if (RAW_SHIPMENTS_TABLE.size < 1) {
+				return [false, poData]
 			}
 
-			let shipmentTableRows = shipmentTable.querySelectorAll("tbody tr");
-
-			if (shipmentTableRows.length < 1) {
-				return [false, poData];
-			}
-
-			for (let i = 0; i < shipmentTableRows.length; i++) {
-				let row = shipmentTableRows[i];
-				let cells = row.querySelectorAll("td");
-
-				if (cells.length < 11) {
-					continue;
+			RAW_SHIPMENTS_TABLE.forEach((data, key) => {
+				if (!poData.has(data.po)) {
+					poData.set(data.po, [ [], [] ]);
 				}
 
-				let po = cells[1]?.querySelector("input")?.value || "err";
-				let shipped = cells[9]?.querySelector("input")?.value || 0;
-				let received = cells[10]?.innerText.trim() || 0;
-
-				if (po == "err") {
-					continue;
-				}
-
-				shipped = parseInt(shipped, 10) || 0;
-				received = parseInt(received, 10) || 0;
-
-				if (!poData.has(po)) {
-					poData.set(po, [ [], [] ]);
-				}
-
-				poData.get(po)[0].push(shipped);
-				poData.get(po)[1].push(received);
-			}
+				poData.get(data.po)[0].push(data.shipped);
+				poData.get(data.po)[1].push(data.received);
+			});
 
 			return [true, poData];
 		}
@@ -129,7 +158,7 @@
 			let poStr = "";
 
 			const summaryTable = document.createElement('table');
-			summaryTable.className = 'edit-fba-table t-blue';
+			summaryTable.className = 'edit-fba-table t-blue custom-po-summary-table';
 			summaryTable.style.marginLeft = '2.5%';
 			summaryTable.style.width = '20%';
 
@@ -151,8 +180,8 @@
 				<thead>
 					<tr>
 						<th>PO Num.</th>
-						<th>Sum.Ship</th>
-						<th>Sum.Rec</th>
+						<th>Summ<br>Ship</th>
+						<th>Summ<br>Rec</th>
 						<th>Diff</th>
 					</tr>
 				</thead>
@@ -180,6 +209,47 @@
 		let validatedData = validatePOData(poData[1]);
 
 		createTable(validatedData);
+	}
+
+
+	function setShipmentsInfo() {
+
+		function getRawShipmentsData() {
+			let rawShipData = new Map();
+
+			if (RAW_SHIPMENTS_TABLE.size < 1) {
+				print("Нет шипментов для обработки")
+				return [false, rawShipData]
+			}
+
+			RAW_SHIPMENTS_TABLE.forEach((data, key) => {
+				rawShipData.set(key, data.shipment_status);
+			});
+
+			return [true, rawShipData];
+		}
+
+		function validateRawShipments(rawShipmentsData) {
+			let valShipments = [];
+
+			rawShipmentsData.forEach((data, key) => {
+				if (data != "CANCELLED") {
+					valShipments.push(key);
+				}
+			});
+
+			return valShipments;
+		}
+
+		let rawShipData = getRawShipmentsData();
+
+		if (rawShipData[0] == false) {
+			return;
+		}
+
+		let valRawShipData = validateRawShipments(rawShipData[1]);
+
+		print(valRawShipData);
 	}
 
 
