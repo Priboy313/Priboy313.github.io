@@ -64,7 +64,7 @@
 	},
 
 	"fbaEditShipmentsImprover": {
-		"name": "PMS FBA Edit Shipments Improver (dev)",
+		"name": "PMS FBA Edit Shipments Improver",
 		"ver": "1.0r",
 		"role": ["user", "aboba", "dodev"],
 		"description": "Улучшения для PMS FBA Edit",
