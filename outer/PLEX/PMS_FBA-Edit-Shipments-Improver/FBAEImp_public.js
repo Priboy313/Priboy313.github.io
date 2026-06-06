@@ -375,7 +375,7 @@
 
 		const tranferListData = await fetchTransferData(valRawShipData);
 
-
+		createTranferTable(tranferListData);
 	}
 
 
