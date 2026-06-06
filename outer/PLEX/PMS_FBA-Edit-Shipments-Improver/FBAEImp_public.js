@@ -326,7 +326,7 @@
 			tranferData.forEach(shipment => {
 				let name = shipment[1];
 				let perUnitCost = shipment[8];
-				let shippingCost = shipment[9];
+				let shippingCost = shipment[7];
 				let status = shipment[15];
 
 				tranferStr += `
