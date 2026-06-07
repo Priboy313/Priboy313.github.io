@@ -355,6 +355,8 @@
 				</tbody>
 			`;
 
+			const summaryTable = document.body.querySelector('.custom-po-summary-table');
+
 			const summaryAnchor = (summaryTable && summaryTable.nextElementSibling && summaryTable.nextElementSibling.classList.contains('custom-table-toggle-btn'))
 				? summaryTable.nextElementSibling
 				: summaryTable;
