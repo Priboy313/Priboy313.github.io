@@ -357,7 +357,7 @@
 
 			const summaryTable = document.body.querySelector('.custom-po-summary-table');
 
-			const summaryAnchor = (summaryTable && summaryTable.nextElementSibling && summaryTable.nextElementSibling.classList.contains('custom-table-toggle-btn'))
+			const summaryAnchor = (summaryTable && summaryTable.nextElementSibling && summaryTable.nextElementSibling.classList.contains('custom-table-toggle-container'))
 				? summaryTable.nextElementSibling
 				: summaryTable;
 
@@ -395,41 +395,71 @@
 		const rows = Array.from(tbody.querySelectorAll('tr'));
 		if (rows.length <= chunkSize) return;
 
-		let isExpanded = false;
+		let visibleCount = chunkSize;
 
-		rows.forEach((row, index) => {
-			if (index >= chunkSize) {
-				row.style.display = 'none';
-			}
-		});
+		function applyButtonStyle(btn) {
+			btn.type = 'button';
+			btn.style.padding = '5px 14px';
+			btn.style.backgroundColor = '#f4f4f4';
+			btn.style.border = '1px solid #ccc';
+			btn.style.borderRadius = '3px';
+			btn.style.cursor = 'pointer';
+			btn.style.fontSize = '12px';
+		}
 
-		const toggleButton = document.createElement('button');
-		toggleButton.type = 'button';
-		toggleButton.className = 'custom-table-toggle-btn';
-		
-		toggleButton.style.display = 'block';
-		toggleButton.style.marginTop = '8px';
-		toggleButton.style.marginBottom = '20px';
-		toggleButton.style.marginLeft = '2.5%';
-		toggleButton.style.padding = '5px 14px';
-		toggleButton.style.backgroundColor = '#f4f4f4';
-		toggleButton.style.border = '1px solid #ccc';
-		toggleButton.style.borderRadius = '3px';
-		toggleButton.style.cursor = 'pointer';
-		toggleButton.style.fontSize = '12px';
-		toggleButton.innerText = `Показать еще (${rows.length - chunkSize})`;
+		const container = document.createElement('div');
+		container.className = 'custom-table-toggle-container';
+		container.style.display = 'flex';
+		container.style.gap = '10px';
+		container.style.marginLeft = '2.5%';
+		container.style.marginTop = '8px';
+		container.style.marginBottom = '20px';
 
-		toggleButton.addEventListener('click', () => {
-			isExpanded = !isExpanded;
+		const showMoreButton = document.createElement('button');
+		applyButtonStyle(showMoreButton);
+
+		const showLessButton = document.createElement('button');
+		applyButtonStyle(showLessButton);
+
+		container.appendChild(showMoreButton);
+		container.appendChild(showLessButton);
+
+		function updateUI() {
 			rows.forEach((row, index) => {
-				if (index >= chunkSize) {
-					row.style.display = isExpanded ? '' : 'none';
-				}
+				row.style.display = index < visibleCount ? '' : 'none';
 			});
-			toggleButton.innerText = isExpanded ? 'Скрыть' : `Показать еще (${rows.length - chunkSize})`;
+
+			const remaining = rows.length - visibleCount;
+			if (remaining > 0) {
+				showMoreButton.style.display = 'block';
+				const nextChunk = Math.min(chunkSize, remaining);
+				showMoreButton.innerText = `Показать еще (+${nextChunk})`;
+			} else {
+				showMoreButton.style.display = 'none';
+			}
+
+			if (visibleCount > chunkSize) {
+				showLessButton.style.display = 'block';
+				const prevChunk = Math.min(chunkSize, visibleCount - chunkSize);
+				showLessButton.innerText = `Скрыть (-${prevChunk})`;
+			} else {
+				showLessButton.style.display = 'none';
+			}
+		}
+
+		showMoreButton.addEventListener('click', () => {
+			visibleCount = Math.min(visibleCount + chunkSize, rows.length);
+			updateUI();
 		});
 
-		table.insertAdjacentElement('afterend', toggleButton);
+		showLessButton.addEventListener('click', () => {
+			visibleCount = Math.max(visibleCount - chunkSize, chunkSize);
+			updateUI();
+		});
+
+		updateUI();
+
+		table.insertAdjacentElement('afterend', container);
 	}
 
 	function print(...args){
