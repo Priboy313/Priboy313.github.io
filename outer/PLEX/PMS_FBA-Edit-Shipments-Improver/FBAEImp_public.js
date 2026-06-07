@@ -6,8 +6,8 @@
 	const ROLE = role;
 
 	const DEFAULTS  = {
-		calcPOSummaryTable: false,
-		showShipmentInfo: false
+		calcPOSummaryTable: true,
+		showShipmentInfo: true
 	};
 
 	const DOMEN_TRANSFER_URLS = {
@@ -53,13 +53,14 @@
 
 		if (extractResult) {
 
-			if (config.showShipmentInfo) {
-				await setShipmentsInfo();
-			}
-			
 			if (config.calcPOSummaryTable) {
 				calcPOSummaryTable();
 			}
+
+			if (config.showShipmentInfo) {
+				await setShipmentsInfo();
+			}
+
 		}
 	}
 
@@ -204,6 +205,7 @@
 
 			if (targetSpan) {
 				targetSpan.insertAdjacentElement('afterend', summaryTable);
+				makeTableCollapsible(summaryTable);
 			} else {
 				print('Целевой span не найден');
 			}
@@ -275,7 +277,7 @@
 
 			if (!comp) {
 				print("Не удалось определить компанию для запроса шипментов:", location);
-				return;
+				return [];
 			}
 
 			const baseUrl = DOMEN_TRANSFER_URLS[comp];
@@ -353,12 +355,17 @@
 				</tbody>
 			`;
 
-			const target = document.body.querySelector('custom-po-summary-table')
+			const summaryAnchor = (summaryTable && summaryTable.nextElementSibling && summaryTable.nextElementSibling.classList.contains('custom-table-toggle-btn'))
+				? summaryTable.nextElementSibling
+				: summaryTable;
+
+			const target = summaryAnchor
 							|| document.body.querySelector('span[style*="font-size: 1.5em"]')
 							|| document.body.querySelector('span');
 
 			if (target) {
 				target.insertAdjacentElement('afterend', tranferTable);
+				makeTableCollapsible(tranferTable);
 			} else {
 				print('Целевой span не найден');
 			}
@@ -378,6 +385,50 @@
 		createTranferTable(tranferListData);
 	}
 
+
+	function makeTableCollapsible(table, chunkSize = 5) {
+		const tbody = table.querySelector('tbody');
+		if (!tbody) return;
+
+		const rows = Array.from(tbody.querySelectorAll('tr'));
+		if (rows.length <= chunkSize) return;
+
+		let isExpanded = false;
+
+		rows.forEach((row, index) => {
+			if (index >= chunkSize) {
+				row.style.display = 'none';
+			}
+		});
+
+		const toggleButton = document.createElement('button');
+		toggleButton.type = 'button';
+		toggleButton.className = 'custom-table-toggle-btn';
+		
+		toggleButton.style.display = 'block';
+		toggleButton.style.marginTop = '8px';
+		toggleButton.style.marginBottom = '20px';
+		toggleButton.style.marginLeft = '2.5%';
+		toggleButton.style.padding = '5px 14px';
+		toggleButton.style.backgroundColor = '#f4f4f4';
+		toggleButton.style.border = '1px solid #ccc';
+		toggleButton.style.borderRadius = '3px';
+		toggleButton.style.cursor = 'pointer';
+		toggleButton.style.fontSize = '12px';
+		toggleButton.innerText = `Показать еще (${rows.length - chunkSize})`;
+
+		toggleButton.addEventListener('click', () => {
+			isExpanded = !isExpanded;
+			rows.forEach((row, index) => {
+				if (index >= chunkSize) {
+					row.style.display = isExpanded ? '' : 'none';
+				}
+			});
+			toggleButton.innerText = isExpanded ? 'Скрыть' : `Показать еще (${rows.length - chunkSize})`;
+		});
+
+		table.insertAdjacentElement('afterend', toggleButton);
+	}
 
 	function print(...args){
 		if (ROLE == "dodev"){
