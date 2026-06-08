@@ -342,6 +342,9 @@
 				
 				cleanPerUnitCost = isNaN(cleanPerUnitCost) ? 0 : cleanPerUnitCost;
 
+				let displayPerUnitCost = cleanPerUnitCost.toFixed(2);
+				let displayShippingCost = shippingCost.toFixed(2);
+
 				let shippingCost = cleanPerUnitCost * shippedQty;
 
 				let status = shipment[15];
@@ -349,8 +352,8 @@
 				tranferStr += `
 					<tr>
 						<td>${name}</td>
-						<td>${cleanPerUnitCost}</td>
-						<td>${shippingCost}</td>
+						<td>${displayPerUnitCost}</td>
+						<td>${displayShippingCost}</td>
 						<td>${status}</td>
 					</tr>
 				`;
