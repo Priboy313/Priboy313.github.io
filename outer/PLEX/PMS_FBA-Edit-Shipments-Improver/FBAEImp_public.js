@@ -341,11 +341,11 @@
 					: parseFloat(perUnitCost);
 				
 				cleanPerUnitCost = isNaN(cleanPerUnitCost) ? 0 : cleanPerUnitCost;
+				
+				let shippingCost = cleanPerUnitCost * shippedQty;
 
 				let displayPerUnitCost = cleanPerUnitCost.toFixed(2);
 				let displayShippingCost = shippingCost.toFixed(2);
-
-				let shippingCost = cleanPerUnitCost * shippedQty;
 
 				let status = shipment[15];
 
