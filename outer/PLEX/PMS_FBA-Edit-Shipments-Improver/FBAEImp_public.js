@@ -235,18 +235,24 @@
 			}
 
 			RAW_SHIPMENTS_TABLE.forEach((data, key) => {
-				rawShipData.set(key, data.shipment_status);
+				rawShipData.set(
+					key, 
+					{
+						shipped: data.shipped, 
+						shipment_status: data.shipment_status
+					}
+				);
 			});
 
 			return [true, rawShipData];
 		}
 
 		function validateRawShipments(rawShipmentsData) {
-			let valShipments = [];
+			let valShipments = new Map();
 
 			rawShipmentsData.forEach((data, key) => {
-				if (data != "CANCELLED") {
-					valShipments.push(key);
+				if (data.shipment_status != "CANCELLED") {
+					valShipments.set(key, {shipped: data.shipped});
 				}
 			});
 
@@ -316,7 +322,7 @@
 
 		}
 
-		function createTranferTable(tranferData) {
+		function createTranferTable(tranferData, valRawShipData) {
 
 			let tranferStr = "";
 
@@ -327,14 +333,22 @@
 
 			tranferData.forEach(shipment => {
 				let name = shipment[1];
-				let perUnitCost = shipment[8];
-				let shippingCost = shipment[7];
+				let shippedQty = valRawShipData.get(name)?.shipped || 0;
+
+				let cleanPerUnitCost = typeof perUnitCost === 'string' 
+					? parseFloat(perUnitCost.replace(/[^0-9.-]+/g, "")) 
+					: parseFloat(perUnitCost);
+				
+				cleanPerUnitCost = isNaN(cleanPerUnitCost) ? 0 : cleanPerUnitCost;
+
+				let shippingCost = cleanPerUnitCost * shippedQty;
+
 				let status = shipment[15];
 
 				tranferStr += `
 					<tr>
 						<td>${name}</td>
-						<td>${perUnitCost}</td>
+						<td>${cleanPerUnitCost}</td>
 						<td>${shippingCost}</td>
 						<td>${status}</td>
 					</tr>
@@ -382,9 +396,9 @@
 
 		let valRawShipData = validateRawShipments(rawShipData[1]);
 
-		const tranferListData = await fetchTransferData(valRawShipData);
+		const tranferListData = await fetchTransferData(Array.from(valRawShipData.keys()));
 
-		createTranferTable(tranferListData);
+		createTranferTable(tranferListData, valRawShipData);
 	}
 
 
