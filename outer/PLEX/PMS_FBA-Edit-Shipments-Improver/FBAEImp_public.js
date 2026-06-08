@@ -334,6 +334,7 @@
 			tranferData.forEach(shipment => {
 				let name = shipment[1];
 				let shippedQty = valRawShipData.get(name)?.shipped || 0;
+				let perUnitCost = shipment[8];
 
 				let cleanPerUnitCost = typeof perUnitCost === 'string' 
 					? parseFloat(perUnitCost.replace(/[^0-9.-]+/g, "")) 
