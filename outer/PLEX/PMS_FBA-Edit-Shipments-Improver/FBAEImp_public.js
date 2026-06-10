@@ -7,7 +7,7 @@
 
 	const DEFAULTS  = {
 		calcPOSummaryTable: true,
-		showShipmentInfo: false
+		showShipmentInfo: true
 	};
 
 	const DOMEN_TRANSFER_URLS = {
