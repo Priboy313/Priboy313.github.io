@@ -208,7 +208,10 @@
 			if (targetSpan) {
 				targetSpan.insertAdjacentElement('afterend', summaryTable);
 				makeTableCollapsible(summaryTable);
-				makeTableInteractable(summaryTable);
+
+				if(config.makePOTableInteractable){
+					makeTableInteractable(summaryTable);
+				}
 			} else {
 				print('Целевой span не найден');
 			}
