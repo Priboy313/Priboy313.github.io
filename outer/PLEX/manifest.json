@@ -70,6 +70,7 @@
 		"description": "Улучшения для PMS FBA Edit",
 		"settings": {
 			"calcPOSummaryTable": { "label": "Добавить таблицу саммари PO", "type": "boolean", "default": true},
+			"makePOTableInteractable": { "label": "Сделать таблицу ПО интерактивной (dev)", "type": "boolean", "default": false, "role": ["aboba", "dodev"]},
 			"showShipmentInfo": { "label": "Добавить информацию из Transfer List", "type": "boolean", "default": true}
 		}
 	},
