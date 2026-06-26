@@ -42,13 +42,13 @@
 
 	let config;
 
-	function runImmediate(config){
+	function runImmediate(){
 		print(`Выполнение немедленных задач...`);
 
 		addCustomCSS();
 	}
 
-	async function runOnLoad(config) {
+	async function runOnLoad() {
 		print(`Выполнение задач после загрузки DOM...`);
 
 		let extractResult = extractRawTableData();
@@ -67,16 +67,16 @@
 	}
 
 	async function main() {
-		const config = loadConfig();
+		config = loadConfig();
 
-		runImmediate(config);
+		runImmediate();
 
 		if (document.readyState === 'loading') {
 			document.addEventListener('DOMContentLoaded', () => {
-				runOnLoad(config);
+				runOnLoad();
 			});
 		} else {
-			runOnLoad(config);
+			runOnLoad();
 		}
 	}
 
