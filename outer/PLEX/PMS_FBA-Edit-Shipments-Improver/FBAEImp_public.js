@@ -7,7 +7,7 @@
 
 	const DEFAULTS  = {
 		calcPOSummaryTable: true,
-		makePOTableInteractable: false,
+		makePOTableInteractable: true,
 		showShipmentInfo: true
 	};
 
