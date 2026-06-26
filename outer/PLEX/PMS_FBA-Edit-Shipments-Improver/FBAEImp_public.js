@@ -487,97 +487,110 @@
 	}
 
 	function makeTableInteractable(table) {
-		const cells = table.querySelectorAll('tbody tr td');
-
-		cells.forEach(cell => {
-			const text = cell.innerText.trim();
-			const cleanText = text.replace(/[^0-9.-]+/g, "");
-			const val = parseFloat(cleanText);
+		let tfoot = table.querySelector('tfoot');
+		if (!tfoot) {
+			tfoot = document.createElement('tfoot');
+			const headerRow = table.querySelector('thead tr');
+			const colCount = headerRow ? headerRow.cells.length : (table.querySelector('tbody tr')?.cells.length || 4);
 			
-			if (text !== "" && !isNaN(val) && cell.cellIndex !== 0) {
-				cell.classList.add('plx-selectable-cell');
+			let footerRowHTML = '<tr>';
+			for (let i = 0; i < colCount; i++) {
+				footerRowHTML += '<td><strong>-</strong></td>';
 			}
+			footerRowHTML += '</tr>';
+			tfoot.innerHTML = footerRowHTML;
+			table.appendChild(tfoot);
+		}
+
+		const rows = table.querySelectorAll('tbody tr');
+		rows.forEach(row => {
+			row.classList.add('plx-selectable-row');
 		});
 
 		let isSelecting = false;
+		let lastAction = null;
+
+		function updateTableFooter() {
+			const selectedRows = Array.from(table.querySelectorAll('tbody tr.selected'));
+			const count = selectedRows.length;
+			const footerCells = tfoot.querySelectorAll('tr td');
+
+			footerCells.forEach((td, colIndex) => {
+				if (colIndex === 0) {
+					td.innerHTML = `<strong>Выбрано: ${count}</strong>`;
+					return;
+				}
+
+				let sum = 0;
+				let isNumeric = false;
+
+				selectedRows.forEach(row => {
+					const cell = row.cells[colIndex];
+					if (cell) {
+						const text = cell.innerText.trim();
+						const cleanText = text.replace(/[^0-9.-]+/g, "");
+						const val = parseFloat(cleanText);
+						if (text !== "" && !isNaN(val)) {
+							sum += val;
+							isNumeric = true;
+						}
+					}
+				});
+
+				if (count > 0 && isNumeric) {
+					td.innerHTML = `<strong>${Number(sum.toFixed(2))}</strong>`;
+				} else {
+					td.innerHTML = `<strong>-</strong>`;
+				}
+			});
+		}
 
 		table.addEventListener('mousedown', (e) => {
-			const cell = e.target.closest('.plx-selectable-cell');
-			if (!cell) return;
+			const row = e.target.closest('tbody tr');
+			if (!row) return;
 
 			isSelecting = true;
 
 			if (!e.ctrlKey && !e.metaKey) {
-				document.querySelectorAll('.plx-selectable-cell.selected').forEach(c => c.classList.remove('selected'));
+				table.querySelectorAll('tbody tr.selected').forEach(r => r.classList.remove('selected'));
 			}
 
-			cell.classList.toggle('selected');
-			updateSumWidget();
+			row.classList.toggle('selected');
+			lastAction = row.classList.contains('selected') ? 'select' : 'deselect';
+			
+			updateTableFooter();
 			e.preventDefault();
 		});
 
 		table.addEventListener('mouseover', (e) => {
 			if (!isSelecting) return;
-			const cell = e.target.closest('.plx-selectable-cell');
-			if (!cell) return;
+			const row = e.target.closest('tbody tr');
+			if (!row) return;
 
-			cell.classList.add('selected');
-			updateSumWidget();
+			if (lastAction === 'select') {
+				row.classList.add('selected');
+			} else {
+				row.classList.remove('selected');
+			}
+			updateTableFooter();
 		});
 
 		const stopSelection = () => {
 			isSelecting = false;
+			lastAction = null;
 		};
 
 		window.addEventListener('mouseup', stopSelection);
 		
 		const handleKeyDown = (e) => {
 			if (e.key === 'Escape') {
-				document.querySelectorAll('.plx-selectable-cell.selected').forEach(c => c.classList.remove('selected'));
-				updateSumWidget();
+				table.querySelectorAll('tbody tr.selected').forEach(r => r.classList.remove('selected'));
+				updateTableFooter();
 			}
 		};
 		window.addEventListener('keydown', handleKeyDown);
-	}
 
-	function updateSumWidget() {
-		let widget = document.getElementById('plx-sum-widget');
-		if (!widget) {
-			widget = document.createElement('div');
-			widget.id = 'plx-sum-widget';
-			widget.className = 'plx-sum-widget';
-			widget.style.display = 'none';
-			document.body.appendChild(widget);
-		}
-
-		const selectedCells = document.querySelectorAll('.plx-selectable-cell.selected');
-		if (selectedCells.length === 0) {
-			widget.style.display = 'none';
-			return;
-		}
-
-		let sum = 0;
-		let count = 0;
-
-		selectedCells.forEach(cell => {
-			const cleanText = cell.innerText.trim().replace(/[^0-9.-]+/g, "");
-			const val = parseFloat(cleanText);
-			if (!isNaN(val)) {
-				sum += val;
-				count++;
-			}
-		});
-
-		widget.innerHTML = `
-			<span>Выделено ячеек: <strong>${count}</strong> | Сумма: <strong>${Number(sum.toFixed(2))}</strong></span>
-			<span class="plx-sum-widget-close" title="Сбросить выделение (Esc)">✖</span>
-		`;
-		widget.style.display = 'flex';
-
-		widget.querySelector('.plx-sum-widget-close').onclick = () => {
-			document.querySelectorAll('.plx-selectable-cell.selected').forEach(c => c.classList.remove('selected'));
-			widget.style.display = 'none';
-		};
+		updateTableFooter();
 	}
 
 	function addCustomCSS() {
@@ -587,45 +600,24 @@
 
 			if (config.makePOTableInteractable) {
 				customStyle.innerHTML += `
-					.plx-selectable-cell {
+					.plx-selectable-row {
 						cursor: pointer;
-						user-select: none; /* Отключает стандартное выделение синим текстом при протягивании */
 						transition: background-color 0.1s;
 					}
-					.plx-selectable-cell:hover {
-						background-color: rgba(0, 123, 255, 0.08) !important;
+					.plx-selectable-row:hover {
+						background-color: rgba(0, 123, 255, 0.05) !important;
 					}
-					.plx-selectable-cell.selected {
+					.plx-selectable-row.selected {
 						background-color: #b4dbff !important;
-						outline: 1px solid #007bff;
 					}
-					.plx-sum-widget {
-						position: fixed;
-						bottom: 25px;
-						right: 25px;
-						background: #212529;
-						color: #fff;
-						padding: 10px 16px;
-						border-radius: 8px;
-						box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-						font-size: 14px;
-						font-family: Arial, sans-serif;
-						z-index: 2147483647;
-						display: flex;
-						align-items: center;
-						gap: 12px;
-						border: 1px solid #343a40;
-					}
-					.plx-sum-widget-close {
-						cursor: pointer;
+					/* Стилизация новой строки итогов */
+					.edit-fba-table tfoot tr td {
+						background-color: #e9ecef !important;
+						border-top: 2px solid #6c757d !important;
+						border-bottom: 2px solid #6c757d !important;
 						font-weight: bold;
-						color: #dc3545;
-						font-size: 16px;
-						line-height: 1;
-						transition: color 0.15s;
-					}
-					.plx-sum-widget-close:hover {
-						color: #ffc107;
+						padding: 8px 10px;
+						color: #212529;
 					}
 				`;
 			}
