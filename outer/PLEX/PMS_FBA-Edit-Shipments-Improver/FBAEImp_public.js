@@ -513,6 +513,14 @@
 		function updateTableFooter() {
 			const selectedRows = Array.from(table.querySelectorAll('tbody tr.selected'));
 			const count = selectedRows.length;
+
+			if (count === 0) {
+				tfoot.style.display = 'none';
+				return;
+			} else {
+				tfoot.style.display = '';
+			}
+
 			const footerCells = tfoot.querySelectorAll('tr td');
 
 			footerCells.forEach((td, colIndex) => {
