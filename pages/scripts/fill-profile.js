@@ -1,7 +1,10 @@
 const DATA_URL = '/pages/data/profile.json';
 const PROJECTS_DATA_URL = '/pages/data/projects.json';
+const EXPERIENCE_DATA_URL = '/pages/data/experience.json';
+
 let profileData = null;
 let projectsData = null;
+let experienceData = null;
 
 async function fetchData() {
 	const response = await fetch(DATA_URL);
@@ -15,6 +18,16 @@ async function fetchData() {
 
 async function fetchProjectsData() {
 	const response = await fetch(PROJECTS_DATA_URL);
+
+	if (!response.ok) {
+		throw new Error(`Failed to fetch projects data: ${response.status} ${response.statusText}`);
+	}
+
+	return await response.json();
+}
+
+async function fetchExperienceData() {
+	const response = await fetch(EXPERIENCE_DATA_URL);
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch projects data: ${response.status} ${response.statusText}`);
@@ -46,6 +59,32 @@ function fillContacts(container, items){
 		link.textContent = item.text;
 
 		container.appendChild(link);
+	});
+}
+
+function fillExperience(container, items){
+	container.innerHTML = '';
+
+	items.forEach(item => {
+		const li = document.createElement('li');
+		li.className = "experience-item";
+
+		const year = item[0];
+		const title = item[1];
+		const desc = item[2];
+
+		const header = document.createElement('div');
+		header.className = "experience-header";
+		header.textContent = `${year} — ${title}`;
+
+		const descDiv = document.createElement('div');
+		descDiv.className = "experience-desc";
+		descDiv.textContent = desc;
+
+		li.appendChild(header);
+		li.appendChild(descDiv);
+
+		container.appendChild(li);
 	});
 }
 
@@ -167,6 +206,10 @@ function fillData(lang) {
 		HERO.querySelector(".contacts .contact-email").textContent = profileData.universal.contacts.email;
 		const contactLinksContainer = HERO.querySelector(".contacts .contact-links");
 		fillContacts(contactLinksContainer, profileData.universal.contacts.links);
+
+		HERO.querySelector(".h-experience").textContent = profileData[lang].experience.title;
+		const experienceContainer = HERO.querySelector(".experience");
+		fillExperience(experienceContainer, profileData[lang].experience.items);
 		
 		HERO.querySelector(".h-education").textContent = profileData[lang].edu.title;
 		const eduContainer = HERO.querySelector(".education");
@@ -194,6 +237,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		profileData = await fetchData();
 		projectsData = await fetchProjectsData();
+		experienceData = await fetchExperienceData();
+
 		fillData("en");
 
 		document.getElementById('lang-en').addEventListener('click', () => {

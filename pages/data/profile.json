@@ -28,7 +28,15 @@
 		"intro": "Gamer, Game Developer, Web Developer (Frontend, hobby)"
 	},
 	"contacts": {
-		"title": "Contacts"
+		"title": ""
+	},
+	"experience": {
+		"title": "Experience",
+		"items": [
+			["2026", "LG Electronics RUS", "Lead Software Engineer"],
+			["2024-2026", "PlexSupply Inc.", "Amazon Account & Operations Manager"],
+			["2022-2026", "Indie Developer / Game Developer", "Full development cycle from architecture to implementation of mechanics and optimization"]
+		]
 	},
 	"edu": {
 		"title": "Education",
@@ -46,7 +54,15 @@
 		"intro": "Геймер, разработчик игр, веб-разработчик (фронтенд, хобби)"
 	},
 	"contacts": {
-		"title": "Контакты"
+		"title": ""
+	}, 
+	"experience": {
+		"title": "Опыт работы",
+		"items": [
+			["2026", "LG Electronics RUS", "Ведущий инженер-программист"],
+			["2024-2026", "PlexSupply Inc.", "Amazon Account & Operations Manager"],
+			["2022-2026", "Инди разработчик", "Занимался полным циклом разработки от архитектуры до реализации механик и оптимизации"]
+		]
 	},
 	"edu": {
 		"title": "Образование",

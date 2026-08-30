@@ -1,0 +1,29 @@
+{
+"en": {
+	"experience": [
+		{
+			"year": "2022-2026",
+			"tags": ["C#", "Unity"],
+			"title": "Indie Developer / Game Developer",
+			"description": "Full development cycle (from architecture to implementation of mechanics and optimization).",
+			"links": [
+				{"type": "github", "url": "https://github.com/Priboy313", "label": "GitHub"}
+			]
+		}
+	]
+},
+
+"ru": {
+	"experience": [
+		{
+			"year": "2022-2026",
+			"tags": ["C#", "Unity"],
+			"title": "Инди разработчик",
+			"description": "Занимался полным циклом разработки (от архитектуры до реализации механик и оптимизации).",
+			"links": [
+				{"type": "github", "url": "https://github.com/Priboy313", "label": "GitHub"}
+			]
+		}
+	]
+}
+}
