@@ -1,0 +1,14 @@
+{
+	"routes": [
+		{
+			"pattern": "b2b\\.lge\\.com.*",
+			"moduleId": "lgB2BFix",
+			"worker": "lg_b2b_worker.js"
+		},
+		{
+			"pattern": "example\\.com.*",
+			"moduleId": "sampleWorker",
+			"worker": "sample_worker.js"
+		}
+	]
+}
