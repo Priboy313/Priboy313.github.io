@@ -1,12 +1,17 @@
 // ==UserScript==
 // @name         omniNexus
-// @version      1.0
+// @version      1.2
 // @author       Priboy313
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @run-at       document-start
+// @connect      127.0.0.1
+// @connect      localhost
+// @connect      api.github.com
+// @connect      raw.githubusercontent.com
+// @connect      cdn.jsdelivr.net
 // ==/UserScript==
 
 (function() {
@@ -18,19 +23,20 @@
 		role: "dodev",
 		dashboardHost: "google.com",
 		dashboardPath: "/priboy313",
-		ttlMinutes: 60,
+		ttlMinutes: 60, // Время жизни кэша коммита
 		provider: "github", // "github" | "custom" | "local"
 		sources: {
 			github: {
 				username: "Priboy313",
 				repo: "Priboy313.github.io",
-				branch: "main"
+				branch: "main",
+				token: ["ghp", "_", "YOUR_TOKEN_HERE"].join("")
 			},
 			custom: {
 				baseUrl: "https://my-domain.com/scripts"
 			},
 			local: {
-				baseUrl: "http://127.0.0.1:8080/outer"
+				baseUrl: "http://127.0.0.1:5500"
 			}
 		}
 	};
@@ -41,7 +47,6 @@
 	const HASH_CACHE_KEY = CACHE_PREFIX + 'commit_hash';
 
 	const currentUrl = window.location.href;
-	const isDashboard = currentUrl.includes(CONFIG.dashboardHost + CONFIG.dashboardPath);
 
 	let routerCache = GM_getValue(ROUTER_CACHE_KEY, { timestamp: 0, routes: [] });
 
@@ -66,16 +71,29 @@
 			</body>`;
 	}
 
-	if (isDashboardHome) {
-		updateSystem().finally(() => executeWorker('dashboard.js', 'dashboard'));
-	} else {
-		const isCacheExpired = (Date.now() - routerCache.timestamp) > (CONFIG.ttlMinutes * 60 * 1000);
-		if (isCacheExpired) {
-			updateSystem();
-		}
+	init();
 
-		if (activeRoute && activeRoute.worker) {
-			executeWorker(activeRoute.worker, activeRoute.moduleId);
+	async function init() {
+		try {
+			const ttlMs = CONFIG.ttlMinutes * 60 * 1000;
+			const cachedHashData = GM_getValue(HASH_CACHE_KEY, null);
+			const isExpired = !cachedHashData || (Date.now() - cachedHashData.timestamp > ttlMs);
+
+			const needUpdate = isDashboardHome || isExpired;
+			
+			const currentHash = await resolveCommitHash(needUpdate);
+
+			if (needUpdate) {
+				await updateRouter(currentHash);
+			}
+
+			if (isDashboardHome) {
+				await executeWorker('dashboard.js', 'dashboard', currentHash);
+			} else if (activeRoute && activeRoute.worker) {
+				await executeWorker(activeRoute.worker, activeRoute.moduleId, currentHash);
+			}
+		} catch (err) {
+			console.error(`[omniNexus:${CONFIG.workspace}] Ошибка инициализации:`, err);
 		}
 	}
 
@@ -87,65 +105,84 @@
 		});
 	}
 
-	function getRouterUrl() {
-		const src = CONFIG.sources[CONFIG.provider];
-		const path = `outer/${CONFIG.systemRoot}/${CONFIG.workspace}/router.json`;
-		if (CONFIG.provider === 'github') {
-			return `https://raw.githubusercontent.com/${src.username}/${src.repo}/${src.branch}/${path}?t=${Date.now()}`;
+	async function resolveCommitHash(forceUpdate) {
+		if (CONFIG.provider !== 'github') return 'latest';
+
+		const cached = GM_getValue(HASH_CACHE_KEY, null);
+
+		if (!forceUpdate && cached && cached.hash) {
+			return cached.hash;
 		}
-		return `${src.baseUrl}/${path}?t=${Date.now()}`;
+
+		const src = CONFIG.sources.github;
+		const apiUrl = `https://api.github.com/repos/${src.username}/${src.repo}/commits/${src.branch}`;
+		const headers = { "Accept": "application/vnd.github.v3+json" };
+		if (src.token && src.token.trim()) {
+			headers["Authorization"] = `token ${src.token.trim()}`;
+		}
+
+		try {
+			const res = await request({ method: 'GET', url: apiUrl, headers });
+			const latestSha = JSON.parse(res.responseText).sha;
+
+			GM_setValue(HASH_CACHE_KEY, {
+				hash: latestSha,
+				timestamp: Date.now()
+			});
+
+			return latestSha;
+		} catch (e) {
+			console.warn("[omniNexus] Ошибка получения свежего коммита из API, используем прошлый кэш:", e);
+			return cached ? cached.hash : 'main';
+		}
+	}
+
+	async function updateRouter(hash) {
+		try {
+			let routerUrl;
+			const src = CONFIG.sources[CONFIG.provider];
+			const path = `outer/${CONFIG.systemRoot}/${CONFIG.workspace}/router.json`;
+
+			if (CONFIG.provider === 'github') {
+				routerUrl = `https://cdn.jsdelivr.net/gh/${src.username}/${src.repo}@${hash}/${path}`;
+			} else {
+				routerUrl = `${src.baseUrl}/${path}?t=${Date.now()}`;
+			}
+
+			const res = await request({ method: 'GET', url: routerUrl });
+			const newRouter = JSON.parse(res.responseText);
+
+			GM_setValue(ROUTER_CACHE_KEY, {
+				timestamp: Date.now(),
+				routes: newRouter.routes || []
+			});
+		} catch (e) {
+			console.error("[omniNexus] Ошибка обновления router.json:", e);
+		}
 	}
 
 	function getWorkerUrl(workerName, hash) {
 		const src = CONFIG.sources[CONFIG.provider];
 		const path = `outer/${CONFIG.systemRoot}/${CONFIG.workspace}/${workerName}`;
+
 		if (CONFIG.provider === 'github') {
 			return `https://cdn.jsdelivr.net/gh/${src.username}/${src.repo}@${hash}/${path}`;
 		}
 		return `${src.baseUrl}/${path}?t=${Date.now()}`;
 	}
 
-	async function updateSystem() {
-		try {
-			const routerRes = await request({ method: 'GET', url: getRouterUrl() });
-			const newRouter = JSON.parse(routerRes.responseText);
-
-			let commitHash = 'main';
-			if (CONFIG.provider === 'github') {
-				const src = CONFIG.sources.github;
-				const apiUrl = `https://api.github.com/repos/${src.username}/${src.repo}/commits/${src.branch}`;
-				const hashRes = await request({
-					method: 'GET',
-					url: apiUrl,
-					headers: { "Accept": "application/vnd.github.v3+json" }
-				});
-				commitHash = JSON.parse(hashRes.responseText).sha;
-				GM_setValue(HASH_CACHE_KEY, commitHash);
-			}
-
-			GM_setValue(ROUTER_CACHE_KEY, {
-				timestamp: Date.now(),
-				routes: newRouter.routes || []
-			});
-
-			return commitHash;
-		} catch (e) {
-			console.error(`[OmniNexus:${CONFIG.workspace}] Sync error:`, e);
-		}
-	}
-
-	function executeWorker(workerFileName, moduleId) {
-		const hash = GM_getValue(HASH_CACHE_KEY, 'main');
+	async function executeWorker(workerFileName, moduleId, hash) {
 		const workerUrl = getWorkerUrl(workerFileName, hash);
 		const globalSettings = GM_getValue(SETTINGS_KEY, {});
 		const moduleSettings = globalSettings[moduleId] || {};
 		const settingsJSON = JSON.stringify(moduleSettings);
 
-		request({ method: 'GET', url: workerUrl })
-			.then(res => {
-				const workerFn = new Function('settingsJSON', 'role', 'GM_getValue', 'GM_setValue', 'CONFIG', res.responseText);
-				workerFn(settingsJSON, CONFIG.role, GM_getValue, GM_setValue, CONFIG);
-			})
-			.catch(err => console.error(`[OmniNexus] Failed to load ${workerFileName}:`, err));
+		try {
+			const res = await request({ method: 'GET', url: workerUrl });
+			const workerFn = new Function('settingsJSON', 'role', 'GM_getValue', 'GM_setValue', 'CONFIG', res.responseText);
+			workerFn(settingsJSON, CONFIG.role, GM_getValue, GM_setValue, CONFIG);
+		} catch (err) {
+			console.error(`[omniNexus] Ошибка загрузки ${workerFileName} (${hash}):`, err);
+		}
 	}
 })();

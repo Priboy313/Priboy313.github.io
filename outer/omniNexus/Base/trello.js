@@ -1,5 +1,4 @@
 (function(settingsJSON, role = "user", GM_getValue, GM_setValue, CONFIG) {
-	'use strict';
 
 	const SCRIPT_ID = 'nexusTrello';
 	const ROLE = role;

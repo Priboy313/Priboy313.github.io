@@ -7,6 +7,14 @@
 			"pattern": "google\\.com\\/priboy313\\/trello",
 			"launchUrl": "https://www.google.com/priboy313/trello",
 			"worker": "trello.js"
+		},
+		{
+			"moduleId": "todo",
+			"name": "📝 Чеклисты и Списки",
+			"desc": "Двухпанельный менеджер списков дел с файловой структурой.",
+			"pattern": "google\\.com\\/priboy313\\/todo",
+			"launchUrl": "https://www.google.com/priboy313/todo",
+			"worker": "todo.js"
 		}
 	]
 }
