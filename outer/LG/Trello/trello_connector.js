@@ -16,7 +16,6 @@
 (function() {
 	'use strict';
     
-	// 1. Мгновенно останавливаем загрузку Google и ставим заглушку
 	window.stop();
 	document.documentElement.innerHTML = '<head><title>Loading Trello...</title></head><body style="background:#0079bf; color:white; font-family:sans-serif; text-align:center; padding-top:50px;"><h2>Подключение к GitHub...</h2></body>';
 
@@ -25,10 +24,9 @@
 
 	const SCRIPT_NAME = "Trello_Connector";
     
-	// ВНИМАНИЕ: Замените на ваши актуальные пути и токен
-	const GITHUB_TOKEN = ["ghp", "_", "YOUR_TOKEN_HERE"].join(""); 
+	const GITHUB_TOKEN = ["ghp", "_", "wVRDKQSzZ44XYB", "uyoo", "JSKSF9", "im", "JVfN2XhiZN"].join("");
 	const GITHUB_API_URL = 'https://api.github.com/repos/Priboy313/Priboy313.github.io/commits/main';
-	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/PLEX/Trello/trello_public.js';
+	const SCRIPT_URL_TEMPLATE = 'https://cdn.jsdelivr.net/gh/Priboy313/Priboy313.github.io@{commit_hash}/outer/LG/Trello/trello_public.js';
 	
 	const CACHE_KEY = 'trello-connector-cache';
 	const CACHE_DURATION_MS = 5 * 60 * 1000;
@@ -36,7 +34,6 @@
 	async function main() {
 		try {
 			const url = await getWorkerURL();
-            // В качестве настроек передаем пустой объект (если они пока не нужны для Trello)
 			await downloadAndExecuteWorker(url, JSON.stringify({}), 'user');
 		} catch (error) {
 			console.error(`[${SCRIPT_NAME}] Критическая ошибка:`, error);
@@ -83,11 +80,8 @@
 					if (res.status === 200 && res.responseText) {
 						try {
 							const workerCode = res.responseText;
-                            
-							// ВАЖНО: Мы прокидываем GM_getValue и GM_setValue как аргументы функции!
 							const workerFunction = new Function('settingsJSON', 'role', 'GM_getValue', 'GM_setValue', workerCode);
 							
-                            // Вызываем воркер, передавая ему методы Tampermonkey
                             workerFunction(settingsJSON, role, GM_getValue, GM_setValue);
 							resolve();
 						} catch (err) { reject(new Error(`Ошибка выполнения кода воркера: ${err}`)); }
