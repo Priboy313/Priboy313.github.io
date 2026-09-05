@@ -53,16 +53,20 @@
 		}
 	}
 
-	if (!activeRoute && !isDashboard) return;
+	const isDashboardHome = !activeRoute && new RegExp(`${CONFIG.dashboardHost}${CONFIG.dashboardPath}\\/?(\\?.*)?$`, 'i').test(currentUrl);
 
-	if (isDashboard) {
+	if (!activeRoute && !isDashboardHome) return;
+
+	if (currentUrl.includes(CONFIG.dashboardHost)) {
 		window.stop();
 		document.documentElement.innerHTML = `
 			<head><title>${CONFIG.workspace} Hub</title></head>
 			<body style="background:#0f172a;color:#38bdf8;font-family:monospace;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;">
-				<h2>[OmniNexus:${CONFIG.workspace}] Initializing core...</h2>
+				<h2>[omniNexus:${CONFIG.workspace}] Loading...</h2>
 			</body>`;
+	}
 
+	if (isDashboardHome) {
 		updateSystem().finally(() => executeWorker('dashboard.js', 'dashboard'));
 	} else {
 		const isCacheExpired = (Date.now() - routerCache.timestamp) > (CONFIG.ttlMinutes * 60 * 1000);

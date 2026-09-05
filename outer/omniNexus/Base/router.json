@@ -1,14 +1,12 @@
 {
 	"routes": [
 		{
-			"pattern": "b2b\\.lge\\.com.*",
-			"moduleId": "lgB2BFix",
-			"worker": "lg_b2b_worker.js"
-		},
-		{
-			"pattern": "example\\.com.*",
-			"moduleId": "sampleWorker",
-			"worker": "sample_worker.js"
+			"moduleId": "trello",
+			"name": "📋 Канбан-доска",
+			"desc": "Локальный менеджер задач и заметок с сохранением в изолированном кэше.",
+			"pattern": "google\\.com\\/priboy313\\/trello",
+			"launchUrl": "https://www.google.com/priboy313/trello",
+			"worker": "trello.js"
 		}
 	]
 }

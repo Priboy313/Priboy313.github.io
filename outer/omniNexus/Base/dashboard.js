@@ -4,20 +4,8 @@
 	const SCRIPT_ID = 'nexusDashboard';
 	const ROLE = role;
 
-	const DEFAULTS = {
-		defaultColumns: [
-			{ id: 'todo', title: 'To Do', cards: [{ id: 'c1', text: 'Проверить omniNexus' }] },
-			{ id: 'in_progress', title: 'In Progress', cards: [] },
-			{ id: 'done', title: 'Done', cards: [] }
-		]
-	};
-
-	let config;
-	let boardData;
-	let draggedCardId = null;
-	let sourceColId = null;
-
-	const STORAGE_KEY = `nexus_${CONFIG.workspace}_trello`;
+	const ROUTER_CACHE_KEY = `nexus_${CONFIG.workspace}_router`;
+	const HASH_CACHE_KEY = `nexus_${CONFIG.workspace}_commit_hash`;
 	const SETTINGS_KEY = `nexus_${CONFIG.workspace}_settings`;
 
 	function print(...args) {
@@ -26,180 +14,108 @@
 		}
 	}
 
-	function loadConfig() {
-		print('Обработка полученной конфигурации...', settingsJSON);
-		let settingsData = {};
-		try {
-			if (settingsJSON && typeof settingsJSON === 'string') {
-				settingsData = JSON.parse(settingsJSON);
-			}
-		} catch (e) {
-			print('Ошибка парсинга JSON настроек. Используются defaults.', e);
-			return DEFAULTS;
-		}
-		const finalConfig = { ...DEFAULTS, ...settingsData };
-		print('Финальный конфиг:', finalConfig);
-		return finalConfig;
-	}
-
 	function addCustomCSS() {
 		const style = document.createElement('style');
 		style.id = `custom-${SCRIPT_ID}-css`;
 		style.textContent = `
 			* { box-sizing: border-box; }
-			body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #f8fafc; height: 100vh; overflow: hidden; }
-			#root { display: flex; height: 100vh; }
-			aside { width: 250px; background: #1e293b; padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; }
-			aside h2 { margin: 0 0 10px 0; font-size: 18px; color: #38bdf8; }
-			.role-badge { font-size: 11px; background: #334155; padding: 3px 8px; border-radius: 12px; width: fit-content; margin-bottom: 15px; color: #94a3b8; }
-			aside button { background: #334155; border: 1px solid #475569; color: #f8fafc; padding: 10px 12px; border-radius: 6px; cursor: pointer; text-align: left; font-size: 14px; }
-			aside button:hover { background: #475569; }
-			main { flex-grow: 1; padding: 24px; overflow-x: auto; display: flex; flex-direction: column; }
-			.board { display: flex; gap: 16px; align-items: flex-start; height: 100%; }
-			.col { background: #1e293b; border: 1px solid #334155; width: 280px; min-width: 280px; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; max-height: calc(100vh - 80px); }
-			.col-header { font-weight: 600; font-size: 14px; margin-bottom: 12px; color: #94a3b8; display: flex; justify-content: space-between; }
-			.card-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; min-height: 40px; }
-			.card { background: #334155; border: 1px solid #475569; padding: 10px; border-radius: 6px; cursor: grab; font-size: 14px; line-height: 1.4; }
-			.card:active { cursor: grabbing; opacity: 0.6; }
-			.add-btn { margin-top: 10px; background: transparent; border: 1px dashed #475569; color: #94a3b8; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-			.add-btn:hover { background: #334155; color: #f8fafc; }
+			body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #f8fafc; min-height: 100vh; padding: 40px 20px; display: flex; justify-content: center; }
+			.container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 32px; }
+			
+			/* Брендовый заголовок */
+			header { border-bottom: 1px solid #1e293b; padding-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+			.brand-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin: 0; color: #f8fafc; display: flex; align-items: center; gap: 10px; }
+			.brand-title span { color: #38bdf8; }
+			.brand-subtitle { font-size: 14px; color: #64748b; margin-top: 6px; }
+			.meta-pill { font-family: monospace; font-size: 12px; background: #1e293b; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; color: #94a3b8; }
+
+			/* Список модулей */
+			.section-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin: 0 0 16px 0; font-weight: 600; }
+			.modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+			.module-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; transition: border-color 0.2s, transform 0.15s; }
+			.module-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
+			.module-card h3 { margin: 0 0 8px 0; font-size: 16px; color: #f8fafc; }
+			.module-card p { margin: 0 0 16px 0; font-size: 13px; color: #94a3b8; line-height: 1.4; flex-grow: 1; }
+			.module-btn { background: #334155; border: 1px solid #475569; color: #38bdf8; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; }
+			.module-card:hover .module-btn { background: #0284c7; color: #fff; border-color: #0284c7; }
+
+			/* Нижний блок настроек */
+			details { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; font-size: 14px; }
+			summary { cursor: pointer; color: #94a3b8; font-weight: 600; user-select: none; }
+			textarea { width: 100%; height: 180px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; padding: 10px; margin-top: 12px; font-family: monospace; font-size: 12px; }
+			.save-btn { margin-top: 8px; background: #0284c7; border: none; color: white; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
 		`;
 		document.head.appendChild(style);
 	}
 
 	function runImmediate() {
-		print('Выполнение немедленных задач (Awake)...');
-		document.documentElement.innerHTML = `<head><title>${CONFIG.workspace} Hub</title></head><body><div id="root"></div></body>`;
+		document.documentElement.innerHTML = `<head><title>${CONFIG.workspace} Hub</title></head><body><div class="container" id="app"></div></body>`;
 		addCustomCSS();
 	}
 
 	function runOnLoad() {
-		print('Выполнение задач после монтирования DOM (Start)...');
-		boardData = GM_getValue(STORAGE_KEY, config.defaultColumns);
-		renderShell();
-		renderTrello();
+		render();
 	}
 
-	function renderShell() {
-		const root = document.getElementById('root');
-		root.innerHTML = `
-			<aside>
-				<h2>⚡ ${CONFIG.workspace}</h2>
-				<span class="role-badge">Role: ${ROLE}</span>
-				<button id="nav-board">Канбан-доска</button>
-				<button id="nav-settings">Настройки модулей</button>
-			</aside>
-			<main id="view-container"></main>
-		`;
-
-		document.getElementById('nav-board').onclick = renderTrello;
-		document.getElementById('nav-settings').onclick = renderSettings;
-	}
-
-	function renderTrello() {
-		const view = document.getElementById('view-container');
-		view.innerHTML = '<div class="board" id="kanban-board"></div>';
-		const board = document.getElementById('kanban-board');
-
-		boardData.forEach(col => {
-			const colEl = document.createElement('div');
-			colEl.className = 'col';
-
-			colEl.innerHTML = `
-				<div class="col-header">
-					<span>${col.title}</span>
-					<span>${col.cards.length}</span>
-				</div>
-				<div class="card-list" data-col="${col.id}"></div>
-				<button class="add-btn">+ Добавить</button>
-			`;
-
-			const listEl = colEl.querySelector('.card-list');
-
-			listEl.addEventListener('dragover', e => e.preventDefault());
-			listEl.addEventListener('drop', () => {
-				if (!draggedCardId || sourceColId === col.id) return;
-				moveCard(sourceColId, col.id, draggedCardId);
-			});
-
-			col.cards.forEach(card => {
-				const cardEl = document.createElement('div');
-				cardEl.className = 'card';
-				cardEl.draggable = true;
-				cardEl.textContent = card.text;
-
-				cardEl.addEventListener('dragstart', () => {
-					draggedCardId = card.id;
-					sourceColId = col.id;
-				});
-
-				cardEl.addEventListener('dragend', () => {
-					draggedCardId = null;
-					sourceColId = null;
-				});
-
-				listEl.appendChild(cardEl);
-			});
-
-			colEl.querySelector('.add-btn').onclick = () => {
-				const text = prompt('Текст задачи:');
-				if (text && text.trim()) {
-					col.cards.push({ id: 'c_' + Date.now(), text: text.trim() });
-					persistBoard();
-					renderTrello();
-				}
-			};
-
-			board.appendChild(colEl);
-		});
-	}
-
-	function renderSettings() {
-		const view = document.getElementById('view-container');
+	function render() {
+		const app = document.getElementById('app');
+		const routerData = GM_getValue(ROUTER_CACHE_KEY, { routes: [] });
+		const hash = GM_getValue(HASH_CACHE_KEY, 'main');
 		const globalSettings = GM_getValue(SETTINGS_KEY, {});
 
-		view.innerHTML = `
-			<div style="max-width: 650px;">
-				<h3 style="margin-top:0;">Настройки модулей (${CONFIG.workspace})</h3>
-				<textarea id="settings-raw" style="width:100%;height:320px;background:#1e293b;color:#f8fafc;border:1px solid #334155;padding:12px;border-radius:6px;font-family:monospace;line-height:1.4;"></textarea>
-				<button id="save-settings-btn" style="margin-top:10px;background:#0284c7;color:#fff;border:none;padding:8px 18px;border-radius:4px;cursor:pointer;">Сохранить конфигурацию</button>
+		let modulesHTML = '';
+		if (routerData.routes.length === 0) {
+			modulesHTML = '<div style="color:#64748b;font-size:14px;">Нет зарегистрированных модулей в этом спейсе.</div>';
+		} else {
+			routerData.routes.forEach(m => {
+				modulesHTML += `
+					<a class="module-card" href="${m.launchUrl || '#'}" target="${m.launchUrl?.startsWith('http') ? '_self' : '_blank'}">
+						<div>
+							<h3>${m.name || m.moduleId}</h3>
+							<p>${m.desc || 'Модуль системы omniNexus'}</p>
+						</div>
+						<div class="module-btn">Запустить ➔</div>
+					</a>
+				`;
+			});
+		}
+
+		app.innerHTML = `
+			<header>
+				<div>
+					<h1 class="brand-title">⚡ omniNexus <span>// ${CONFIG.workspace}</span></h1>
+					<div class="brand-subtitle">Environment Hub & Launcher</div>
+				</div>
+				<div class="meta-pill">${CONFIG.provider.toUpperCase()} : ${hash.substring(0, 7)}</div>
+			</header>
+
+			<div>
+				<div class="section-title">Доступные модули</div>
+				<div class="modules-grid">
+					${modulesHTML}
+				</div>
 			</div>
+
+			<details>
+				<summary>⚙️ Конфигурация спейса (${CONFIG.workspace})</summary>
+				<textarea id="settings-area">${JSON.stringify(globalSettings, null, 2)}</textarea>
+				<button class="save-btn" id="save-btn">Сохранить</button>
+			</details>
 		`;
 
-		const area = document.getElementById('settings-raw');
-		area.value = JSON.stringify(globalSettings, null, 2);
-
-		document.getElementById('save-settings-btn').onclick = () => {
+		document.getElementById('save-btn').onclick = () => {
 			try {
-				const parsed = JSON.parse(area.value);
-				GM_setValue(SETTINGS_KEY, parsed);
-				print('Конфигурация модулей успешно сохранена.');
-				alert('Настройки сохранены');
+				const val = JSON.parse(document.getElementById('settings-area').value);
+				GM_setValue(SETTINGS_KEY, val);
+				alert('Конфигурация сохранена');
 			} catch (e) {
-				alert('Ошибка парсинга JSON');
+				alert('Ошибка валидации JSON');
 			}
 		};
 	}
 
-	function moveCard(fromId, toId, cardId) {
-		const fromCol = boardData.find(c => c.id === fromId);
-		const toCol = boardData.find(c => c.id === toId);
-		const idx = fromCol.cards.findIndex(c => c.id === cardId);
-		const [card] = fromCol.cards.splice(idx, 1);
-		toCol.cards.push(card);
-
-		persistBoard();
-		renderTrello();
-	}
-
-	function persistBoard() {
-		GM_setValue(STORAGE_KEY, boardData);
-	}
-
 	function main() {
-		config = loadConfig();
 		runImmediate();
-
 		if (document.readyState === 'loading') {
 			document.addEventListener('DOMContentLoaded', runOnLoad);
 		} else {
