@@ -30,7 +30,7 @@
 				username: "Priboy313",
 				repo: "Priboy313.github.io",
 				branch: "main",
-				token: ["ghp", "_", "YOUR_TOKEN_HERE"].join("")
+				token: ["ghp", "_", "jxnJlaxiJLsgkzg6mqaKq7YtJH5ob414f3Lw"].join("")
 			},
 			custom: {
 				baseUrl: "https://my-domain.com/scripts"

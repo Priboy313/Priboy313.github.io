@@ -59,8 +59,8 @@
 	function render() {
 		const app = document.getElementById('app');
 		const routerData = GM_getValue(ROUTER_CACHE_KEY, { routes: [] });
-		const hash = GM_getValue(HASH_CACHE_KEY, 'main');
-		const globalSettings = GM_getValue(SETTINGS_KEY, {});
+		const hashRaw = GM_getValue(HASH_CACHE_KEY, 'main');
+		const hash = (typeof hashRaw === 'object' && hashRaw !== null) ? (hashRaw.hash || 'main') : String(hashRaw || 'main');
 
 		let modulesHTML = '';
 		if (routerData.routes.length === 0) {
