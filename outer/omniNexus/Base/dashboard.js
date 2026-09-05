@@ -62,6 +62,8 @@
 		const hashRaw = GM_getValue(HASH_CACHE_KEY, 'main');
 		const hash = (typeof hashRaw === 'object' && hashRaw !== null) ? (hashRaw.hash || 'main') : String(hashRaw || 'main');
 
+		const globalSettings = GM_getValue(SETTINGS_KEY, {});
+
 		let modulesHTML = '';
 		if (routerData.routes.length === 0) {
 			modulesHTML = '<div style="color:#64748b;font-size:14px;">Нет зарегистрированных модулей в этом спейсе.</div>';
