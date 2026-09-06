@@ -6,6 +6,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_listValues
 // @run-at       document-start
 // @connect      127.0.0.1
 // @connect      localhost
@@ -25,7 +26,7 @@
 		// Базовый домен, на котором разворачиваем Нексус
 		dashboardHost: "google.com",
 		// Путь к конкретной странице на домене, лучше брать несуществующий на самом сайте
-		dashboardPath: "/priboy313",
+		dashboardPath: "/omninexus",
 
 		provider: "github", // github | custom | local | file
 
@@ -231,6 +232,7 @@
 					role: CONFIG.role,
 					GM_getValue,
 					GM_setValue,
+					GM_listValues,
 					CONFIG
 				});
 			} else {

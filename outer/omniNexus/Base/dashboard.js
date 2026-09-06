@@ -31,8 +31,15 @@ var ModuleClass = (function(NexusBehaviour) {
 
 				details { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; font-size: 14px; }
 				summary { cursor: pointer; color: #94a3b8; font-weight: 600; user-select: none; }
-				textarea { width: 100%; height: 180px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; padding: 10px; margin-top: 12px; font-family: monospace; font-size: 12px; }
-				.save-btn { margin-top: 8px; background: #0284c7; border: none; color: white; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
+				textarea { width: 100%; height: 160px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; padding: 10px; margin-top: 12px; font-family: monospace; font-size: 12px; }
+				
+				.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+				.action-btn { background: #334155; border: 1px solid #475569; color: #f8fafc; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background 0.15s; }
+				.action-btn:hover { background: #475569; }
+				.action-btn.primary { background: #0284c7; border-color: #0284c7; color: white; }
+				.action-btn.primary:hover { background: #0369a1; }
+				.action-btn.success { background: #10b981; border-color: #10b981; color: white; }
+				.action-btn.success:hover { background: #059669; }
 			`);
 		}
 
@@ -83,14 +90,38 @@ var ModuleClass = (function(NexusBehaviour) {
 					</div>
 				</div>
 
+				<!-- Блок бэкапа и переноса данных -->
+				<details>
+					<summary>📦 Резервное копирование (${this.workspace})</summary>
+					<p style="color:#94a3b8;font-size:13px;margin:8px 0 0 0;">
+						Скопируйте текст ниже, чтобы сохранить бэкап, либо вставьте текст сюда для восстановления.
+					</p>
+					
+					<textarea id="backup-text" placeholder="Нажмите «Экспорт в текст» или вставьте сюда текст бэкапа..."></textarea>
+					
+					<div class="btn-row">
+						<button class="action-btn primary" id="btn-export-text">Сформировать экспорт</button>
+						<button class="action-btn" id="btn-copy-text">Скопировать в буфер</button>
+						<button class="action-btn success" id="btn-import-text">Применить из поля выше</button>
+						<button class="action-btn" id="btn-export-file">Скачать файл .json</button>
+						<button class="action-btn" id="btn-import-file">Загрузить файл .json</button>
+						<input type="file" id="file-input" accept=".json" style="display:none;" />
+					</div>
+				</details>
+
+				<!-- Блок конфигурации модулей -->
 				<details>
 					<summary>⚙️ Конфигурация спейса (${this.workspace})</summary>
 					<textarea id="settings-area">${JSON.stringify(globalSettings, null, 2)}</textarea>
-					<button class="save-btn" id="save-btn">Сохранить</button>
+					<div class="btn-row">
+						<button class="action-btn primary" id="save-settings-btn">Сохранить</button>
+					</div>
 				</details>
 			`;
 
-			document.getElementById('save-btn').onclick = () => {
+			this.initBackupHandlers();
+
+			document.getElementById('save-settings-btn').onclick = () => {
 				try {
 					const val = JSON.parse(document.getElementById('settings-area').value);
 					this.saveGlobal('settings', val);
@@ -98,6 +129,119 @@ var ModuleClass = (function(NexusBehaviour) {
 				} catch (e) {
 					alert('Ошибка валидации JSON');
 				}
+			};
+		}
+
+		// Логика сбора всех данных спейса
+		getAllWorkspaceData() {
+			const prefix = `nexus_${this.workspace}_`;
+			let keys = [];
+
+			if (typeof this._GM_list === 'function') {
+				keys = this._GM_list().filter(k => k.startsWith(prefix)).map(k => k.replace(prefix, ''));
+			} else {
+				// Фоллбэк на базовые модули, если GM_listValues не доступен
+				keys = ['trello', 'todo', 'settings', 'router'];
+			}
+
+			const payload = {
+				__meta: {
+					workspace: this.workspace,
+					timestamp: Date.now(),
+					exportedAt: new Date().toLocaleString()
+				},
+				data: {}
+			};
+
+			keys.forEach(k => {
+				const val = this.loadGlobal(k, null);
+				if (val !== null) {
+					payload.data[k] = val;
+				}
+			});
+
+			return payload;
+		}
+
+		applyWorkspaceData(payload) {
+			const data = payload.data || payload;
+			let count = 0;
+
+			for (const key in data) {
+				if (key === '__meta') continue;
+				this.saveGlobal(key, data[key]);
+				count++;
+			}
+
+			alert(`Успешно восстановлено разделов: ${count}. Страница будет перезагружена.`);
+			window.location.reload();
+		}
+
+		initBackupHandlers() {
+			const area = document.getElementById('backup-text');
+			const fileInput = document.getElementById('file-input');
+
+			// 1. Сформировать экспорт в текст
+			document.getElementById('btn-export-text').onclick = () => {
+				const data = this.getAllWorkspaceData();
+				area.value = JSON.stringify(data, null, 2);
+			};
+
+			// 2. Скопировать в буфер
+			document.getElementById('btn-copy-text').onclick = () => {
+				if (!area.value.trim()) {
+					const data = this.getAllWorkspaceData();
+					area.value = JSON.stringify(data, null, 2);
+				}
+				navigator.clipboard.writeText(area.value).then(() => {
+					alert('Текст бэкапа скопирован в буфер обмена!');
+				});
+			};
+
+			// 3. Применить из текста
+			document.getElementById('btn-import-text').onclick = () => {
+				const raw = area.value.trim();
+				if (!raw) return alert('Поле ввода пустое!');
+
+				try {
+					const parsed = JSON.parse(raw);
+					if (!confirm('Применить бэкап? Текущие данные в спейсе будут заменены.')) return;
+					this.applyWorkspaceData(parsed);
+				} catch (e) {
+					alert('Ошибка парсинга: в поле вставлен некорректный JSON!');
+				}
+			};
+
+			// 4. Скачать файл
+			document.getElementById('btn-export-file').onclick = () => {
+				const data = this.getAllWorkspaceData();
+				const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = `nexus_backup_${this.workspace}_${Date.now()}.json`;
+				a.click();
+				URL.revokeObjectURL(url);
+			};
+
+			// 5. Загрузить из файла
+			document.getElementById('btn-import-file').onclick = () => fileInput.click();
+
+			fileInput.onchange = (e) => {
+				const file = e.target.files[0];
+				if (!file) return;
+
+				const reader = new FileReader();
+				reader.onload = (ev) => {
+					try {
+						const parsed = JSON.parse(ev.target.result);
+						if (!confirm('Загрузить данные из файла?')) return;
+						this.applyWorkspaceData(parsed);
+					} catch (err) {
+						alert('Ошибка чтения файла: неверный формат JSON.');
+					}
+				};
+				reader.readAsText(file);
 			};
 		}
 	};

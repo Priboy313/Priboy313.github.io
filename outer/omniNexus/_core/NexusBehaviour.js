@@ -4,18 +4,26 @@ class NexusBehaviour {
         this.role = context.role;
         this.workspace = context.CONFIG.workspace;
         this.CONFIG = context.CONFIG;
+		this._context = context;
         
         this._GM_get = context.GM_getValue;
         this._GM_set = context.GM_setValue;
+		this._GM_list = context.GM_listValues;
+		this._observers = [];
 
-        let userSettings = {};
-        try {
-            userSettings = JSON.parse(context.settingsJSON || '{}');
-        } catch (e) {}
-        this.config = { ...(this.defaults || {}), ...userSettings };
-
-        this._initLifecycle();
+        queueMicrotask(() => this._initLifecycle());
     }
+
+	get config() {
+		if (!this._cachedConfig) {
+			let userSettings = {};
+			try {
+				userSettings = JSON.parse(this._context.settingsJSON || '{}');
+			} catch (e) {}
+			this._cachedConfig = { ...(this.defaults || {}), ...userSettings };
+		}
+		return this._cachedConfig;
+	}
 
     _initLifecycle() {
         this.awake();
