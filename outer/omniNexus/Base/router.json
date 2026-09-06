@@ -2,17 +2,17 @@
 	"routes": [
 		{
 			"moduleId": "trello",
-			"name": "📋 Канбан-доска",
-			"desc": "Локальный менеджер задач и заметок с сохранением в изолированном кэше.",
-			"pattern": "google\\.com\\/priboy313\\/trello",
+			"name": "📋 Доска",
+			"desc": "Локальный менеджер задач и заметок в стиле Трелло.",
+			"subpath": "trello",
 			"launchUrl": "https://www.google.com/priboy313/trello",
 			"worker": "trello.js"
 		},
 		{
 			"moduleId": "todo",
-			"name": "📝 Чеклисты и Списки",
+			"name": "📝 Чеклисты",
 			"desc": "Двухпанельный менеджер списков дел с файловой структурой.",
-			"pattern": "google\\.com\\/priboy313\\/todo",
+			"subpath": "todo",
 			"launchUrl": "https://www.google.com/priboy313/todo",
 			"worker": "todo.js"
 		}

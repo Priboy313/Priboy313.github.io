@@ -62,8 +62,14 @@ var ModuleClass = (function(NexusBehaviour) {
 				modulesHTML = '<div style="color:#64748b;font-size:14px;">Нет зарегистрированных модулей в этом спейсе.</div>';
 			} else {
 				routes.forEach(m => {
+					let targetUrl = m.launchUrl;
+					if (m.subpath) {
+						const cleanSub = m.subpath.replace(/^\/+|\/+$/g, '');
+						targetUrl = `https://${this.CONFIG.dashboardHost}${this.CONFIG.dashboardPath}/${cleanSub}`;
+					}
+
 					modulesHTML += `
-						<a class="module-card" href="${m.launchUrl || '#'}" target="${m.launchUrl?.startsWith('http') ? '_self' : '_blank'}">
+						<a class="module-card" href="${targetUrl || '#'}" target="${targetUrl?.startsWith('http') ? '_self' : '_blank'}">
 							<div>
 								<h3>${m.name || m.moduleId}</h3>
 								<p>${m.desc || 'Модуль системы omniNexus'}</p>

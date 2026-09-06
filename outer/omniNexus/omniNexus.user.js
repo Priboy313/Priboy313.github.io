@@ -52,7 +52,7 @@
 			}
 		},
 
-		role: "dodev",
+		role: "user",
 		ttlMinutes: 60, // Время жизни кэша коммита
 	};
 
@@ -63,17 +63,30 @@
 
 	const currentUrl = window.location.href;
 
+	function escapeRegex(str) {
+		return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
 	let routerCache = GM_getValue(ROUTER_CACHE_KEY, { timestamp: 0, routes: [] });
 
 	let activeRoute = null;
 	for (const route of routerCache.routes) {
-		if (new RegExp(route.pattern, 'i').test(currentUrl)) {
+		let pattern = route.pattern;
+
+		if (route.subpath) {
+			const cleanSub = route.subpath.replace(/^\/+|\/+$/g, '');
+			pattern = `${escapeRegex(CONFIG.dashboardHost)}.*${escapeRegex(CONFIG.dashboardPath)}\\/${cleanSub}(\\/)?($|\\?.*)`;
+		}
+
+		if (pattern && new RegExp(pattern, 'i').test(currentUrl)) {
 			activeRoute = route;
 			break;
 		}
 	}
 
-	const isDashboardHome = !activeRoute && new RegExp(`${CONFIG.dashboardHost}${CONFIG.dashboardPath}\\/?(\\?.*)?$`, 'i').test(currentUrl);
+	// const isDashboardHome = !activeRoute && new RegExp(`${CONFIG.dashboardHost}${CONFIG.dashboardPath}\\/?(\\?.*)?$`, 'i').test(currentUrl);
+	const homePattern = new RegExp(`${escapeRegex(CONFIG.dashboardHost)}.*${escapeRegex(CONFIG.dashboardPath)}\\/?($|\\?.*)`, 'i');
+	const isDashboardHome = !activeRoute && homePattern.test(currentUrl);
 
 	if (!activeRoute && !isDashboardHome) return;
 
