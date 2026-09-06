@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         omniNexus
-// @version      1.2
+// @version      1.5
 // @author       Priboy313
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
@@ -9,6 +9,7 @@
 // @run-at       document-start
 // @connect      127.0.0.1
 // @connect      localhost
+// @connect      my-domain.com // Заменить на кастомный сервер
 // @connect      api.github.com
 // @connect      raw.githubusercontent.com
 // @connect      cdn.jsdelivr.net
@@ -18,27 +19,40 @@
 	'use strict';
 
 	const CONFIG = {
-		systemRoot: "omniNexus",
-		workspace: "Base",
-		role: "dodev",
+		systemRoot: "omniNexus", // Название корневой папки Нексуса 
+		workspace: "Base", // Название конкретного пространства, где лежат модули
+
+		// Базовый домен, на котором разворачиваем Нексус
 		dashboardHost: "google.com",
+		// Путь к конкретной странице на домене, лучше брать несуществующий на самом сайте
 		dashboardPath: "/priboy313",
-		ttlMinutes: 60, // Время жизни кэша коммита
-		provider: "github", // "github" | "custom" | "local"
+
+		provider: "github", // github | custom | local | file
+
 		sources: {
 			github: {
+				// Данные репозитория и его владельца
 				username: "Priboy313",
 				repo: "Priboy313.github.io",
 				branch: "main",
 				token: ["ghp", "_", "jxnJlaxiJLsgkzg6mqaKq7YtJH5ob414f3Lw"].join("")
 			},
 			custom: {
-				baseUrl: "https://my-domain.com/scripts"
+				// Адрес собственного сервера, если Гитхаб чем-то не устраивает
+				baseUrl: "https://my-domain.com/omni-nexus"
 			},
 			local: {
+				// Вставляем адрес локального СЕРВЕРА (например, LiveServer VSCode)
 				baseUrl: "http://127.0.0.1:5500"
+			},
+			file: {
+				// Путь до локальной папки с файлами проекта, напрямую, без сервера
+				baseUrl: "file:///C:/Users/USER_NAME/Desktop/omniNexus"
 			}
-		}
+		},
+
+		role: "dodev",
+		ttlMinutes: 60, // Время жизни кэша коммита
 	};
 
 	const CACHE_PREFIX = `nexus_${CONFIG.workspace}_`;
@@ -99,7 +113,11 @@
 
 	function request(options) {
 		return new Promise((resolve, reject) => {
-			options.onload = res => (res.status === 200) ? resolve(res) : reject(res.status);
+			options.onload = res => {
+				const isSuccess = res.status === 200 || (res.status === 0 && res.responseText);
+				if (isSuccess) resolve(res);
+				else reject(res.status);
+			};
 			options.onerror = reject;
 			GM_xmlhttpRequest(options);
 		});
@@ -137,6 +155,32 @@
 		}
 	}
 
+	function getCoreUrl(hash) {
+		const src = CONFIG.sources[CONFIG.provider];
+		const path = `outer/${CONFIG.systemRoot}/_core/NexusBehaviour.js`;
+
+		if (CONFIG.provider === 'github') {
+			return `https://cdn.jsdelivr.net/gh/${src.username}/${src.repo}@${hash}/${path}`;
+		}
+		if (CONFIG.provider === 'file') {
+			return `${src.baseUrl}/${path}`;
+		}
+		return `${src.baseUrl}/${path}?t=${Date.now()}`;
+	}
+
+	function getWorkerUrl(workerName, hash) {
+		const src = CONFIG.sources[CONFIG.provider];
+		const path = `outer/${CONFIG.systemRoot}/${CONFIG.workspace}/${workerName}`;
+
+		if (CONFIG.provider === 'github') {
+			return `https://cdn.jsdelivr.net/gh/${src.username}/${src.repo}@${hash}/${path}`;
+		}
+		if (CONFIG.provider === 'file') {
+			return `${src.baseUrl}/${path}`;
+		}
+		return `${src.baseUrl}/${path}?t=${Date.now()}`;
+	}
+
 	async function updateRouter(hash) {
 		try {
 			let routerUrl;
@@ -145,6 +189,8 @@
 
 			if (CONFIG.provider === 'github') {
 				routerUrl = `https://cdn.jsdelivr.net/gh/${src.username}/${src.repo}@${hash}/${path}`;
+			} else if (CONFIG.provider === 'file') {
+				routerUrl = `${src.baseUrl}/${path}`;
 			} else {
 				routerUrl = `${src.baseUrl}/${path}?t=${Date.now()}`;
 			}
@@ -161,28 +207,37 @@
 		}
 	}
 
-	function getWorkerUrl(workerName, hash) {
-		const src = CONFIG.sources[CONFIG.provider];
-		const path = `outer/${CONFIG.systemRoot}/${CONFIG.workspace}/${workerName}`;
-
-		if (CONFIG.provider === 'github') {
-			return `https://cdn.jsdelivr.net/gh/${src.username}/${src.repo}@${hash}/${path}`;
-		}
-		return `${src.baseUrl}/${path}?t=${Date.now()}`;
-	}
-
 	async function executeWorker(workerFileName, moduleId, hash) {
+		const coreUrl = getCoreUrl(hash);
 		const workerUrl = getWorkerUrl(workerFileName, hash);
+
 		const globalSettings = GM_getValue(SETTINGS_KEY, {});
 		const moduleSettings = globalSettings[moduleId] || {};
 		const settingsJSON = JSON.stringify(moduleSettings);
 
 		try {
-			const res = await request({ method: 'GET', url: workerUrl });
-			const workerFn = new Function('settingsJSON', 'role', 'GM_getValue', 'GM_setValue', 'CONFIG', res.responseText);
-			workerFn(settingsJSON, CONFIG.role, GM_getValue, GM_setValue, CONFIG);
+			const [coreRes, workerRes] = await Promise.all([
+				request({ method: 'GET', url: coreUrl }),
+				request({ method: 'GET', url: workerUrl })
+			]);
+
+			const NexusBehaviour = new Function(coreRes.responseText + '; return NexusBehaviour;')();
+
+			const WorkerClass = new Function('NexusBehaviour', workerRes.responseText + '; return typeof ModuleClass !== "undefined" ? ModuleClass : null;')(NexusBehaviour);
+
+			if (WorkerClass) {
+				new WorkerClass({
+					settingsJSON,
+					role: CONFIG.role,
+					GM_getValue,
+					GM_setValue,
+					CONFIG
+				});
+			} else {
+				console.error(`[omniNexus] ${workerFileName} не вернул ModuleClass`);
+			}
 		} catch (err) {
-			console.error(`[omniNexus] Ошибка загрузки ${workerFileName} (${hash}):`, err);
+			console.error(`[omniNexus] Ошибка выполнения ${workerFileName} (${hash}):`, err);
 		}
 	}
 })();
