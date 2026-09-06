@@ -106,7 +106,7 @@ var ModuleClass = (function(NexusBehaviour) {
 					<textarea id="backup-text" placeholder="Нажмите «Экспорт в текст» или вставьте сюда текст бэкапа..."></textarea>
 					
 					<div class="btn-row">
-						<button class="action-btn primary" id="btn-export-text">Сформировать экспорт</button>
+						<button class="action-btn primary" id="btn-export-text">Экспорт в текст</button>
 						<button class="action-btn" id="btn-copy-text">Скопировать в буфер</button>
 						<button class="action-btn success" id="btn-import-text">Применить из поля выше</button>
 						<button class="action-btn" id="btn-export-file">Скачать файл .json</button>
