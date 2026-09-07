@@ -85,7 +85,7 @@ var ModuleClass = (function(NexusBehaviour) {
 				<header>
 					<div>
 						<h1 class="brand-title">⚡ ${this.config?.title || 'omniNexus'} <span>// ${this.workspace}</span></h1>
-						<div class="brand-subtitle">Environment Hub & Launcher</div>
+						<div class="brand-subtitle">Environment Hub & Launcher by Priboy313</div>
 					</div>
 					<div class="meta-pill">${this.CONFIG.provider.toUpperCase()} : ${hash.substring(0, 7)}</div>
 				</header>
