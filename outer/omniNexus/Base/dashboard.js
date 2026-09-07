@@ -206,15 +206,23 @@ var ModuleClass = (function(NexusBehaviour) {
 
 			// 3. Применить из текста
 			document.getElementById('btn-import-text').onclick = () => {
-				const raw = area.value.trim();
+				let raw = area.value.trim();
 				if (!raw) return alert('Поле ввода пустое!');
+
+				raw = raw
+					.replace(/\uFEFF/g, '')
+					.replace(/[\u200B-\u200D\u2060]/g, '')
+					.replace(/[\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]/g, ' ')
+					.replace(/[“”]/g, '"')
+					.replace(/[‘’]/g, "'");
 
 				try {
 					const parsed = JSON.parse(raw);
 					if (!confirm('Применить бэкап? Текущие данные в спейсе будут заменены.')) return;
 					this.applyWorkspaceData(parsed);
 				} catch (e) {
-					alert('Ошибка парсинга: в поле вставлен некорректный JSON!');
+					console.error('[Backup Import Error]', e);
+					alert(`Ошибка парсинга JSON: ${e.message}\n\nПроверьте, скопировался ли текст целиком.`);
 				}
 			};
 
