@@ -1,6 +1,16 @@
 var ModuleClass = (function(NexusBehaviour) {
 
-	return class OmniSheet extends NexusBehaviour {
+	return class OmniSheet extends NexusBehaviour.Explorer {
+
+		moduleTitle = '📊 omniSheet Studio';
+		storageKey = 'sheet';
+		fileIcon = '📊';
+		templateIcon = '📑';
+		defaultFileName = 'Новая таблица';
+		defaultTemplateName = 'Новый шаблон таблицы';
+		emptyStateIcon = '📊';
+		emptyStateTitle = 'Нет открытых таблиц';
+		emptyStateDesc = 'Выберите таблицу или шаблон в проводнике слева, либо создайте новую.';
 
 		defaults = {
 			defaultData: {
@@ -10,7 +20,7 @@ var ModuleClass = (function(NexusBehaviour) {
 					{
 						id: 'sheet_1',
 						name: 'Прогон тестов TV.xlsx',
-						cols: 6, // A - F
+						cols: 6,
 						rows: 15,
 						cells: {
 							"A1": "ID", "B1": "Тест / Модуль", "C1": "Время (сек)", "D1": "Статус", "E1": "Коэф.", "F1": "Итог",
@@ -42,205 +52,19 @@ var ModuleClass = (function(NexusBehaviour) {
 			}
 		};
 
-		awake() {
-			const hubUrl = `https://${this.CONFIG.dashboardHost}${this.CONFIG.dashboardPath}`;
+		// Конструкторы данных:
+		createFileData(name) { return { cols: 8, rows: 20, cells: {} }; }
+		createTemplateData(name) { return { cols: 6, rows: 15, cells: {} }; }
 
-			document.documentElement.innerHTML = `
-				<head><title>omniSheet // ${this.workspace}</title></head>
-				<body>
-					<header>
-						<div class="header-left">
-							<a href="${hubUrl}" class="back-link">← В Хаб</a>
-							<span class="header-title">📊 omniSheet Studio</span>
-						</div>
-					</header>
-					<div class="app-layout">
-						<!-- Сайдбар Проводника -->
-						<div class="explorer-pane">
-							<div class="explorer-section files-section">
-								<div class="section-header">
-									<span class="section-title">Таблицы</span>
-									<button class="icon-action-btn" id="btn-new-file" title="Создать таблицу">+ Таблица</button>
-								</div>
-								<div class="file-list" id="explorer-files"></div>
-							</div>
-
-							<div class="explorer-section templates-section" id="templates-accordion">
-								<div class="section-header accordion-toggle" id="toggle-templates">
-									<div class="accordion-title-wrap">
-										<span class="chevron" id="templates-chevron">⌄</span>
-										<span class="section-title">Шаблоны</span>
-										<span class="accordion-count" id="templates-count">0</span>
-									</div>
-									<button class="icon-action-btn" id="btn-new-tpl" title="Создать шаблон">+ Шаблон</button>
-								</div>
-								<div class="file-list" id="explorer-templates"></div>
-							</div>
-						</div>
-
-						<!-- Рабочая область Таблицы -->
-						<div class="content-pane" id="editor-pane"></div>
-					</div>
-				</body>`;
-
-			this.addCSS(`
-				* { box-sizing: border-box; }
-				body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #f8fafc; height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
-				
-				/* Шапка */
-				header { height: 52px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; }
-				.header-left { display: flex; align-items: center; gap: 14px; }
-				.back-link { color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 4px; background: #334155; display: flex; align-items: center; gap: 6px; }
-				.back-link:hover { color: #f8fafc; background: #475569; }
-				.header-title { font-weight: 700; font-size: 15px; color: #38bdf8; }
-
-				.app-layout { flex-grow: 1; display: flex; overflow: hidden; }
-
-				/* Сайдбар */
-				.explorer-pane { width: 280px; min-width: 280px; background: #111827; border-right: 1px solid #1f2937; display: flex; flex-direction: column; }
-				.explorer-section { display: flex; flex-direction: column; }
-				.files-section { flex-grow: 1; overflow: hidden; }
-				.templates-section { flex-shrink: 0; border-top: 1px solid #1f2937; background: #0d131f; }
-				.templates-section.collapsed #explorer-templates { display: none; }
-
-				.section-header { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; height: 38px; }
-				.accordion-toggle { cursor: pointer; user-select: none; }
-				.accordion-toggle:hover { background: #172033; }
-				.accordion-title-wrap { display: flex; align-items: center; gap: 8px; }
-				.chevron { font-size: 14px; color: #9ca3af; font-family: monospace; font-weight: bold; width: 12px; display: inline-block; transition: transform 0.15s; }
-				.templates-section.collapsed .chevron { transform: rotate(-90deg); }
-				.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #9ca3af; }
-				.accordion-count { font-size: 11px; color: #64748b; font-family: monospace; }
-				
-				.icon-action-btn { background: #1f2937; border: 1px solid #374151; color: #38bdf8; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
-				.icon-action-btn:hover { background: #374151; color: #fff; }
-
-				.file-list { overflow-y: auto; padding: 6px; display: flex; flex-direction: column; gap: 3px; max-height: calc(100vh - 200px); }
-				.templates-section .file-list { max-height: 240px; }
-
-				.file-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 9px; border-radius: 5px; cursor: pointer; font-size: 13px; color: #d1d5db; transition: background 0.1s; }
-				.file-item:hover { background: #1f2937; color: #fff; }
-				.file-item.active { background: #0284c7; color: #fff; }
-				.file-name-wrapper { display: flex; align-items: center; gap: 7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-grow: 1; margin-right: 6px; }
-				
-				.file-actions { display: flex; gap: 2px; opacity: 0; }
-				.file-item:hover .file-actions { opacity: 1; }
-				.file-btn { background: transparent; border: none; color: #9ca3af; cursor: pointer; padding: 2px 5px; border-radius: 3px; font-size: 11px; }
-				.file-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
-				.file-btn.make-file { color: #38bdf8; font-weight: bold; }
-				.file-btn.make-file:hover { background: rgba(56, 189, 248, 0.2); color: #fff; }
-				.file-btn.del:hover { background: rgba(239,68,68,0.3); color: #ef4444; }
-
-				/* Панель таблицы */
-				.content-pane { flex-grow: 1; display: flex; flex-direction: column; background: #0f172a; overflow: hidden; }
-				
-				.sheet-topbar { padding: 12px 20px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
-				.sheet-title-row { display: flex; justify-content: space-between; align-items: center; }
-				.sheet-title { font-size: 18px; font-weight: 700; color: #f8fafc; margin: 0; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-				.sheet-title:hover { color: #38bdf8; }
-				.tpl-badge { font-size: 11px; font-weight: 700; background: #f59e0b; color: #000; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; }
-
-				/* Тулбар операций */
-				.sheet-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
-				.toolbar-group { display: flex; gap: 6px; align-items: center; }
-				.s-btn { background: #0f172a; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
-				.s-btn:hover { background: #334155; color: #f8fafc; }
-				.s-btn.primary { background: #0284c7; border-color: #0284c7; color: white; }
-				.s-btn.primary:hover { background: #0369a1; }
-				.s-btn.btn-copied { background: #10b981 !important; border-color: #10b981 !important; color: white !important; }
-
-				/* Строка формул (Excel fx) */
-				.formula-bar-container { display: flex; align-items: center; gap: 8px; background: #0f172a; border: 1px solid #334155; border-radius: 4px; padding: 4px 8px; }
-				.active-cell-badge { font-family: monospace; font-weight: 700; color: #38bdf8; font-size: 13px; min-width: 45px; text-align: center; border-right: 1px solid #334155; padding-right: 8px; }
-				.fx-label { font-family: serif; font-style: italic; font-weight: bold; color: #64748b; font-size: 14px; user-select: none; }
-				#formula-input { flex-grow: 1; background: transparent; border: none; color: #f8fafc; font-family: monospace; font-size: 13px; outline: none; }
-
-				/* Сетка таблицы */
-				.grid-viewport { flex-grow: 1; overflow: auto; background: #0f172a; position: relative; }
-				table.sheet-table { border-collapse: collapse; table-layout: fixed; width: max-content; }
-				
-				/* Заголовки A, B, C и 1, 2, 3 */
-				th.corner-header { width: 45px; min-width: 45px; background: #111827; border: 1px solid #334155; position: sticky; top: 0; left: 0; z-index: 30; }
-				th.col-header { height: 28px; width: 120px; min-width: 120px; background: #1e293b; border: 1px solid #334155; font-size: 12px; font-weight: 600; color: #94a3b8; text-align: center; position: sticky; top: 0; z-index: 20; user-select: none; }
-				th.col-header.selected-col { background: #334155; color: #38bdf8; }
-				
-				td.row-header { width: 45px; min-width: 45px; height: 28px; background: #1e293b; border: 1px solid #334155; font-size: 11px; font-weight: 600; color: #94a3b8; text-align: center; position: sticky; left: 0; z-index: 10; user-select: none; font-family: monospace; }
-				td.row-header.selected-row { background: #334155; color: #38bdf8; }
-
-				/* Ячейки */
-				td.cell { height: 28px; background: #0f172a; border: 1px solid #1e293b; padding: 4px 8px; font-size: 13px; color: #f8fafc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: cell; user-select: text; }
-				td.cell.numeric { text-align: right; font-family: monospace; }
-				td.cell.selected { outline: 2px solid #38bdf8 !important; outline-offset: -2px; background: rgba(56, 189, 248, 0.08) !important; }
-				td.cell.editing { padding: 0; background: #000 !important; }
-				
-				input.cell-editor { width: 100%; height: 100%; background: #000; border: none; color: #38bdf8; font-family: monospace; font-size: 13px; padding: 4px 8px; outline: none; }
-				.err-val { color: #f87171 !important; font-weight: bold; font-family: monospace; }
-
-				/* Пустой экран */
-				.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 70vh; text-align: center; gap: 16px; color: #64748b; }
-				.empty-icon { font-size: 48px; }
-				.empty-title { font-size: 20px; font-weight: 700; color: #94a3b8; margin: 0; }
-				.empty-desc { font-size: 14px; max-width: 340px; line-height: 1.5; margin: 0; }
-				.empty-btns { display: flex; gap: 10px; }
-				.empty-btn { background: #0284c7; border: none; color: white; padding: 10px 18px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; }
-				.empty-btn:hover { background: #0369a1; }
-				.empty-btn.secondary { background: #1e293b; border: 1px solid #334155; color: #94a3b8; }
-				.empty-btn.secondary:hover { background: #334155; color: #fff; }
-			`);
-		}
-
-		start() {
-			this.appData = this.loadGlobal('sheet', this.config.defaultData);
-
-			if (!this.appData.files) this.appData.files = [];
-			if (!this.appData.templates) this.appData.templates = [];
-			if (this.appData.isTemplatesOpen === undefined) this.appData.isTemplatesOpen = true;
-			if (!this.appData.activeId && this.appData.files.length > 0) {
-				this.appData.activeId = this.appData.files[0].id;
-			}
-
-			this.selectedCell = 'A1';
-			this.isEditing = false;
-
-			this.initSidebarEvents();
-			this.render();
-		}
-
-		initSidebarEvents() {
-			document.getElementById('btn-new-file').onclick = () => this.createNewFile();
-			document.getElementById('btn-new-tpl').onclick = (e) => {
-				e.stopPropagation();
-				this.createNewTemplate();
-			};
-
-			const accordionHeader = document.getElementById('toggle-templates');
-			accordionHeader.onclick = (e) => {
-				if (e.target.closest('#btn-new-tpl')) return;
-				this.appData.isTemplatesOpen = !this.appData.isTemplatesOpen;
-				this.persist();
-				this.updateAccordionVisual();
+		cloneTemplateData(tpl) {
+			return {
+				cols: tpl.cols || 8,
+				rows: tpl.rows || 20,
+				cells: JSON.parse(JSON.stringify(tpl.cells || {}))
 			};
 		}
 
-		updateAccordionVisual() {
-			const section = document.getElementById('templates-accordion');
-			section.classList.toggle('collapsed', !this.appData.isTemplatesOpen);
-		}
-
-		getActiveObject() {
-			const id = this.appData.activeId;
-			if (!id) return null;
-
-			const file = this.appData.files.find(f => f.id === id);
-			if (file) return { data: file, isTemplate: false };
-
-			const tpl = this.appData.templates.find(t => t.id === id);
-			if (tpl) return { data: tpl, isTemplate: true };
-
-			return null;
-		}
-
-		// === ДВИЖОК ВЫЧИСЛЕНИЯ ФОРМУЛ (Excel / Google Sheets Parser) ===
+		// === ДВИЖОК ВЫЧИСЛЕНИЯ ФОРМУЛ ===
 
 		idxToCol(i) {
 			let s = '';
@@ -253,9 +77,7 @@ var ModuleClass = (function(NexusBehaviour) {
 
 		colToIdx(s) {
 			let n = 0;
-			for (let i = 0; i < s.length; i++) {
-				n = n * 26 + s.charCodeAt(i) - 64;
-			}
+			for (let i = 0; i < s.length; i++) n = n * 26 + s.charCodeAt(i) - 64;
 			return n - 1;
 		}
 
@@ -297,7 +119,6 @@ var ModuleClass = (function(NexusBehaviour) {
 				return !isNaN(num) ? num : raw;
 			}
 
-			// Формула
 			return this.evalFormula(raw.substring(1), cells, new Set([...visited, coord]));
 		}
 
@@ -305,7 +126,6 @@ var ModuleClass = (function(NexusBehaviour) {
 			try {
 				let expr = formula.trim();
 
-				// 1. Функции диапазонов: SUM, AVERAGE (AVG), MIN, MAX, COUNT
 				const fnRegex = /(SUM|AVERAGE|AVG|MIN|MAX|COUNT)\(([^)]+)\)/gi;
 				expr = expr.replace(fnRegex, (match, fnName, argStr) => {
 					fnName = fnName.toUpperCase();
@@ -320,7 +140,6 @@ var ModuleClass = (function(NexusBehaviour) {
 					return 0;
 				});
 
-				// 2. Одиночные ссылки на ячейки (например: A1, B2, C10)
 				const cellRefRegex = /\b([A-Z]+[0-9]+)\b/g;
 				expr = expr.replace(cellRefRegex, (ref) => {
 					const val = this.evalCell(ref, cells, visited);
@@ -331,10 +150,7 @@ var ModuleClass = (function(NexusBehaviour) {
 					return !isNaN(num) ? num : 0;
 				});
 
-				// 3. Безопасное вычисление чистого мат. выражения
-				if (!/^[0-9+\-*/(). eE%]+$/.test(expr)) {
-					return '#VALUE!';
-				}
+				if (!/^[0-9+\-*/(). eE%]+$/.test(expr)) return '#VALUE!';
 
 				const result = Function(`"use strict"; return (${expr})`)();
 				if (typeof result === 'number') {
@@ -347,134 +163,57 @@ var ModuleClass = (function(NexusBehaviour) {
 			}
 		}
 
-		// === РЕНДЕР ===
-
-		render() {
-			this.renderExplorer();
-			this.renderContent();
-			this.updateAccordionVisual();
-		}
-
-		renderExplorer() {
-			const filesEl = document.getElementById('explorer-files');
-			filesEl.innerHTML = '';
-
-			this.appData.files.forEach(file => {
-				const item = document.createElement('div');
-				item.className = `file-item ${file.id === this.appData.activeId ? 'active' : ''}`;
-
-				item.innerHTML = `
-					<div class="file-name-wrapper" title="${file.name}">
-						<span>📊</span>
-						<span style="overflow:hidden;text-overflow:ellipsis;">${file.name}</span>
-					</div>
-					<div class="file-actions">
-						<button class="file-btn edit" title="Переименовать">✏️</button>
-						<button class="file-btn del" title="Удалить">✕</button>
-					</div>
-				`;
-
-				item.onclick = (e) => {
-					if (e.target.closest('.file-actions')) return;
-					this.appData.activeId = file.id;
-					this.selectedCell = 'A1';
-					this.persist();
-					this.render();
-				};
-
-				item.querySelector('.file-btn.edit').onclick = (e) => {
-					e.stopPropagation();
-					this.renameItem(file);
-				};
-
-				item.querySelector('.file-btn.del').onclick = (e) => {
-					e.stopPropagation();
-					this.deleteItem(file.id, false);
-				};
-
-				filesEl.appendChild(item);
-			});
-
-			const tplEl = document.getElementById('explorer-templates');
-			const tplCount = document.getElementById('templates-count');
-			tplCount.textContent = this.appData.templates.length;
-			tplEl.innerHTML = '';
-
-			this.appData.templates.forEach(tpl => {
-				const item = document.createElement('div');
-				item.className = `file-item ${tpl.id === this.appData.activeId ? 'active' : ''}`;
-
-				item.innerHTML = `
-					<div class="file-name-wrapper" title="${tpl.name}">
-						<span>📑</span>
-						<span style="overflow:hidden;text-overflow:ellipsis;">${tpl.name}</span>
-					</div>
-					<div class="file-actions">
-						<button class="file-btn make-file" title="Создать таблицу по шаблону">⚡</button>
-						<button class="file-btn edit" title="Переименовать">✏️</button>
-						<button class="file-btn del" title="Удалить">✕</button>
-					</div>
-				`;
-
-				item.onclick = (e) => {
-					if (e.target.closest('.file-actions')) return;
-					this.appData.activeId = tpl.id;
-					this.selectedCell = 'A1';
-					this.persist();
-					this.render();
-				};
-
-				item.querySelector('.file-btn.make-file').onclick = (e) => {
-					e.stopPropagation();
-					this.instantiateTemplate(tpl);
-				};
-
-				item.querySelector('.file-btn.edit').onclick = (e) => {
-					e.stopPropagation();
-					this.renameItem(tpl);
-				};
-
-				item.querySelector('.file-btn.del').onclick = (e) => {
-					e.stopPropagation();
-					this.deleteItem(tpl.id, true);
-				};
-
-				tplEl.appendChild(item);
-			});
-		}
-
-		renderContent() {
-			const pane = document.getElementById('editor-pane');
-			const activeObj = this.getActiveObject();
-
-			if (!activeObj) {
-				pane.innerHTML = `
-					<div class="empty-state">
-						<div class="empty-icon">📊</div>
-						<h3 class="empty-title">Нет открытых таблиц</h3>
-						<p class="empty-desc">Выберите таблицу или шаблон в проводнике слева, либо создайте новую.</p>
-						<div class="empty-btns">
-							<button class="empty-btn" id="empty-create-file">+ Создать таблицу</button>
-							<button class="empty-btn secondary" id="empty-create-tpl">+ Новый шаблон</button>
-						</div>
-					</div>
-				`;
-				document.getElementById('empty-create-file').onclick = () => this.createNewFile();
-				document.getElementById('empty-create-tpl').onclick = () => this.createNewTemplate();
-				return;
-			}
-
-			const active = activeObj.data;
-			const isTemplate = activeObj.isTemplate;
+		// Рендер редактора таблицы:
+		renderEditor(active, isTemplate, pane) {
 			if (!active.cells) active.cells = {};
 			if (!active.cols) active.cols = 8;
 			if (!active.rows) active.rows = 20;
+			if (!this.selectedCell) this.selectedCell = 'A1';
+
+			this.addCSS(`
+				.sheet-topbar { padding: 12px 20px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+				.sheet-title-row { display: flex; justify-content: space-between; align-items: center; }
+				.sheet-title { font-size: 18px; font-weight: 700; color: #f8fafc; margin: 0; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+				.sheet-title:hover { color: #38bdf8; }
+				.tpl-badge { font-size: 11px; font-weight: 700; background: #f59e0b; color: #000; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; }
+
+				.sheet-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+				.toolbar-group { display: flex; gap: 6px; align-items: center; }
+				.s-btn { background: #0f172a; border: 1px solid #334155; color: #94a3b8; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
+				.s-btn:hover { background: #334155; color: #f8fafc; }
+				.s-btn.primary { background: #0284c7; border-color: #0284c7; color: white; }
+				.s-btn.primary:hover { background: #0369a1; }
+				.s-btn.btn-copied { background: #10b981 !important; border-color: #10b981 !important; color: white !important; }
+
+				.formula-bar-container { display: flex; align-items: center; gap: 8px; background: #0f172a; border: 1px solid #334155; border-radius: 4px; padding: 4px 8px; }
+				.active-cell-badge { font-family: monospace; font-weight: 700; color: #38bdf8; font-size: 13px; min-width: 45px; text-align: center; border-right: 1px solid #334155; padding-right: 8px; }
+				.fx-label { font-family: serif; font-style: italic; font-weight: bold; color: #64748b; font-size: 14px; user-select: none; }
+				#formula-input { flex-grow: 1; background: transparent; border: none; color: #f8fafc; font-family: monospace; font-size: 13px; outline: none; }
+
+				.grid-viewport { flex-grow: 1; overflow: auto; background: #0f172a; position: relative; }
+				table.sheet-table { border-collapse: collapse; table-layout: fixed; width: max-content; }
+				
+				th.corner-header { width: 45px; min-width: 45px; background: #111827; border: 1px solid #334155; position: sticky; top: 0; left: 0; z-index: 30; }
+				th.col-header { height: 28px; width: 120px; min-width: 120px; background: #1e293b; border: 1px solid #334155; font-size: 12px; font-weight: 600; color: #94a3b8; text-align: center; position: sticky; top: 0; z-index: 20; user-select: none; }
+				th.col-header.selected-col { background: #334155; color: #38bdf8; }
+				
+				td.row-header { width: 45px; min-width: 45px; height: 28px; background: #1e293b; border: 1px solid #334155; font-size: 11px; font-weight: 600; color: #94a3b8; text-align: center; position: sticky; left: 0; z-index: 10; user-select: none; font-family: monospace; }
+				td.row-header.selected-row { background: #334155; color: #38bdf8; }
+
+				td.cell { height: 28px; background: #0f172a; border: 1px solid #1e293b; padding: 4px 8px; font-size: 13px; color: #f8fafc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: cell; user-select: text; }
+				td.cell.numeric { text-align: right; font-family: monospace; }
+				td.cell.selected { outline: 2px solid #38bdf8 !important; outline-offset: -2px; background: rgba(56, 189, 248, 0.08) !important; }
+				td.cell.editing { padding: 0; background: #000 !important; }
+				
+				input.cell-editor { width: 100%; height: 100%; background: #000; border: none; color: #38bdf8; font-family: monospace; font-size: 13px; padding: 4px 8px; outline: none; }
+				.err-val { color: #f87171 !important; font-weight: bold; font-family: monospace; }
+			`);
 
 			pane.innerHTML = `
 				<div class="sheet-topbar">
 					<div class="sheet-title-row">
 						<h2 class="sheet-title" id="sheet-title" title="Кликните для переименования">
-							<span>${isTemplate ? '📑' : '📊'} ${active.name}</span>
+							<span>${isTemplate ? this.templateIcon : this.fileIcon} ${active.name}</span>
 							<span style="font-size:14px;color:#64748b;">✏️</span>
 						</h2>
 						${isTemplate ? '<span class="tpl-badge">Шаблон</span>' : ''}
@@ -489,13 +228,12 @@ var ModuleClass = (function(NexusBehaviour) {
 							<button class="s-btn" id="btn-del-col">- Столбец</button>
 						</div>
 						<div class="toolbar-group">
-							<button class="s-btn" id="btn-copy-tsv" title="Копирует таблицу в буфер для вставки в Excel">📋 Копировать для Excel</button>
-							<button class="s-btn" id="btn-paste-tsv" title="Вставляет данные, скопированные из Excel">📥 Вставить из Excel</button>
+							<button class="s-btn" id="btn-copy-tsv" title="Копирует таблицу для Excel">📋 Копировать для Excel</button>
+							<button class="s-btn" id="btn-paste-tsv" title="Вставляет скопированное из Excel">📥 Вставить из Excel</button>
 							<button class="s-btn" id="btn-export-csv">💾 Скачать .csv</button>
 						</div>
 					</div>
 
-					<!-- Строка формул fx -->
 					<div class="formula-bar-container">
 						<span class="active-cell-badge" id="fx-cell">${this.selectedCell}</span>
 						<span class="fx-label">fx</span>
@@ -514,16 +252,12 @@ var ModuleClass = (function(NexusBehaviour) {
 				document.getElementById('btn-use-tpl').onclick = () => this.instantiateTemplate(active);
 			}
 
-			// Операции с размером сетки
 			document.getElementById('btn-add-row').onclick = () => { active.rows++; this.persist(); this.renderGrid(active); };
 			document.getElementById('btn-add-col').onclick = () => { active.cols++; this.persist(); this.renderGrid(active); };
 			document.getElementById('btn-del-row').onclick = () => { if (active.rows > 1) { active.rows--; this.persist(); this.renderGrid(active); } };
 			document.getElementById('btn-del-col').onclick = () => { if (active.cols > 1) { active.cols--; this.persist(); this.renderGrid(active); } };
 
-			// Интеграция с Excel через буфер обмена
 			this.initExcelBridge(active);
-
-			// Рендер самой сетки ячеек
 			this.renderGrid(active);
 		}
 
@@ -534,7 +268,6 @@ var ModuleClass = (function(NexusBehaviour) {
 
 			const parsedSelected = this.parseCoord(this.selectedCell) || { cIdx: 0, rIdx: 0 };
 
-			// 1. Верхний заголовок столбцов (Corner + A, B, C...)
 			const thead = document.createElement('thead');
 			const headerRow = document.createElement('tr');
 			
@@ -552,27 +285,23 @@ var ModuleClass = (function(NexusBehaviour) {
 			thead.appendChild(headerRow);
 			table.appendChild(thead);
 
-			// 2. Тело таблицы со строками и ячейками
 			const tbody = document.createElement('tbody');
 
 			for (let r = 0; r < sheet.rows; r++) {
 				const tr = document.createElement('tr');
 				const rowNum = r + 1;
 
-				// Заголовок строки 1, 2, 3...
 				const rowTh = document.createElement('td');
 				rowTh.className = `row-header ${r === parsedSelected.rIdx ? 'selected-row' : ''}`;
 				rowTh.textContent = rowNum;
 				tr.appendChild(rowTh);
 
-				// Ячейки в строке
 				for (let c = 0; c < sheet.cols; c++) {
 					const cellKey = `${this.idxToCol(c)}${rowNum}`;
 					const td = document.createElement('td');
 					td.className = `cell ${cellKey === this.selectedCell ? 'selected' : ''}`;
 					td.dataset.coord = cellKey;
 
-					// Вычисляем значение ячейки
 					const displayVal = this.evalCell(cellKey, sheet.cells);
 					if (typeof displayVal === 'number') {
 						td.classList.add('numeric');
@@ -584,9 +313,7 @@ var ModuleClass = (function(NexusBehaviour) {
 						td.textContent = displayVal;
 					}
 
-					// Клик выбора ячейки
 					td.onclick = () => this.selectCell(cellKey, sheet);
-					// Двойной клик для прямого редактирования по месту
 					td.ondblclick = () => this.startInlineEdit(td, cellKey, sheet);
 
 					tr.appendChild(td);
@@ -595,7 +322,6 @@ var ModuleClass = (function(NexusBehaviour) {
 			}
 			table.appendChild(tbody);
 
-			// Обновляем строку формул
 			this.syncFormulaBar(sheet);
 		}
 
@@ -692,14 +418,11 @@ var ModuleClass = (function(NexusBehaviour) {
 			return `${this.idxToCol(newC)}${newR}`;
 		}
 
-		// === ИНТЕГРАЦИЯ С EXCEL / GOOGLE SHEETS ЧЕРЕЗ TSV ===
-
 		initExcelBridge(sheet) {
 			const copyBtn = document.getElementById('btn-copy-tsv');
 			const pasteBtn = document.getElementById('btn-paste-tsv');
 			const csvBtn = document.getElementById('btn-export-csv');
 
-			// 1. Копирование сетки в буфер для вставки в Excel
 			copyBtn.onclick = () => {
 				let tsv = '';
 				for (let r = 1; r <= sheet.rows; r++) {
@@ -722,7 +445,6 @@ var ModuleClass = (function(NexusBehaviour) {
 				});
 			};
 
-			// 2. Вставка данных прямо из буфера Excel
 			pasteBtn.onclick = async () => {
 				try {
 					const text = await navigator.clipboard.readText();
@@ -753,7 +475,6 @@ var ModuleClass = (function(NexusBehaviour) {
 				}
 			};
 
-			// 3. Скачивание CSV
 			csvBtn.onclick = () => {
 				let csv = '';
 				for (let r = 1; r <= sheet.rows; r++) {
@@ -777,97 +498,6 @@ var ModuleClass = (function(NexusBehaviour) {
 				a.click();
 				URL.revokeObjectURL(url);
 			};
-		}
-
-		// === ОПЕРАЦИИ СО СПИСКАМИ И ШАБЛОНАМИ ===
-
-		instantiateTemplate(tpl) {
-			const name = prompt('Название новой таблицы по шаблону:', `${tpl.name} (Копия)`);
-			if (!name || !name.trim()) return;
-
-			const newSheet = {
-				id: 'sheet_' + Date.now(),
-				name: name.trim(),
-				cols: tpl.cols || 8,
-				rows: tpl.rows || 20,
-				cells: JSON.parse(JSON.stringify(tpl.cells || {}))
-			};
-
-			this.appData.files.push(newSheet);
-			this.appData.activeId = newSheet.id;
-			this.persist();
-			this.render();
-		}
-
-		createNewFile() {
-			const name = prompt('Название новой таблицы:', 'Новая таблица');
-			if (!name || !name.trim()) return;
-
-			const newSheet = {
-				id: 'sheet_' + Date.now(),
-				name: name.trim(),
-				cols: 8,
-				rows: 20,
-				cells: {}
-			};
-
-			this.appData.files.push(newSheet);
-			this.appData.activeId = newSheet.id;
-			this.persist();
-			this.render();
-		}
-
-		createNewTemplate() {
-			const name = prompt('Название нового шаблона:', 'Новый шаблон таблицы');
-			if (!name || !name.trim()) return;
-
-			const newTpl = {
-				id: 'tpl_' + Date.now(),
-				name: name.trim(),
-				cols: 6,
-				rows: 15,
-				cells: {}
-			};
-
-			this.appData.templates.push(newTpl);
-			this.appData.activeId = newTpl.id;
-			this.appData.isTemplatesOpen = true;
-			this.persist();
-			this.render();
-		}
-
-		renameItem(item) {
-			const newName = prompt('Новое название:', item.name);
-			if (newName && newName.trim()) {
-				item.name = newName.trim();
-				this.persist();
-				this.render();
-			}
-		}
-
-		deleteItem(id, isTemplate) {
-			const targetArray = isTemplate ? this.appData.templates : this.appData.files;
-			const item = targetArray.find(x => x.id === id);
-			if (!item) return;
-
-			if (!confirm(`Удалить ${isTemplate ? 'шаблон' : 'таблицу'} "${item.name}"?`)) return;
-
-			if (isTemplate) {
-				this.appData.templates = this.appData.templates.filter(x => x.id !== id);
-			} else {
-				this.appData.files = this.appData.files.filter(x => x.id !== id);
-			}
-
-			if (this.appData.activeId === id) {
-				this.appData.activeId = this.appData.files.length > 0 ? this.appData.files[0].id : null;
-			}
-
-			this.persist();
-			this.render();
-		}
-
-		persist() {
-			this.saveGlobal('sheet', this.appData);
 		}
 	};
 
