@@ -1,12 +1,12 @@
 {
 	"routes": [
 		{
-			"moduleId": "trello",
+			"moduleId": "kanban",
 			"name": "📋 Доска",
 			"desc": "Локальный менеджер задач и заметок в стиле Трелло.",
-			"subpath": "trello",
-			"launchUrl": "https://www.google.com/priboy313/trello",
-			"worker": "trello.js"
+			"subpath": "kanban",
+			"launchUrl": "https://www.google.com/priboy313/kanban",
+			"worker": "kanban.js"
 		},
 		{
 			"moduleId": "todo",
@@ -15,6 +15,27 @@
 			"subpath": "todo",
 			"launchUrl": "https://www.google.com/priboy313/todo",
 			"worker": "todo.js"
+		},
+		{
+			"moduleId": "pass",
+			"name": "🔐 omniPass",
+			"desc": "База тестовых учеток ТВ и сервисов.",
+			"subpath": "pass",
+			"worker": "pass.js"
+		},
+		{
+			"moduleId": "word",
+			"name": "📄 Word",
+			"desc": "Текстовый редактор для заметок.",
+			"subpath": "word",
+			"worker": "word.js"
+		},
+		{
+			"moduleId": "sheet",
+			"name": "📊 Sheet",
+			"desc": "Легковесный табличный редактор с поддержкой формул и импорта из Excel.",
+			"subpath": "sheet",
+			"worker": "sheet.js"
 		}
 	]
 }

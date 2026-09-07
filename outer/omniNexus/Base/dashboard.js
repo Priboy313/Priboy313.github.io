@@ -34,12 +34,13 @@ var ModuleClass = (function(NexusBehaviour) {
 				textarea { width: 100%; height: 160px; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; padding: 10px; margin-top: 12px; font-family: monospace; font-size: 12px; }
 				
 				.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-				.action-btn { background: #334155; border: 1px solid #475569; color: #f8fafc; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background 0.15s; }
+				.action-btn { background: #334155; border: 1px solid #475569; color: #f8fafc; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background 0.15s, border-color 0.15s, color 0.15s; }
 				.action-btn:hover { background: #475569; }
 				.action-btn.primary { background: #0284c7; border-color: #0284c7; color: white; }
 				.action-btn.primary:hover { background: #0369a1; }
 				.action-btn.success { background: #10b981; border-color: #10b981; color: white; }
 				.action-btn.success:hover { background: #059669; }
+				.action-btn.btn-copied { background: #10b981 !important; border-color: #10b981 !important; color: white !important; }
 			`);
 		}
 
@@ -83,7 +84,7 @@ var ModuleClass = (function(NexusBehaviour) {
 			app.innerHTML = `
 				<header>
 					<div>
-						<h1 class="brand-title">⚡ ${this.config.title} <span>// ${this.workspace}</span></h1>
+						<h1 class="brand-title">⚡ ${this.config?.title || 'omniNexus'} <span>// ${this.workspace}</span></h1>
 						<div class="brand-subtitle">Environment Hub & Launcher</div>
 					</div>
 					<div class="meta-pill">${this.CONFIG.provider.toUpperCase()} : ${hash.substring(0, 7)}</div>
@@ -96,17 +97,16 @@ var ModuleClass = (function(NexusBehaviour) {
 					</div>
 				</div>
 
-				<!-- Блок бэкапа и переноса данных -->
 				<details>
 					<summary>📦 Резервное копирование (${this.workspace})</summary>
 					<p style="color:#94a3b8;font-size:13px;margin:8px 0 0 0;">
-						Скопируйте текст ниже, чтобы сохранить бэкап, либо вставьте текст сюда для восстановления.
+						Скопируйте текст ниже для переноса данных, либо вставьте текст для восстановления.
 					</p>
 					
 					<textarea id="backup-text" placeholder="Нажмите «Экспорт в текст» или вставьте сюда текст бэкапа..."></textarea>
 					
 					<div class="btn-row">
-						<button class="action-btn primary" id="btn-export-text">Экспорт в текст</button>
+						<button class="action-btn primary" id="btn-export-text">Сформировать экспорт</button>
 						<button class="action-btn" id="btn-copy-text">Скопировать в буфер</button>
 						<button class="action-btn success" id="btn-import-text">Применить из поля выше</button>
 						<button class="action-btn" id="btn-export-file">Скачать файл .json</button>
@@ -115,7 +115,6 @@ var ModuleClass = (function(NexusBehaviour) {
 					</div>
 				</details>
 
-				<!-- Блок конфигурации модулей -->
 				<details>
 					<summary>⚙️ Конфигурация спейса (${this.workspace})</summary>
 					<textarea id="settings-area">${JSON.stringify(globalSettings, null, 2)}</textarea>
@@ -138,7 +137,6 @@ var ModuleClass = (function(NexusBehaviour) {
 			};
 		}
 
-		// Логика сбора всех данных спейса
 		getAllWorkspaceData() {
 			const prefix = `nexus_${this.workspace}_`;
 			let keys = [];
@@ -146,7 +144,6 @@ var ModuleClass = (function(NexusBehaviour) {
 			if (typeof this._GM_list === 'function') {
 				keys = this._GM_list().filter(k => k.startsWith(prefix)).map(k => k.replace(prefix, ''));
 			} else {
-				// Фоллбэк на базовые модули, если GM_listValues не доступен
 				keys = ['trello', 'todo', 'settings', 'router'];
 			}
 
@@ -186,25 +183,30 @@ var ModuleClass = (function(NexusBehaviour) {
 		initBackupHandlers() {
 			const area = document.getElementById('backup-text');
 			const fileInput = document.getElementById('file-input');
+			const copyBtn = document.getElementById('btn-copy-text');
 
-			// 1. Сформировать экспорт в текст
 			document.getElementById('btn-export-text').onclick = () => {
 				const data = this.getAllWorkspaceData();
 				area.value = JSON.stringify(data, null, 2);
 			};
 
-			// 2. Скопировать в буфер
-			document.getElementById('btn-copy-text').onclick = () => {
+			// Плавная анимация копирования вместо alert()
+			copyBtn.onclick = () => {
 				if (!area.value.trim()) {
 					const data = this.getAllWorkspaceData();
 					area.value = JSON.stringify(data, null, 2);
 				}
 				navigator.clipboard.writeText(area.value).then(() => {
-					alert('Текст бэкапа скопирован в буфер обмена!');
+					const prevText = copyBtn.textContent;
+					copyBtn.textContent = '✓ Скопировано!';
+					copyBtn.classList.add('btn-copied');
+					setTimeout(() => {
+						copyBtn.textContent = prevText;
+						copyBtn.classList.remove('btn-copied');
+					}, 1500);
 				});
 			};
 
-			// 3. Применить из текста
 			document.getElementById('btn-import-text').onclick = () => {
 				let raw = area.value.trim();
 				if (!raw) return alert('Поле ввода пустое!');
@@ -226,7 +228,6 @@ var ModuleClass = (function(NexusBehaviour) {
 				}
 			};
 
-			// 4. Скачать файл
 			document.getElementById('btn-export-file').onclick = () => {
 				const data = this.getAllWorkspaceData();
 				const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -238,7 +239,6 @@ var ModuleClass = (function(NexusBehaviour) {
 				URL.revokeObjectURL(url);
 			};
 
-			// 5. Загрузить из файла
 			document.getElementById('btn-import-file').onclick = () => fileInput.click();
 
 			fileInput.onchange = (e) => {

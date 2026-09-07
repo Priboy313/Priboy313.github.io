@@ -4,29 +4,31 @@ class NexusBehaviour {
         this.role = context.role;
         this.workspace = context.CONFIG.workspace;
         this.CONFIG = context.CONFIG;
-		this._context = context;
+        this._context = context;
         
         this._GM_get = context.GM_getValue;
         this._GM_set = context.GM_setValue;
-		this._GM_list = context.GM_listValues;
-		this._observers = [];
+        this._GM_list = context.GM_listValues;
+        this._observers = [];
 
         queueMicrotask(() => this._initLifecycle());
     }
 
-	get config() {
-		if (!this._cachedConfig) {
-			let userSettings = {};
-			try {
-				userSettings = JSON.parse(this._context.settingsJSON || '{}');
-			} catch (e) {}
-			this._cachedConfig = { ...(this.defaults || {}), ...userSettings };
-		}
-		return this._cachedConfig;
-	}
+    get config() {
+        if (!this._cachedConfig) {
+            let userSettings = {};
+            try {
+                userSettings = JSON.parse(this._context?.settingsJSON || '{}');
+            } catch (e) {}
+            this._cachedConfig = { ...(this.defaults || {}), ...userSettings };
+        }
+        return this._cachedConfig;
+    }
 
     _initLifecycle() {
         this.awake();
+        
+        this.injectGlobalScrollbars();
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.start());
@@ -35,10 +37,35 @@ class NexusBehaviour {
         }
     }
 
-    // Методы для переопределения в воркерах
+    injectGlobalScrollbars() {
+        if (document.getElementById('nexus-global-scrollbars')) return;
+        const style = document.createElement('style');
+        style.id = 'nexus-global-scrollbars';
+        style.textContent = `
+            ::-webkit-scrollbar, *::-webkit-scrollbar {
+                width: 8px !important;
+                height: 8px !important;
+            }
+            ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+                background: #0f172a !important;
+            }
+            ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+                background: #334155 !important;
+                border-radius: 4px !important;
+                border: 2px solid #0f172a !important;
+            }
+            ::-webkit-scrollbar-thumb:hover, *::-webkit-scrollbar-thumb:hover {
+                background: #475569 !important;
+            }
+            ::-webkit-scrollbar-corner, *::-webkit-scrollbar-corner {
+                background: #0f172a !important;
+            }
+        `;
+        (document.head || document.documentElement).appendChild(style);
+    }
+
     awake() {}
     start() {}
-	// =====================================
 
     print(...args) {
         if (this.role === "dodev") {
@@ -51,59 +78,59 @@ class NexusBehaviour {
         const style = document.createElement('style');
         style.id = `custom-${this.id}-css`;
         style.textContent = cssString;
-        document.head.appendChild(style);
+        (document.head || document.documentElement).appendChild(style);
     }
 
-	waitForElement(selector, timeout = 10000, parent = null) {
-		return new Promise((resolve) => {
-			if (!selector) return resolve(null);
+    waitForElement(selector, timeout = 10000, parent = null) {
+        return new Promise((resolve) => {
+            if (!selector) return resolve(null);
 
-			const root = parent || document;
-			const existing = root.querySelector(selector);
-			if (existing) return resolve(existing);
+            const root = parent || document;
+            const existing = root.querySelector(selector);
+            if (existing) return resolve(existing);
 
-			const targetNode = parent || document.body || document.documentElement;
+            const targetNode = parent || document.body || document.documentElement;
 
-			let timeoutId;
-			const observer = new MutationObserver(() => {
-				const found = root.querySelector(selector);
-				if (found) {
-					clearTimeout(timeoutId);
-					observer.disconnect();
-					resolve(found);
-				}
-			});
+            let timeoutId;
+            const observer = new MutationObserver(() => {
+                const found = root.querySelector(selector);
+                if (found) {
+                    clearTimeout(timeoutId);
+                    observer.disconnect();
+                    resolve(found);
+                }
+            });
 
-			timeoutId = setTimeout(() => {
-				observer.disconnect();
-				this.print(`[Timeout] Элемент "${selector}" не появился за ${timeout} мс.`);
-				resolve(null);
-			}, timeout);
+            timeoutId = setTimeout(() => {
+                observer.disconnect();
+                this.print(`[Timeout] Элемент "${selector}" не появился за ${timeout} мс.`);
+                resolve(null);
+            }, timeout);
 
-			observer.observe(targetNode, { childList: true, subtree: true });
-		});
-	}
+            observer.observe(targetNode, { childList: true, subtree: true });
+        });
+    }
 
-	observe(target, callback, options = { childList: true, subtree: true }) {
-		const node = typeof target === 'string' ? document.querySelector(target) : target;
-		if (!node || !(node instanceof Node)) {
-			this.print('observe: целевой элемент не найден или не является Node:', target);
-			return null;
-		}
+    observe(target, callback, options = { childList: true, subtree: true }) {
+        const node = typeof target === 'string' ? document.querySelector(target) : target;
+        if (!node || !(node instanceof Node)) {
+            this.print('observe: целевой элемент не найден или не является Node:', target);
+            return null;
+        }
 
-		const observer = new MutationObserver((mutations, obs) => {
-			callback(node, mutations, obs);
-		});
+        const observer = new MutationObserver((mutations, obs) => {
+            callback(node, mutations, obs);
+        });
 
-		observer.observe(node, options);
-		this._observers.push(observer);
-		return observer;
-	}
+        observer.observe(node, options);
+        this._observers.push(observer);
+        return observer;
+    }
 
-	disconnectObservers() {
-		this._observers.forEach(obs => obs.disconnect());
-		this._observers = [];
-	}
+    disconnectObservers() {
+        this._observers.forEach(obs => obs.disconnect());
+        this._observers = [];
+    }
 
     save(key, value) {
         const fullKey = `nexus_${this.workspace}_${this.id}_${key}`;
@@ -114,12 +141,12 @@ class NexusBehaviour {
         const fullKey = `nexus_${this.workspace}_${this.id}_${key}`;
         return this._GM_get(fullKey, fallback);
     }
-	
-	saveGlobal(key, value) {
-		this._GM_set(`nexus_${this.workspace}_${key}`, value);
-	}
+    
+    saveGlobal(key, value) {
+        this._GM_set(`nexus_${this.workspace}_${key}`, value);
+    }
 
-	loadGlobal(key, fallback = null) {
-		return this._GM_get(`nexus_${this.workspace}_${key}`, fallback);
-	}
+    loadGlobal(key, fallback = null) {
+        return this._GM_get(`nexus_${this.workspace}_${key}`, fallback);
+    }
 }
